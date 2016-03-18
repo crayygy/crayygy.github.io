@@ -4,13 +4,28 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2016-03-18T14:01:09+08:00</updated>
+  <updated>2016-03-18T15:37:22+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[个人博客搭建完毕]]></title>
+    <link href="http://blog.crayygy.com/14582820943493.html"/>
+    <updated>2016-03-18T14:21:34+08:00</updated>
+    <id>http://blog.crayygy.com/14582820943493.html</id>
+    <content type="html"><![CDATA[
+<p>纠结了很久，终于这次把博客平台都给弄好了。</p>
+
+<h2 id="toc_0">服务商选择</h2>
+
+<p>之前一直在动态博客和静态博客中纠结。但我是个不喜欢折腾的人，所以Hexo和Jekyll我都不是很喜欢，配置起来实在是有些麻烦。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[日常工具使用安排]]></title>
