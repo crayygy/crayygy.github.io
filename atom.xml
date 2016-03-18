@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[渐行渐远]]></title>
+  <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
+  <link href="http://blog.crayygy.com/"/>
+  <updated>2016-03-18T14:01:09+08:00</updated>
+  <id>http://blog.crayygy.com/</id>
+  <author>
+    <name><![CDATA[]]></name>
+    
+  </author>
+  <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[日常工具使用安排]]></title>
+    <link href="http://blog.crayygy.com/14582781733248.html"/>
+    <updated>2016-03-18T13:16:13+08:00</updated>
+    <id>http://blog.crayygy.com/14582781733248.html</id>
+    <content type="html"><![CDATA[
+<p>既然handoff这么好用，iCloud同步最近也没出什么问题的话，还是把我的随笔记录换成iOS和Mac自带的Notes吧。Notes支持文字格式，插入图片，甚至iOS上面还可以随手画，简直神器。而且iOS9.3上就可以针对单个的笔记进行加密了，如果可以对某个文件夹加密的话，我就可以把我的日记也都写在这里了，虽然DayOne真的很好用，但是真的太贵了！如果哪一天Notes支持了Markdown格式，那真是第三方的灾难。</p>
+
+<span id="more"></span><!-- more -->
+
+<p>换了手机之后，发现了以前用的一些软件觉得不好用完全是因为手机太卡，其实还是很好用的，比如Spark、Outlook，都是绝对的杀手级的邮箱应用，然而我直到最近才发现，真是可惜。</p>
+
+<p>邮箱的话，Mac 和 Windows上目前使用Foxmail感觉很不错，支持自定义代理，配置一下之后就可以用gmail了，Hotmail也连接不太顺畅，所以也加上了代理。iOS上本来Spark用着挺爽畅的，没想到昨晚鬼使神差的下载了Outlook，刚刚测试了一下，速度上还是Outlook比较舒服，所以目前先观望着，看看提醒速度了，比较偏向于Outlook。</p>
+
+<p>记笔记的话，Quiver是没什么疑问的了，最近iOS版本的Quiver内测也加入了，慢慢的应该会很好用。也支持Markdown，Latex。所以，以后程序笔记，包括代码和一些学习笔记，都纪录在Quiver里面，不过没办法在除了Mac和iOS上面看的话，还是有些蛋疼，不过问题也不大，毕竟这两个是我的主力平台。</p>
+
+<p>MWeb还是用来写每天的Summary和博客吧，包括之前的C++ Primer学习笔记。支持七牛之后，感觉上传图片要舒服多了，而且可以直接发到静态博客里。目前准备使用MWeb编写了之后，直接发布到Github Pages和Coding Pages。</p>
+
+<p>一些需要多个平台共用的文本之类的，包括一些简单的代码段之类的，就通过SimpleNote了，全平台舒适度相当的好，同步也很快。基本上相当于即时了。刚刚向开发者提了一下Handoff的功能，不知道会不会支持。</p>
+
+<p>日程安排使用iCal，已经足够实用，GTD方面，暂时没有什么好的选择，也许wunderlist。Wunderlist用来安排比较长远性质的一些计划，比如学习什么技术，看什么书，以及书单，电影列表，考研计划等等，偶尔看一下，可以感受一下目标。</p>
+
+<p>备份同步使用Dropbox，全平台都很好用。配合SS和Surge，基本上毫无压力。只是容量小了点，等回头也来邀请一波，到20G差不多就够了应该。</p>
+
+<p>稍后阅读方面，Pocket已经沦为菜谱…感觉很难掰过来了，Instapaper 用来放一些文章，博客之类的，很好用。</p>
+
+<p>背单词使用扇贝，每天打开，已经80多天了，没理由放弃。</p>
+
+<p>番茄钟继续用着Pomotodo，一年的会员已经充值，非常的好用，全平台，只要有一个设备在身边就能用。</p>
+
+]]></content>
+  </entry>
+  
+</feed>
