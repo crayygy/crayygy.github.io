@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  个人博客搭建完毕 - 渐行渐远
+  Leetcode #334 Reverse String - 渐行渐远
   
   </title>
   
@@ -92,21 +92,21 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>个人博客搭建完毕</h1>
+          <h1>Leetcode #334 Reverse String</h1>
      
         <div class="read-more clearfix">
-          <span class="date">3/18/2016</span>
+          <span class="date">5/22/2016</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='%E9%9A%8F%E7%AC%94.html'>随笔</a></span>
+              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
            
          
           <span class="comments">
             
 
             
-              &nbsp;<a  class="ds-thread-count" data-thread-key="14582820943493.html" data-count-type="comments" href="14582820943493.html#ds-thread"></a>
+              &nbsp;<a  class="ds-thread-count" data-thread-key="14639018379416.html" data-count-type="comments" href="14639018379416.html#ds-thread"></a>
             
           </span>
 
@@ -114,27 +114,40 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>纠结了很久，终于这次把博客平台都给弄好了。<br/>
-想想还是写点东西，给自己留个念想。</p>
+      <blockquote>
+<p>Write a function that takes a string as input and returns the string reversed.<br/>
+Example:<br/>
+Given s = &quot;hello&quot;, return &quot;olleh&quot;.</p>
+</blockquote>
 
 <span id="more"></span><!-- more -->
 
-<h3 id="toc_0">服务商选择</h3>
+<p>At first, I tried to solve this using char array and a for loop, like this:</p>
 
-<p>之前一直在动态博客和静态博客中纠结。但我是个不喜欢折腾的人，所以Hexo和Jekyll我都不是很喜欢，配置起来实在是有些麻烦。而Wordpress这类的动态博客又需要去自己搭建一个虚拟主机，或者去购买一个主机空间，也是比较的麻烦。索性，直接使用MWeb自带的站点功能，主题什么的我也不是很在意，就这样也挺不错。<br/>
-世界上最好用的免费博客空间是什么？ 当然是Github Pages了。用MWeb生成的静态文件，直接通过git提交到Github的仓库中，便实现了静态博客的功能，评论用了多说，也挺好的。昨天刚好看到一个网友用Coding.net 和 Github Pages 加上Dnspod实现了国内外分流。于是索性也加上了Coding的Pages服务，感觉似乎也挺好的，这样blog.crayygy.com等于是拥有了两个备份，即使其中一个除了问题，我相信Dnspod也可以帮我搞定。</p>
+<pre><code class="language-java">public class Solution {
+    public String reverseString(String s) {
+        char[] charArray = s.toCharArray();
+        String result = &quot;&quot;;
+        for(int i=charArray.length; i) {
+            result += charArray[i];
+        }
+        return result;
+    }
+}
+</code></pre>
 
-<h3 id="toc_1">博客的内容</h3>
+<p>Unfortunately, this code is out of time limits. </p>
 
-<p>之前也零零散散写过一些文章，要么是一些无聊的心情文字，要么就是些烂大街的教程或者评测，没什么太多意义。这次开始写博客，我想从最近开始学习的一些技术上开始入手，比如，马上就要开始学习Django和Android开发，在开发过程中必然也会遇到一些这样那样的问题，把学习过程中遇到的这样那样的问题总结一些，写一写自己的感受。</p>
+<p>Luckily, we have a built-in java method named <code>StringBuilder</code>, we can write this code in just a single line:</p>
 
-<p>今天偶然间发现，SegmentFault也有写博客的功能，不过暂时还不打算去写，等到自己的文字有一定的质量的时候再转一些过去吧。</p>
+<pre><code class="language-java">public class Solution {
+    public String reverseString(String s) {
+        return new StringBuilder(s).reverse().toString();
+    }
+}
+</code></pre>
 
-<h3 id="toc_2">给自己的约定</h3>
-
-<p>争取每周都能写一篇技术博客，一点点成长。</p>
-
-<h4 id="toc_3">希望我能如博客名称一般，渐行渐远，哪怕走的很缓慢。</h4>
+<p>Wow!</p>
 
       </div>
 
@@ -142,16 +155,13 @@
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14591320972722.html" 
-          title="Previous Post: 二叉树的深度问题">&laquo; 二叉树的深度问题</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14582781733248.html" 
-          title="Next Post: 日常工具使用安排">日常工具使用安排 &raquo;</a>
+          <a  href="14625453863908.html" 
+          title="Next Post: 关于新的生日纪录的产品的一些想法">关于新的生日纪录的产品的一些想法 &raquo;</a>
       
       </p>
         </div>
@@ -163,7 +173,7 @@
           
 
           
-              <div class="ds-thread" data-thread-key="14582820943493.html" data-url="http://blog.crayygy.com/14582820943493.html" data-title="个人博客搭建完毕"></div>
+              <div class="ds-thread" data-thread-key="14639018379416.html" data-url="http://blog.crayygy.com/14639018379416.html" data-title="Leetcode #334 Reverse String"></div>
           
         </div>
       </div>

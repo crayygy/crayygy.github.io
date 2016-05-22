@@ -4,13 +4,57 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2016-05-06T23:19:14+08:00</updated>
+  <updated>2016-05-22T15:30:26+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Leetcode #334 Reverse String]]></title>
+    <link href="http://blog.crayygy.com/14639018379416.html"/>
+    <updated>2016-05-22T15:23:57+08:00</updated>
+    <id>http://blog.crayygy.com/14639018379416.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>Write a function that takes a string as input and returns the string reversed.<br/>
+Example:<br/>
+Given s = &quot;hello&quot;, return &quot;olleh&quot;.</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<p>At first, I tried to solve this using char array and a for loop, like this:</p>
+
+<pre><code class="language-java">public class Solution {
+    public String reverseString(String s) {
+        char[] charArray = s.toCharArray();
+        String result = &quot;&quot;;
+        for(int i=charArray.length; i) {
+            result += charArray[i];
+        }
+        return result;
+    }
+}
+</code></pre>
+
+<p>Unfortunately, this code is out of time limits. </p>
+
+<p>Luckily, we have a built-in java method named <code>StringBuilder</code>, we can write this code in just a single line:</p>
+
+<pre><code class="language-java">public class Solution {
+    public String reverseString(String s) {
+        return new StringBuilder(s).reverse().toString();
+    }
+}
+</code></pre>
+
+<p>Wow!</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[关于新的生日纪录的产品的一些想法]]></title>
