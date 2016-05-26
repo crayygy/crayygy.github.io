@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  二叉树的深度问题 - 渐行渐远
+  数组乱序算法 - 渐行渐远
   
   </title>
   
@@ -92,10 +92,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>二叉树的深度问题</h1>
+          <h1>数组乱序算法</h1>
      
         <div class="read-more clearfix">
-          <span class="date">3/28/2016</span>
+          <span class="date">5/22/2016</span>
 
           <span>posted in&nbsp;</span> 
           
@@ -106,7 +106,7 @@
             
 
             
-              &nbsp;<a  class="ds-thread-count" data-thread-key="14591320972722.html" data-count-type="comments" href="14591320972722.html#ds-thread"></a>
+              &nbsp;<a  class="ds-thread-count" data-thread-key="14639202546153.html" data-count-type="comments" href="14639202546153.html#ds-thread"></a>
             
           </span>
 
@@ -114,81 +114,127 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>昨天笔试的时候做到了一题求二叉树深度的问题，刚刚在Leetcode上刷题的时候刚好也遇到了，就顺手刷了。但是仔细思考发现，这个问题背后所反应的思想很值得我注重，因此写了这篇文章。</p>
+      <blockquote>
+<p>给定一个已知数组<code>array[]</code>， 将 <code>array[]</code> 乱序后输出。<br/>
+可以延伸为:例如，从 0～1000 中随机取数字100次，要求每次的结果不能相同。</p>
+</blockquote>
 
 <span id="more"></span><!-- more -->
 
-<p>这个算法并不难，利用递归可以非常简单的求解。因此我在看到题目之后，给出的第一个解法是这样的(Java版本):</p>
+<p>这道题的想法来自于遇到的一个小问题，需要将一组包含20个字符串的数组乱序输出。</p>
 
-<pre><code class="language-java">/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
-        int depth = 0;
-        if(root.left != null &amp;&amp; root.right != null){
-            int l = maxDepth(root.left);
-            int r = maxDepth(root.right);
-            depth = (l &gt; r? l : r) + 1;
-        } else if (root.left == null){
-            depth = maxDepth(root.right) + 1;
-        } else if (root.right == null){
-            depth = maxDepth(root.left) + 1;
-        } else {
-            depth = 0;
+<h4 id="toc_0">0x00</h4>
+
+<p>第一想法是，简单的从数组中取元素，然后加入到另一个数组中，加入之前判断这个元素是否已经存在。<br/>
+这个算法的问题在于，运行初期，遇到问题的几率比较小，然而在判断最后几个元素的时候，由于巨大的碰撞几率(n个元素的数组，当第 n 个元素的时候，其实只有 \( \frac{1}{n} \) 的机会得到正确的结果)，当数组长度达到一定程度时，几乎无法使用。</p>
+
+<h4 id="toc_1">0x01</h4>
+
+<p>结合查到的资料，得到这样的一个算法。即: </p>
+
+<blockquote>
+<p>每次从已知数组中<code>随机</code>取一个元素放入新数组，然后将最后一个元素的值赋给这个位置，将长度减1，然后再从 <code>length-1</code> 个元素中重复上述动作，即可得到一个随机数组。</p>
+</blockquote>
+
+<p>这个算法的强势在于，时间复杂度为 \(O(1)\)，并且避开了可能出现的碰撞，实现了快速乱序。<br/>
+下面是这个算法的 Java 实现(为了表述方便选择了 int 型的数组)</p>
+
+<pre><code class="language-java">class RandomArray{
+    public static int[] shuffle(int[] array) {
+        int length = array.length;
+        int[] shuffledArray = new int[length];
+
+        int index = 0;
+
+        java.util.Random random = new java.util.Random();
+        for (int count=length; count&gt;0; count--) {
+            int randomIndex = Math.abs(random.nextInt())%(count);
+            shuffledArray[index] = array[randomIndex];
+            index += 1;
+            array[randomIndex] = array[count-1];
         }
-        return depth;
-    }
-}
-
-</code></pre>
-
-<p><img src="media/14591320972722/14591324511074.jpg" alt=""/></p>
-
-<p>解法是没有错误的，并且Leetcode上也是直接Accept了，但总是看起来让人觉得这个代码非常的丑，太杂乱了。</p>
-
-<p>因此我又花了一点时间思考如何优化这段代码，让它看起来不至于这么的复杂。<br/>
-在这个代码中，复杂的部分全部在 if-else代码块中，那么是不是可以通过其他的方式来取消掉这些判断呢？</p>
-
-<p>答案是肯定的。因此有了下面的代码(Java版本):</p>
-
-<pre><code class="language-java">/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
-        
-        int lDepth = maxDepth(root.left);
-        int rDepth = maxDepth(root.right);
-        
-        return lDepth &gt; rDepth? lDepth + 1 : rDepth + 1;
+        return shuffledArray;
     }
 }
 </code></pre>
 
-<p><img src="media/14591320972722/14591326336170.jpg" alt=""/></p>
+<p>可以在这个类中增加一个测试方法:</p>
 
-<p>可以看到，时间复杂度几乎没有变化，但是从直观上，第二段代码比之之前的版本，代码非常的简洁，并且让人一眼就能看懂意思。</p>
+<pre><code class="language-java">    public static void printArray(int[] array){
+        int len = array.length;
+        for (int i=0; i&lt;len; i++) {
+            System.out.print(array[i] + &quot; &quot;);
+        }
+        System.out.println(&quot;😀&quot;);
+    }
 
-<p>很不幸，在笔试的时候我用的是第一段代码，并且没有考虑到优化和精简问题，不知道这个是否有影响。</p>
 
-<p>对我而言，这两段代码给我的启发是巨大的。同样的效率的代码，如何能写的更漂亮，让别人看起来更舒服，也很重要。</p>
+    public static void main(String[] args) {
+        int array[] = {1,2,3,4,5,6,7,8,9,0,213,123,23,1,23};
+        printArray(array);
 
-<p>希望以后能够多注意类似的问题，不再犯同样的错误。</p>
+        printArray(shuffle(array));
+
+    }
+</code></pre>
+
+<p>每次运行时产生的随机数序列都是不同的，如果需要每次运行结果相同，可以修改随机数生成算法，使得每次运行时都能得到相同的随机数序列。</p>
+
+<h4 id="toc_2">0x02</h4>
+
+<p><a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fisher-Yates shuffle</a></p>
+
+<blockquote>
+<p>The Fisher–Yates shuffle is an algorithm for generating a random permutation of a finite set—in plain terms, the algorithm shuffles the set. The algorithm effectively puts all the elements into a hat; it continually determines the next element by randomly drawing an element from the hat until no elements remain. The algorithm produces an unbiased permutation: every permutation is equally likely. The modern version of the algorithm is efficient: it takes time proportional to the number of items being shuffled and shuffles them in place.<br/>
+From wikipedia</p>
+</blockquote>
+
+<p>Fisher-Yates 算法不需要新建一个数组来保存随机后的数组，而是直接在数组中进行操作，并且时间复杂度依然是 \(O(n)\)</p>
+
+<p>Wiki 上提供的一个伪代码如下:</p>
+
+<pre><code>-- To shuffle an array a of n elements (indices 0..n-1):
+for i from 0 to n−2 do
+     j ← random integer such that 0 ≤ j &lt; n-i
+     exchange a[i] and a[i+j]
+</code></pre>
+
+<p>算法思想很简单，在具有 n 个元素的数组中，从 0 到 n-2 依次进行与一个随机位置的元素进行交换。<br/>
+将伪代码改写成 Java 代码:</p>
+
+<pre><code class="language-java">public static int[] fisherShuffle(int[] array) {
+        int length = array.length;
+        java.util.Random random = new java.util.Random();
+        for (int i=0;i&lt;length-1; i++) {
+            int j = Math.abs(random.nextInt())%(length-i);
+            int temp = array[i];
+            array[i] = array[i+j];
+            array[i+j] = temp;
+        }
+
+        return array;
+    }
+</code></pre>
+
+<p>运行结果如下: <br/>
+<img src="media/14639202546153/14642385093605.jpg" alt=""/></p>
+
+<h4 id="toc_3">0x03</h4>
+
+<p>当然如果使用像 Ruby 这样的语言，已经内置好了 shuffle 算法，只需要直接调用即可。</p>
+
+<pre><code class="language-ruby">array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+print  array
+puts 
+print array.shuffle
+puts
+</code></pre>
+
+<p><img src="media/14639202546153/14642385924669.jpg" alt=""/></p>
+
+<p>简直黑科技...</p>
+
+<p>让我们大喊一声: “Ruby 大法好！”</p>
 
       </div>
 
@@ -196,16 +242,13 @@ public class Solution {
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14584879845645.html" 
-          title="Previous Post: 从二叉查找树到红黑树">&laquo; 从二叉查找树到红黑树</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14582820943493.html" 
-          title="Next Post: 个人博客搭建完毕">个人博客搭建完毕 &raquo;</a>
+          <a  href="14639018379416.html" 
+          title="Next Post: Leetcode #334 Reverse String">Leetcode #334 Reverse String &raquo;</a>
       
       </p>
         </div>
@@ -217,7 +260,7 @@ public class Solution {
           
 
           
-              <div class="ds-thread" data-thread-key="14591320972722.html" data-url="http://blog.crayygy.com/14591320972722.html" data-title="二叉树的深度问题"></div>
+              <div class="ds-thread" data-thread-key="14639202546153.html" data-url="http://blog.crayygy.com/14639202546153.html" data-title="数组乱序算法"></div>
           
         </div>
       </div>
