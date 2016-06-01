@@ -4,13 +4,94 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2016-05-26T21:51:55+08:00</updated>
+  <updated>2016-06-01T23:32:12+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[如何在断开ssh 时保持服务器程序运行？]]></title>
+    <link href="http://blog.crayygy.com/14647950946966.html"/>
+    <updated>2016-06-01T23:31:34+08:00</updated>
+    <id>http://blog.crayygy.com/14647950946966.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>How to keep server progress running after ssh disconnected?</p>
+</blockquote>
+
+<p>My answer is: </p>
+
+<blockquote>
+<p>Screen</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">00x0</h2>
+
+<p>I start to think about this cause I am running a rails server during my work, while connected using ssh, I have to keep my ssh connection. <br/>
+And this is really annoying.</p>
+
+<p>So I started to google and read blogs about server progress, finally I found <code>Screen</code>.</p>
+
+<h2 id="toc_1">00x1  install</h2>
+
+<p>Ubuntu &gt; sudo apt-get install -y screen</p>
+
+<p>CentOS &gt; yum install -y screen</p>
+
+<h2 id="toc_2">00x2 usage</h2>
+
+<p>Using screen command to open a screen</p>
+
+<pre><code class="language-bash"> $ screen
+</code></pre>
+
+<p>the run a progress like </p>
+
+<pre><code class="language-bash">$ rails server
+</code></pre>
+
+<p>After running a progress, using <code>Ctrl-a</code> then <code>d</code> to detach</p>
+
+<p>list all exist screen sessions: </p>
+
+<pre><code class="language-bash">$ screen ls
+</code></pre>
+
+<p>resume screen</p>
+
+<pre><code class="language-bash">$ screen -r
+</code></pre>
+
+<p>if you have only one screen background, this will bring you back, or gives you a list of screen sessions with pid like </p>
+
+<pre><code>8858.pts-0.iZ28*****
+</code></pre>
+
+<p>you can resume a specified screen with </p>
+
+<pre><code class="language-bash">$ screen -r 8858.pts-0.iZ28
+</code></pre>
+
+<p>If you need to step away from your computer for a minute, you can lock your screen session using <code>Ctrl-a</code> then <code>x</code>.  This will require a password to access the session again.</p>
+
+<p>If you want to close a screen session, just using <code>Ctrl-a</code> then <code>k</code> to shut it down.</p>
+
+<p>To get more information, you can run </p>
+
+<pre><code class="language-bash">$ man screen 
+</code></pre>
+
+<h2 id="toc_3">00x3</h2>
+
+<p>After running a progress in screen, you can disconnect your ssh without any trouble.</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[数组乱序算法]]></title>
