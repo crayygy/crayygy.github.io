@@ -2,7 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>http://blog.crayygy.com/</loc>
-  <lastmod>2016-06-01T23:32:28+08:00</lastmod>
+  <lastmod>2016-06-17T11:36:42+08:00</lastmod>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/14661329651049.html</loc>
+  <lastmod>2016-06-17T11:09:25+08:00</lastmod>
 </url>
 
 <url>
@@ -63,15 +68,11 @@
 
 
 <url>
-  <loc>http://blog.crayygy.com/ideas.html</loc>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/%E9%9A%8F%E7%AC%94.html</loc>
-</url>
-
-<url>
   <loc>http://blog.crayygy.com/%E7%BC%96%E7%A8%8B.html</loc>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/server.html</loc>
 </url>
 
 <url>
@@ -79,7 +80,11 @@
 </url>
 
 <url>
-  <loc>http://blog.crayygy.com/server.html</loc>
+  <loc>http://blog.crayygy.com/ideas.html</loc>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/%E9%9A%8F%E7%AC%94.html</loc>
 </url>
 
 
