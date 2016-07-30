@@ -4,13 +4,53 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2016-07-30T15:22:52+08:00</updated>
+  <updated>2016-07-30T15:24:44+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Leetcode #169 Majority Element]]></title>
+    <link href="http://blog.crayygy.com/14698658453148.html"/>
+    <updated>2016-07-30T16:04:05+08:00</updated>
+    <id>http://blog.crayygy.com/14698658453148.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<blockquote>
+<p>You may assume that the array is non-empty and the majority element always exist in the array.</p>
+</blockquote>
+
+<p>Build a hash for the result, if a num is not in the hash, then make the hash[num] counts 1, else make the hash[num]+1.</p>
+
+<p>To get the majority element of the array, just get the key with the max value in this hash.</p>
+
+<pre><code class="language-ruby"># @param {Integer[]} nums
+# @return {Integer}
+def majority_element(nums)
+  hash = Hash.new
+  
+  nums.each do |num| 
+    if hash.has_key? num
+      hash[num] += 1
+    else
+      hash[num] = 1
+    end
+  end
+  result = hash.key(hash.values.max)
+  return result
+end
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Leetcode #338 Counting Bits]]></title>
