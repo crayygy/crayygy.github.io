@@ -18,7 +18,13 @@
   <script src="asset/highlightjs/highlight.pack.js"></script>
   <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script>hljs.initHighlightingOnLoad();</script>
-
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:blog.crayygy.com ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
   </head>
   <body class="antialiased hide-extras">
     
@@ -33,16 +39,18 @@
   <div class="row">
       <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
         <ul id="main-menu" class="left">
-        <li id="menu_item_index"><a href="index.html">HOME</a></li>
-        <li id="menu_item_archives"><a href="archives.html">Archives</a></li>
-        <li id="menu_item_about"><a href="about.html">ABOUT</a></li>
+        
+        <li id=""><a target="self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
         </ul>
 
         <ul class="right" id="search-wrap">
           <li>
-<form target="_blank" action="http://google.com/search" method="get">
-    <input type="hidden" name="q" value="site:blog.crayygy.com" />
-    <input tabindex="1" type="search" name="q"  placeholder="Search"/>
+<form target="_blank" onsubmit="return before_search();" action="http://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
 </form>
 </li>
           </ul>
@@ -82,6 +90,9 @@
 
 
         <section id="main-content" role="main" class="scroll-container">
+        
+       
+
  <script type="text/javascript">
   $(function(){
     $('#menu_item_index').addClass('is_active');
@@ -598,6 +609,9 @@ get()方法代码如下:</p>
 
 <p>在此基础上实现了红黑树，在保持了二叉树的结构的情况下，大幅度优化了插入算法，虽然在实现上稍微复杂了一些，但能保证插入之后的树始终是一棵黑色平衡的树，因此也保证了二叉树的查询复杂度始终为O(log n)，并且不影响其它的操作。</p>
 
+
+    
+
       </div>
 
       <div class="row">
@@ -652,14 +666,17 @@ get()方法代码如下:</p>
 
 
 
-<a class="weibo" target="_blank" href="http://weibo.com/crayygy" title="weibo">Weibo</a>
-<a class="twitter" target="_blank" href="https://twitter.com/crayygy" title="Twitter">Twitter</a>
-<a class="github" target="_blank" href="https://github.com/crayygy" title="GitHub">GitHub</a>
-<a class="email" href="mailto:me@crayygy.com" title="Email">Email</a>
-  <a class="rss" href="atom.xml" title="RSS">RSS</a>
+<a target="_blank" class="weibo" href="http://weibo.com/crayygy" title="weibo">Weibo</a>
+<a target="_blank" class="twitter" target="_blank" href="https://twitter.com/crayygy" title="Twitter">Twitter</a>
+<a target="_blank" class="github" target="_blank" href="https://github.com/crayygy" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:me@crayygy.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
                 
               	 </div>
           	</div>
+
+             
+
               <div id="site-categories" class="side-item ">
                 <div class="side-header">
                   <h2>Categories</h2>
@@ -689,6 +706,12 @@ get()方法代码如下:</p>
 	      
 		      
 			      <li class="post">
+			        <a href="14697688870593.html">Leetcode #338 Counting Bits</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
 			        <a href="14661329651049.html">新浪微博 iOS 官方客户端的一些有趣的事情</a>
 			      </li>
 		     
@@ -712,10 +735,6 @@ get()方法代码如下:</p>
 		     
 		  
 		      
-			      <li class="post">
-			        <a href="14625453863908.html">关于新的生日纪录的产品的一些想法</a>
-			      </li>
-		     
 		  
 		      
 		  

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  关于实习 - 渐行渐远
+  Leetcode #338 Counting Bits - 渐行渐远
   
   </title>
   
@@ -103,21 +103,21 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>关于实习</h1>
+          <h1>Leetcode #338 Counting Bits</h1>
      
         <div class="read-more clearfix">
-          <span class="date">4/23/2016</span>
+          <span class="date">7/29/2016</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='%E9%9A%8F%E7%AC%94.html'>随笔</a></span>
+              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
            
          
           <span class="comments">
             
 
             
-              &nbsp;<a  class="ds-thread-count" data-thread-key="14613969299475.html" data-count-type="comments" href="14613969299475.html#ds-thread"></a>
+              &nbsp;<a  class="ds-thread-count" data-thread-key="14697688870593.html" data-count-type="comments" href="14697688870593.html#ds-thread"></a>
             
           </span>
 
@@ -125,22 +125,130 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>这周总算是开始了实习的生活，虽然这个学期还是每个星期三天的工作，两天的课程。周末也还是各种事情要做。<br/>
-关于实习，我觉得有些话还是想说说的。</p>
+      <blockquote>
+<p>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1&#39;s in their binary representation and return them as an array.</p>
+</blockquote>
 
 <span id="more"></span><!-- more -->
 
-<p>第一天上班的时候其实挺不愉快的，到了公司之后没人理，联系我的那个人半天找不到，最后来了一个人，告知我去办门卡之后也就消失了，办完卡发现自己要一个人坐在一个类似于公共会议室的地方(因为组里的位置不够了)，不知道自己到底是哪个组的，不知道自己具体要做的事情，也不知道自己第一天应该做哪些事情，领哪些东西，什么都不知道，心里很慌，但是面上还是很稳重，坐在自己的位置，默默的把iMac里的没用的东西删掉，然后开始配开发环境。</p>
+<blockquote>
+<p>Example:<br/>
+For num = 5 you should return [0,1,1,2,1,2].</p>
 
-<p>但是， 午饭的时候发现，其实同事们都很nice，没什么太多的顾虑的感觉，我知道自己的那些想法只是因为我还是第一天到，跟大家不熟悉而已，渐渐的应该会好很多。下午的时候开始熟悉自己的任务之类的，然后又花了两天时间看文档。</p>
+<p>Follow up:<br/>
+It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?<br/>
+Space complexity should be O(n).<br/>
+Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.</p>
+</blockquote>
 
-<p>我不知道有多少人像我这样运气不错的。 到公司的时候发现自己要做的东西刚好是自己一直很想做的东西，但是现在已经有人开头了，并且是公司在支持(虽然以后我也没办法拿来用，但是毕竟做出来一个之后自己再做自己的会轻松很多)。用的技术也是自己一直很想学，但是没有一个实际的项目来入手的。整个人的心情一下子轻松了很多，看文档的时候也觉得很有意思。</p>
+<p>首先，在规定的时间复杂度下，不可能进行每一步都计算，因此考虑到 2<sup>n-1</sup> 与 2<sup>n</sup> 时的关联，利用前 2<sup>n-1</sup> 次方去推导后面2<sup>n</sup> 位。</p>
 
-<p>我不知道现在的实习状态会持续多久，但是我觉得我应该会做的很开心，Nice的同事们，喜欢的技术，热衷的项目，调整一下自己的心态，下周开始就要进入项目代码中fix bugs了，熟悉了之后会好的～</p>
+<p>考虑前16位: </p>
 
-<p>实习的时候闲来无事想得最多的事情居然是研究生，我想我还是更愿意在学校再多待几年的吧hhhhhh</p>
+<pre><code>[0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4]
+</code></pre>
 
-<p>加油～</p>
+<p>从二进制表示法开始入手， 如下:</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center">十进制</th>
+<th style="text-align: center">二进制</th>
+<th style="text-align: center">十进制</th>
+<th style="text-align: center">二进制</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center">0</td>
+<td style="text-align: center">0</td>
+<td style="text-align: center">8</td>
+<td style="text-align: center">1000</td>
+</tr>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: center">01</td>
+<td style="text-align: center">9</td>
+<td style="text-align: center">1001</td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: center">10</td>
+<td style="text-align: center">10</td>
+<td style="text-align: center">1010</td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: center">11</td>
+<td style="text-align: center">11</td>
+<td style="text-align: center">1011</td>
+</tr>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: center">100</td>
+<td style="text-align: center">12</td>
+<td style="text-align: center">1100</td>
+</tr>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: center">101</td>
+<td style="text-align: center">13</td>
+<td style="text-align: center">1101</td>
+</tr>
+<tr>
+<td style="text-align: center">6</td>
+<td style="text-align: center">110</td>
+<td style="text-align: center">14</td>
+<td style="text-align: center">1110</td>
+</tr>
+<tr>
+<td style="text-align: center">7</td>
+<td style="text-align: center">111</td>
+<td style="text-align: center">15</td>
+<td style="text-align: center">1111</td>
+</tr>
+</tbody>
+</table>
+
+<p>对于任意 x， 我们可以把 x 拆成一个最大的 2<sup>n-1</sup> + 一个数(n表示当前二进制的位数)，比如:</p>
+
+<p>\[5 = 2^2 + 2^0 + 0\\\<br/>
+6 = 2^2 + 2^1 + 0\\\<br/>
+14 = 2^3 + 6 = 2^3 + 2^2 + 2^1 + 0\]</p>
+
+<p>因此在计算 x 的二进制中 1 的个数的时候，如计算 <code>5(= 101)</code>，可以通过计算 <code>1</code> 中 1 的个数，然后加上二进制最高位的1，这样就可以不需要计算每一个的二进制，直接通过前 <code>2^n-1</code>来计算。</p>
+
+<p>因此核心算法如下:</p>
+
+<p>\[f(x) = f(x - 2^n) + 1\]</p>
+
+<p>最后加上的 1 即为二进制最高位的 1.<br/>
+Python 代码如下：</p>
+
+<pre><code class="language-python">class Solution(object):
+    def countBits(self, num):
+        &quot;&quot;&quot;
+        :type num: int
+        :rtype: List[int]
+        &quot;&quot;&quot;
+        array = [0]
+        flag = 0 # current level
+        target = num + 1
+        for i in range(1, target):
+            if i % pow(2, flag+1) == 0:
+                flag+=1 #if a num is 2^n, then level++
+            array.append(array[i-pow(2, flag)] + 1)
+        
+        return array
+</code></pre>
+
+<p><img src="media/14697688870593/14697691172660.jpg" alt=""/></p>
+
+<p>算法复杂度不是很好，其中需要算平方的部分可能耗时比较多，不过相对于一个个去算已经提高了很多了。</p>
+
+<p>应该还是有提升的空间的，需要进一步思考。</p>
 
 
     
@@ -151,16 +259,13 @@
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14625453863908.html" 
-          title="Previous Post: 关于新的生日纪录的产品的一些想法">&laquo; 关于新的生日纪录的产品的一些想法</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14599905787744.html" 
-          title="Next Post: 爬楼梯算法分析详解及扩展(最大步长从2升级为m)">爬楼梯算法分析详解及扩展(最大步长从2升级为m) &raquo;</a>
+          <a  href="14661329651049.html" 
+          title="Next Post: 新浪微博 iOS 官方客户端的一些有趣的事情">新浪微博 iOS 官方客户端的一些有趣的事情 &raquo;</a>
       
       </p>
         </div>
@@ -172,7 +277,7 @@
           
 
           
-              <div class="ds-thread" data-thread-key="14613969299475.html" data-url="http://blog.crayygy.com/14613969299475.html" data-title="关于实习"></div>
+              <div class="ds-thread" data-thread-key="14697688870593.html" data-url="http://blog.crayygy.com/14697688870593.html" data-title="Leetcode #338 Counting Bits"></div>
           
         </div>
       </div>

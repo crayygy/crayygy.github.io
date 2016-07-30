@@ -4,13 +4,147 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2016-06-01T23:32:28+08:00</updated>
+  <updated>2016-07-30T15:22:52+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Leetcode #338 Counting Bits]]></title>
+    <link href="http://blog.crayygy.com/14697688870593.html"/>
+    <updated>2016-07-29T13:08:07+08:00</updated>
+    <id>http://blog.crayygy.com/14697688870593.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1&#39;s in their binary representation and return them as an array.</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<blockquote>
+<p>Example:<br/>
+For num = 5 you should return [0,1,1,2,1,2].</p>
+
+<p>Follow up:<br/>
+It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?<br/>
+Space complexity should be O(n).<br/>
+Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.</p>
+</blockquote>
+
+<p>首先，在规定的时间复杂度下，不可能进行每一步都计算，因此考虑到 2<sup>n-1</sup> 与 2<sup>n</sup> 时的关联，利用前 2<sup>n-1</sup> 次方去推导后面2<sup>n</sup> 位。</p>
+
+<p>考虑前16位: </p>
+
+<pre><code>[0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4]
+</code></pre>
+
+<p>从二进制表示法开始入手， 如下:</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center">十进制</th>
+<th style="text-align: center">二进制</th>
+<th style="text-align: center">十进制</th>
+<th style="text-align: center">二进制</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center">0</td>
+<td style="text-align: center">0</td>
+<td style="text-align: center">8</td>
+<td style="text-align: center">1000</td>
+</tr>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: center">01</td>
+<td style="text-align: center">9</td>
+<td style="text-align: center">1001</td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: center">10</td>
+<td style="text-align: center">10</td>
+<td style="text-align: center">1010</td>
+</tr>
+<tr>
+<td style="text-align: center">3</td>
+<td style="text-align: center">11</td>
+<td style="text-align: center">11</td>
+<td style="text-align: center">1011</td>
+</tr>
+<tr>
+<td style="text-align: center">4</td>
+<td style="text-align: center">100</td>
+<td style="text-align: center">12</td>
+<td style="text-align: center">1100</td>
+</tr>
+<tr>
+<td style="text-align: center">5</td>
+<td style="text-align: center">101</td>
+<td style="text-align: center">13</td>
+<td style="text-align: center">1101</td>
+</tr>
+<tr>
+<td style="text-align: center">6</td>
+<td style="text-align: center">110</td>
+<td style="text-align: center">14</td>
+<td style="text-align: center">1110</td>
+</tr>
+<tr>
+<td style="text-align: center">7</td>
+<td style="text-align: center">111</td>
+<td style="text-align: center">15</td>
+<td style="text-align: center">1111</td>
+</tr>
+</tbody>
+</table>
+
+<p>对于任意 x， 我们可以把 x 拆成一个最大的 2<sup>n-1</sup> + 一个数(n表示当前二进制的位数)，比如:</p>
+
+<p>\[5 = 2^2 + 2^0 + 0\\\<br/>
+6 = 2^2 + 2^1 + 0\\\<br/>
+14 = 2^3 + 6 = 2^3 + 2^2 + 2^1 + 0\]</p>
+
+<p>因此在计算 x 的二进制中 1 的个数的时候，如计算 <code>5(= 101)</code>，可以通过计算 <code>1</code> 中 1 的个数，然后加上二进制最高位的1，这样就可以不需要计算每一个的二进制，直接通过前 <code>2^n-1</code>来计算。</p>
+
+<p>因此核心算法如下:</p>
+
+<p>\[f(x) = f(x - 2^n) + 1\]</p>
+
+<p>最后加上的 1 即为二进制最高位的 1.<br/>
+Python 代码如下：</p>
+
+<pre><code class="language-python">class Solution(object):
+    def countBits(self, num):
+        &quot;&quot;&quot;
+        :type num: int
+        :rtype: List[int]
+        &quot;&quot;&quot;
+        array = [0]
+        flag = 0 # current level
+        target = num + 1
+        for i in range(1, target):
+            if i % pow(2, flag+1) == 0:
+                flag+=1 #if a num is 2^n, then level++
+            array.append(array[i-pow(2, flag)] + 1)
+        
+        return array
+</code></pre>
+
+<p><img src="media/14697688870593/14697691172660.jpg" alt=""/></p>
+
+<p>算法复杂度不是很好，其中需要算平方的部分可能耗时比较多，不过相对于一个个去算已经提高了很多了。</p>
+
+<p>应该还是有提升的空间的，需要进一步思考。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[新浪微博 iOS 官方客户端的一些有趣的事情]]></title>
