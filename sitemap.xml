@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>http://blog.crayygy.com/</loc>
-  <lastmod>2016-07-30T16:07:07+08:00</lastmod>
+  <lastmod>2016-12-26T22:52:25+08:00</lastmod>
 </url>
 
 <url>
@@ -16,33 +16,8 @@
 </url>
 
 <url>
-  <loc>http://blog.crayygy.com/14661329651049.html</loc>
-  <lastmod>2016-06-17T11:09:25+08:00</lastmod>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/14647950946966.html</loc>
-  <lastmod>2016-06-01T23:31:34+08:00</lastmod>
-</url>
-
-<url>
   <loc>http://blog.crayygy.com/14639202546153.html</loc>
   <lastmod>2016-05-22T20:30:54+08:00</lastmod>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/14639018379416.html</loc>
-  <lastmod>2016-05-22T15:23:57+08:00</lastmod>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/14625453863908.html</loc>
-  <lastmod>2016-05-06T22:36:26+08:00</lastmod>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/14613969299475.html</loc>
-  <lastmod>2016-04-23T15:35:29+08:00</lastmod>
 </url>
 
 <url>
@@ -65,11 +40,6 @@
   <lastmod>2016-03-18T14:21:34+08:00</lastmod>
 </url>
 
-<url>
-  <loc>http://blog.crayygy.com/14582781733248.html</loc>
-  <lastmod>2016-03-18T13:16:13+08:00</lastmod>
-</url>
-
 
 <url>
   <loc>http://blog.crayygy.com/about.html</loc>
@@ -78,23 +48,15 @@
 
 
 <url>
-  <loc>http://blog.crayygy.com/%E9%9A%8F%E7%AC%94.html</loc>
+  <loc>http://blog.crayygy.com/drafts.html</loc>
 </url>
 
 <url>
-  <loc>http://blog.crayygy.com/%E7%BC%96%E7%A8%8B.html</loc>
+  <loc>http://blog.crayygy.com/coding.html</loc>
 </url>
 
 <url>
   <loc>http://blog.crayygy.com/Algorithm.html</loc>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/server.html</loc>
-</url>
-
-<url>
-  <loc>http://blog.crayygy.com/ideas.html</loc>
 </url>
 
 
