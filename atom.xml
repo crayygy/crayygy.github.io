@@ -4,13 +4,62 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2016-12-26T22:48:47+08:00</updated>
+  <updated>2017-01-13T00:29:04+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Some Mongodb problems and solutions]]></title>
+    <link href="http://blog.crayygy.com/14842384827556.html"/>
+    <updated>2017-01-13T00:28:02+08:00</updated>
+    <id>http://blog.crayygy.com/14842384827556.html</id>
+    <content type="html"><![CDATA[
+<p>Recently I have encountered some problems during my internship. One of our server suddenly goes very very slow, when I try to ping the server, it&#39;s always 2000-5000. After checked everything I think may cause the problem and got no answer, I decided to reboot the server.</p>
+
+<span id="more"></span><!-- more -->
+
+<p>After hard reboot the virtual machine, it&#39;s just the start of the hell. First, I found there&#39;s some warning about ruby, then, the mongodb on the server can&#39;t restart after reboot. </p>
+
+<p>Luckily, we have already backup our data since one time that we delete our database without &quot;where&quot;.  We backup our database every two hours to another server. So nothing too bad happens.</p>
+
+<p>Mongodb is such a nasty guy, when I try to restart with ⌘ <code>mongod -f /etc/mongod.conf --fork</code>, it got stuck. And never showed a single message. At last, I had to delete my exist db and pull it back from our backup server, and then put it into another folder, and re-write the config file, change dbpath parameter, and start with ⌘ <code>mongod -f /etc/mongod.conf --fork</code>.</p>
+
+<p>Something good about mongo is that it can set a master db and a slave db for backup.  For this, all you have to do is start mongo with a config file, and set <code>master=true</code> or <code>slave=true</code> in config file.</p>
+
+<p>For example, on you master db server, you should write config file like this:</p>
+
+<pre><code>dbpath=[a-folder]
+logpath=[a-folder]
+master=true
+...
+...
+</code></pre>
+
+<p>On your slave db server, you should write mongo config file like this<br/>
+port=<a href="27018">a-port-different-from-master-db</a><br/>
+dbpath=[some-place-to-store-db]<br/>
+logpath=[some-place-to-store-log]<br/>
+slave=true<br/>
+slavedelay=7200// set as seconds<br/>
+source=[master-db-ip-address]:[master-db-port]</p>
+
+<p>After start both server, your mongodb will sync from you master server to your slave server every 2 hours.</p>
+
+<p>Some tricks about mongod ⌘</p>
+
+<p>Usually start with --dbpath parameter, or use --config(-f as abbr) to start with a config file.</p>
+
+<p>--fork parameter can let mongod server runs on the background.</p>
+
+<p>A single example of this is:<br/>
+<code>mongod -f /etc/mongod.conf --fork</code></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Leetcode #169 Majority Element]]></title>
