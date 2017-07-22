@@ -4,13 +4,51 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2017-03-22T20:05:14+08:00</updated>
+  <updated>2017-07-22T23:36:31+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby Sample code of 2d Hash set]]></title>
+    <link href="http://blog.crayygy.com/15007372838208.html"/>
+    <updated>2017-07-22T23:28:03+08:00</updated>
+    <id>http://blog.crayygy.com/15007372838208.html</id>
+    <content type="html"><![CDATA[
+<p>In fact, this can be a n dimension hash set code sample, actually I create a 3-d hash to construct some kind of data structure for API rendering, it&#39;s not so beautiful, but easy to work, and not cost so much.</p>
+
+<span id="more"></span><!-- more -->
+
+<pre><code class="language-ruby">first_hash_key = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;]
+second_hash_key = [&#39;a&#39;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+hash = Hash.new
+first_hash_key.each do |key|
+  hash[key] = Hash.new
+end
+p hash
+
+# {&quot;A&quot;=&gt;{}, &quot;B&quot;=&gt;{}, &quot;C&quot;=&gt;{}, &quot;D&quot;=&gt;{}}
+
+first_hash_key.each do |key|
+  second_hash_key.each do |k|
+    if hash[key][k].nil?
+      hash[key][k] = 1
+      # p hash[&quot;A&quot;][k]
+    else
+      hash[key][k] += 1
+    end
+  end
+end
+p hash
+# {&quot;A&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}, &quot;B&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}, 
+# &quot;C&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}, &quot;D&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}}
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby on Rails + Mongodb + AngularJS develop environment setup]]></title>

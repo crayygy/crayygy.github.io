@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  数组乱序算法 - 渐行渐远
+  Ruby Sample code of 2d Hash set - 渐行渐远
   
   </title>
   
@@ -101,19 +101,19 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>数组乱序算法</h1>
+          <h1>Ruby Sample code of 2d Hash set</h1>
      
         <div class="read-more clearfix">
-          <span class="date">5/22/2016</span>
+          <span class="date">7/22/2017</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
+              <span class="posted-in"><a href='coding.html'>编程</a></span>
            
          
           <span class="comments">
             
-              <a href="http://blog.crayygy.com/14639202546153.html#disqus_thread">comments</a>
+              <a href="http://blog.crayygy.com/15007372838208.html#disqus_thread">comments</a>
             
 
             
@@ -123,127 +123,34 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <blockquote>
-<p>给定一个已知数组<code>array[]</code>， 将 <code>array[]</code> 乱序后输出。<br/>
-可以延伸为:例如，从 0～1000 中随机取数字100次，要求每次的结果不能相同。</p>
-</blockquote>
+      <p>In fact, this can be a n dimension hash set code sample, actually I create a 3-d hash to construct some kind of data structure for API rendering, it&#39;s not so beautiful, but easy to work, and not cost so much.</p>
 
 <span id="more"></span><!-- more -->
 
-<p>这道题的想法来自于遇到的一个小问题，需要将一组包含20个字符串的数组乱序输出。</p>
+<pre><code class="language-ruby">first_hash_key = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;]
+second_hash_key = [&#39;a&#39;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+hash = Hash.new
+first_hash_key.each do |key|
+  hash[key] = Hash.new
+end
+p hash
 
-<h4 id="toc_0">0x00</h4>
+# {&quot;A&quot;=&gt;{}, &quot;B&quot;=&gt;{}, &quot;C&quot;=&gt;{}, &quot;D&quot;=&gt;{}}
 
-<p>第一想法是，简单的从数组中取元素，然后加入到另一个数组中，加入之前判断这个元素是否已经存在。<br/>
-这个算法的问题在于，运行初期，遇到问题的几率比较小，然而在判断最后几个元素的时候，由于巨大的碰撞几率(n个元素的数组，当第 n 个元素的时候，其实只有 \( \frac{1}{n} \) 的机会得到正确的结果)，当数组长度达到一定程度时，几乎无法使用。</p>
-
-<h4 id="toc_1">0x01</h4>
-
-<p>结合查到的资料，得到这样的一个算法。即: </p>
-
-<blockquote>
-<p>每次从已知数组中<code>随机</code>取一个元素放入新数组，然后将最后一个元素的值赋给这个位置，将长度减1，然后再从 <code>length-1</code> 个元素中重复上述动作，即可得到一个随机数组。</p>
-</blockquote>
-
-<p>这个算法的强势在于，时间复杂度为 \(O(n)\)，并且避开了可能出现的碰撞，实现了快速乱序。<br/>
-下面是这个算法的 Java 实现(为了表述方便选择了 int 型的数组)</p>
-
-<pre><code class="language-java">class RandomArray{
-    public static int[] shuffle(int[] array) {
-        int length = array.length;
-        int[] shuffledArray = new int[length];
-
-        int index = 0;
-
-        java.util.Random random = new java.util.Random();
-        for (int count=length; count&gt;0; count--) {
-            int randomIndex = Math.abs(random.nextInt())%(count);
-            shuffledArray[index] = array[randomIndex];
-            index += 1;
-            array[randomIndex] = array[count-1];
-        }
-        return shuffledArray;
-    }
-}
+first_hash_key.each do |key|
+  second_hash_key.each do |k|
+    if hash[key][k].nil?
+      hash[key][k] = 1
+      # p hash[&quot;A&quot;][k]
+    else
+      hash[key][k] += 1
+    end
+  end
+end
+p hash
+# {&quot;A&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}, &quot;B&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}, 
+# &quot;C&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}, &quot;D&quot;=&gt;{&quot;a&quot;=&gt;1, &quot;b&quot;=&gt;1, &quot;c&quot;=&gt;1, &quot;d&quot;=&gt;1}}
 </code></pre>
-
-<p>可以在这个类中增加一个测试方法:</p>
-
-<pre><code class="language-java">    public static void printArray(int[] array){
-        int len = array.length;
-        for (int i=0; i&lt;len; i++) {
-            System.out.print(array[i] + &quot; &quot;);
-        }
-        System.out.println(&quot;😀&quot;);
-    }
-
-
-    public static void main(String[] args) {
-        int array[] = {1,2,3,4,5,6,7,8,9,0,213,123,23,1,23};
-        printArray(array);
-
-        printArray(shuffle(array));
-
-    }
-</code></pre>
-
-<p>每次运行时产生的随机数序列都是不同的，如果需要每次运行结果相同，可以修改随机数生成算法，使得每次运行时都能得到相同的随机数序列。</p>
-
-<h4 id="toc_2">0x02</h4>
-
-<p><a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">Fisher-Yates shuffle</a></p>
-
-<blockquote>
-<p>The Fisher–Yates shuffle is an algorithm for generating a random permutation of a finite set—in plain terms, the algorithm shuffles the set. The algorithm effectively puts all the elements into a hat; it continually determines the next element by randomly drawing an element from the hat until no elements remain. The algorithm produces an unbiased permutation: every permutation is equally likely. The modern version of the algorithm is efficient: it takes time proportional to the number of items being shuffled and shuffles them in place.<br/>
-From wikipedia</p>
-</blockquote>
-
-<p>Fisher-Yates 算法不需要新建一个数组来保存随机后的数组，而是直接在数组中进行操作，并且时间复杂度依然是 \(O(n)\)</p>
-
-<p>Wiki 上提供的一个伪代码如下:</p>
-
-<pre><code>-- To shuffle an array a of n elements (indices 0..n-1):
-for i from 0 to n−2 do
-     j ← random integer such that 0 ≤ j &lt; n-i
-     exchange a[i] and a[i+j]
-</code></pre>
-
-<p>算法思想很简单，在具有 n 个元素的数组中，从 0 到 n-2 依次进行与一个随机位置的元素进行交换。<br/>
-将伪代码改写成 Java 代码:</p>
-
-<pre><code class="language-java">public static int[] fisherShuffle(int[] array) {
-        int length = array.length;
-        java.util.Random random = new java.util.Random();
-        for (int i=0;i&lt;length-1; i++) {
-            int j = Math.abs(random.nextInt())%(length-i);
-            int temp = array[i];
-            array[i] = array[i+j];
-            array[i+j] = temp;
-        }
-
-        return array;
-    }
-</code></pre>
-
-<p>运行结果如下: <br/>
-<img src="media/14639202546153/14642385093605.jpg" alt=""/></p>
-
-<h4 id="toc_3">0x03</h4>
-
-<p>当然如果使用像 Ruby 这样的语言，已经内置好了 shuffle 算法，只需要直接调用即可。</p>
-
-<pre><code class="language-ruby">array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-print  array
-puts 
-print array.shuffle
-puts
-</code></pre>
-
-<p><img src="media/14639202546153/14642385924669.jpg" alt=""/></p>
-
-<p>简直黑科技...</p>
-
-<p>让我们大喊一声: “Ruby 大法好！”</p>
 
 
     
@@ -254,16 +161,13 @@ puts
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14697688870593.html" 
-          title="Previous Post: Leetcode #338 Counting Bits">&laquo; Leetcode #338 Counting Bits</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14599905787744.html" 
-          title="Next Post: 爬楼梯算法分析详解及扩展(最大步长从2升级为m)">爬楼梯算法分析详解及扩展(最大步长从2升级为m) &raquo;</a>
+          <a  href="14890186322971.html" 
+          title="Next Post: Ruby on Rails + Mongodb + AngularJS develop environment setup">Ruby on Rails + Mongodb + AngularJS develop environment setup &raquo;</a>
       
       </p>
         </div>
