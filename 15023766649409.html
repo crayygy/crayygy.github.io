@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  Ruby on Rails + Mongodb + AngularJS develop environment setup - 渐行渐远
+  Keep three decimal places and throw the third if it's "0" - 渐行渐远
   
   </title>
   
@@ -101,10 +101,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>Ruby on Rails + Mongodb + AngularJS develop environment setup</h1>
+          <h1>Keep three decimal places and throw the third if it's "0"</h1>
      
         <div class="read-more clearfix">
-          <span class="date">3/9/2017</span>
+          <span class="date">8/10/2017</span>
 
           <span>posted in&nbsp;</span> 
           
@@ -113,7 +113,7 @@
          
           <span class="comments">
             
-              <a href="http://blog.crayygy.com/14890186322971.html#disqus_thread">comments</a>
+              <a href="http://blog.crayygy.com/15023766649409.html#disqus_thread">comments</a>
             
 
             
@@ -123,81 +123,37 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>Before start, make sure that:<br/>
-1. You are using macOS or Ubuntu 14.04(or higher)</p>
+      <p>For example:</p>
 
-<ol>
-<li>basic system tools like git are installed. If you are using macOS, make sure you have Xcode/ Xcode Tool Chain installed.</li>
-</ol>
+<blockquote>
+<p>14.98812 -&gt; 14.988<br/>
+1.8731312 -&gt; 1.873<br/>
+2.33045 -&gt; 2.33</p>
+</blockquote>
 
 <span id="more"></span><!-- more -->
 
-<h2 id="toc_0">Installation guide</h2>
+<p>script in perl:</p>
 
-<h3 id="toc_1">Install Ruby and Rails</h3>
+<pre><code class="language-perl">$price =~ s/(\.\d\d[1-9]?)\d*/$1/
+</code></pre>
 
-<p>Check this guide on ruby-china(<a href="https://ruby-china.org/wiki/install_ruby_guide">https://ruby-china.org/wiki/install_ruby_guide</a>)</p>
-
-<p>some advice</p>
-
-<ol>
-<li><p>use rvm or rbenv for better performance.</p></li>
-<li><p>use ⌘ <code>gem install rails -v 4.1.4</code> will install the specific version of rails.</p></li>
-</ol>
-
-<h3 id="toc_2">Install Mongodb</h3>
-
-<p>Follow this guide on mongodb.org (<a href="https://docs.mongodb.com/manual/installation/">https://docs.mongodb.com/manual/installation/</a>)</p>
+<p>Explain:</p>
 
 <blockquote>
-<p>If you are using macOS, try use <em>homebrew</em> for all the installation. <br/>
-<code>brew install mongodb</code></p>
+<p><code>\.</code>matches the point</p>
+
+<p><code>\d\d</code> matches the first two digits<br/>
+<code>[1-9]?</code> matches the third digit if it&#39;s between 1 to 9</p>
 </blockquote>
 
-<h3 id="toc_3">Install angularjs</h3>
-
-<p>We are using bower for front-end js package management, so you should install nodejs and use npm install bower first.</p>
-
-<ol>
-<li><p>install node and npm. check documents on <a href="https://nodejs.org/en/">https://nodejs.org/en/</a> </p>
+<p>match all above as a group, in perl, can use $1 to identical the group first</p>
 
 <blockquote>
-<p>Try to use <a href="https://github.com/creationix/nvm">nvm</a> instead of install from the website. Official installer may cause npm not work. (This may be a bug, I have encounter this on macOS and Ubuntu many times).  If you installed this official build, and encounter the same problems, JUST USE <em>NVM</em>.<br/>
-nvm guide:<br/>
-1. use the script to install nvm. (The script is shown on nvm GitHub project).<br/>
-2. use <code>nvm install &lt;version&gt;</code> to install a specific version of node. for example: <code>nvm install 6.10.0</code>.<br/>
-3. use <code>nvm alias default &lt;version&gt;</code> to make this node version as your default version, so you don&#39;t need to choose every time you open a new terminal.<br/>
-4. use <code>node -v</code> and <code>npm -v</code> to check whether  you have these tools installed.<br/>
-5. now you can use <code>npm install</code> ⌘ to install node packages.</p>
-</blockquote></li>
-<li><p>install bower using npm <code>npm install -g bower</code> check documents on <a href="https://bower.io/#install-bower">https://bower.io/#install-bower</a></p></li>
-</ol>
+<p><code>\d*</code> to match all the rest digits if exists.</p>
+</blockquote>
 
-<h3 id="toc_4">SSH key</h3>
-
-<p>ssh key is used to communicate with gitlab server, follow these steps:</p>
-
-<ol>
-<li><p>open your terminal and run ⌘ <code>ssh-keygen -t rsa</code></p></li>
-<li><p>just use default options and set no password, and ssh key will be generated.</p></li>
-<li><p>run ⌘ <code>cat ~/.ssh/id_rsa.pub</code>, copy the ssh key, and add it to your github account.</p></li>
-</ol>
-
-<h2 id="toc_5">Run guide</h2>
-
-<p>make sure you have <em>git</em> <em>ruby</em> <em>rails</em> <em>mongodb</em> <em>bower</em> installed first.</p>
-
-<ol>
-<li><p>git clone </p></li>
-<li><p>cd to project folder and run ⌘ <code>bundle install</code></p></li>
-<li><p>run ⌘ <code>bower install</code></p></li>
-<li><p>run ⌘ <code>rails s</code> - this is for development, if you wanna run rails in production mode, use <code>rails s -e production</code>.</p>
-
-<blockquote>
-<p><code>-e</code> is used to environments,  default is development.</p>
-</blockquote></li>
-<li><p>check output.</p></li>
-</ol>
+<p>at last, replace the matched string(e.g. 1.231323131) and replace with the first matched group(the 3 useful digits if the third one is not 0).</p>
 
 
     
@@ -208,16 +164,13 @@ nvm guide:<br/>
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15007372838208.html" 
-          title="Previous Post: Ruby Sample code of 2d Hash set">&laquo; Ruby Sample code of 2d Hash set</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14842384827556.html" 
-          title="Next Post: Some Mongodb problems and solutions">Some Mongodb problems and solutions &raquo;</a>
+          <a  href="15007372838208.html" 
+          title="Next Post: Ruby Sample code of 2d Hash set">Ruby Sample code of 2d Hash set &raquo;</a>
       
       </p>
         </div>

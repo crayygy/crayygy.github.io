@@ -4,13 +4,54 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2017-07-22T23:36:31+08:00</updated>
+  <updated>2017-07-22T23:39:38+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Keep three decimal places and throw the third if it's "0"]]></title>
+    <link href="http://blog.crayygy.com/15023766649409.html"/>
+    <updated>2017-08-10T22:51:04+08:00</updated>
+    <id>http://blog.crayygy.com/15023766649409.html</id>
+    <content type="html"><![CDATA[
+<p>For example:</p>
+
+<blockquote>
+<p>14.98812 -&gt; 14.988<br/>
+1.8731312 -&gt; 1.873<br/>
+2.33045 -&gt; 2.33</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<p>script in perl:</p>
+
+<pre><code class="language-perl">$price =~ s/(\.\d\d[1-9]?)\d*/$1/
+</code></pre>
+
+<p>Explain:</p>
+
+<blockquote>
+<p><code>\.</code>matches the point</p>
+
+<p><code>\d\d</code> matches the first two digits<br/>
+<code>[1-9]?</code> matches the third digit if it&#39;s between 1 to 9</p>
+</blockquote>
+
+<p>match all above as a group, in perl, can use $1 to identical the group first</p>
+
+<blockquote>
+<p><code>\d*</code> to match all the rest digits if exists.</p>
+</blockquote>
+
+<p>at last, replace the matched string(e.g. 1.231323131) and replace with the first matched group(the 3 useful digits if the third one is not 0).</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ruby Sample code of 2d Hash set]]></title>
