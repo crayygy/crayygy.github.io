@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  二叉树的深度问题 - 渐行渐远
+  编程语言 - 渐行渐远
   
   </title>
   
@@ -92,171 +92,71 @@
        
 
  <script type="text/javascript">
-  $(function(){
-    $('#menu_item_index').addClass('is_active');
-  });
+	$(function(){
+		$('#menu_item_index').addClass('is_active');
+	});
 </script>
 <div class="row">
-  <div class="large-8 medium-8 columns">
-      <div class="markdown-body article-wrap">
-       <div class="article">
-          
-          <h1>二叉树的深度问题</h1>
-     
-        <div class="read-more clearfix">
-          <span class="date">3/28/2016</span>
+	<div class="large-8 medium-8 columns">
+		<div class="markdown-body home-categories">
+		
+			<div class="article">
+                <a class="clearlink" href="15070154325076.html">
+                
+                  <h1>[Dive into Ruby] Ruby 的介绍</h1>
+                  <div class="a-content">
+                      
+                      <div class="a-content-text">
+                        
+                        	<h3 id="toc_0"><a href="https://www.ruby-lang.org/en/">Ruby</a> is</h3>
 
-          <span>posted in&nbsp;</span> 
-          
-              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
-           
-         
-          <span class="comments">
-            
-              <a href="http://blog.crayygy.com/14591320972722.html#disqus_thread">comments</a>
-            
+<blockquote>
+<p>A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.</p>
+</blockquote>
 
-            
-          </span>
 
-        </div>
-      </div><!-- article -->
+                        
+                      </div>
+                  </div>
+                </a>
+                <div class="read-more clearfix">
+                  <div class="more-left left">
+                   <a href="15070154325076.html">Read more</a>&nbsp;&nbsp; 
+                    <span class="date">10/3/2017</span>
+                    <span>posted in&nbsp;</span> 
+          				  
+          					    <span class="posted-in"><a href='programming-languages.html'>编程语言</a></span>
+          				   
+                  </div>
+                  <div class="more-right right">
+                  <span class="comments">
+                      
+                        <a href="http://blog.crayygy.com/15070154325076.html#disqus_thread">comments</a>
+                      
 
-      <div class="article-content">
-      <p>昨天笔试的时候做到了一题求二叉树深度的问题，刚刚在Leetcode上刷题的时候刚好也遇到了，就顺手刷了。但是仔细思考发现，这个问题背后所反应的思想很值得我注重，因此写了这篇文章。</p>
-
-<span id="more"></span><!-- more -->
-
-<p>这个算法并不难，利用递归可以非常简单的求解。因此我在看到题目之后，给出的第一个解法是这样的(Java版本):</p>
-
-<pre><code class="language-java">/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
-        int depth = 0;
-        if(root.left != null &amp;&amp; root.right != null){
-            int l = maxDepth(root.left);
-            int r = maxDepth(root.right);
-            depth = (l &gt; r? l : r) + 1;
-        } else if (root.left == null){
-            depth = maxDepth(root.right) + 1;
-        } else if (root.right == null){
-            depth = maxDepth(root.left) + 1;
-        } else {
-            depth = 0;
-        }
-        return depth;
-    }
-}
-
-</code></pre>
-
-<p><img src="media/14591320972722/14591324511074.jpg" alt=""/></p>
-
-<p>解法是没有错误的，并且Leetcode上也是直接Accept了，但总是看起来让人觉得这个代码非常的丑，太杂乱了。</p>
-
-<p>因此我又花了一点时间思考如何优化这段代码，让它看起来不至于这么的复杂。<br/>
-在这个代码中，复杂的部分全部在 if-else代码块中，那么是不是可以通过其他的方式来取消掉这些判断呢？</p>
-
-<p>答案是肯定的。因此有了下面的代码(Java版本):</p>
-
-<pre><code class="language-java">/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
+                       
+                  </span>
+                  </div>
+                </div>
+              </div><!-- article -->
         
-        int lDepth = maxDepth(root.left);
-        int rDepth = maxDepth(root.right);
-        
-        return lDepth &gt; rDepth? lDepth + 1 : rDepth + 1;
-    }
-}
-</code></pre>
-
-<p><img src="media/14591320972722/14591326336170.jpg" alt=""/></p>
-
-<p>可以看到，时间复杂度几乎没有变化，但是从直观上，第二段代码比之之前的版本，代码非常的简洁，并且让人一眼就能看懂意思。</p>
-
-<p>很不幸，在笔试的时候我用的是第一段代码，并且没有考虑到优化和精简问题，不知道这个是否有影响。</p>
-
-<p>对我而言，这两段代码给我的启发是巨大的。同样的效率的代码，如何能写的更漂亮，让别人看起来更舒服，也很重要。</p>
-
-<p>希望以后能够多注意类似的问题，不再犯同样的错误。</p>
+              
 
 
-    
-
-      </div>
-
-      <div class="row">
-        <div class="large-6 columns">
-        <p class="text-left" style="padding:15px 0px;">
-      
-          <a href="14584879845645.html" 
-          title="Previous Post: 从二叉查找树到红黑树">&laquo; 从二叉查找树到红黑树</a>
-      
-        </p>
-        </div>
-        <div class="large-6 columns">
-      <p class="text-right" style="padding:15px 0px;">
-      
-          <a  href="14582820943493.html" 
-          title="Next Post: 个人博客搭建完毕">个人博客搭建完毕 &raquo;</a>
-      
-      </p>
-        </div>
-      </div>
-      <div class="comments-wrap">
-        <div class="share-comments">
-          <div id="disqus_thread"></div>
-<script>
-
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://crayygy.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-          
-            <div id="disqus_thread"></div>
-          
-
-          
-        </div>
-      </div>
-    </div><!-- article-wrap -->
-  </div><!-- large 8 -->
-
-
-
+			<div class="row">
+			  <div class="large-6 columns">
+			  <p class="text-left" style="padding-top:25px;">
+			   
+			  </p>
+			  </div>
+			  <div class="large-6 columns">
+			<p class="text-right" style="padding-top:25px;">
+			
+			</p>
+			  </div>
+			</div>
+		</div>
+	</div><!-- large 8 -->
 
  <div class="large-4 medium-4 columns">
   <div class="hide-for-small">

@@ -4,13 +4,129 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2017-07-22T23:39:38+08:00</updated>
+  <updated>2017-08-10T22:55:03+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[[Dive into Ruby] Ruby 的介绍]]></title>
+    <link href="http://blog.crayygy.com/15070154325076.html"/>
+    <updated>2017-10-03T15:23:52+08:00</updated>
+    <id>http://blog.crayygy.com/15070154325076.html</id>
+    <content type="html"><![CDATA[
+<h3 id="toc_0"><a href="https://www.ruby-lang.org/en/">Ruby</a> is</h3>
+
+<blockquote>
+<p>A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<p>其实从官网的描述我们已经能够知道，Ruby 是一门开源的脚本语言，并且强调的是写代码时的效率以及可读性等等，并没有刻意强调执行效率（当然，这并不代表执行效率不够高）。Ruby 是一门非常注重编码人员体验的语言， Ruby 之父也曾表示， Ruby最初诞生的一个目标就是: &quot;Happy coding&quot;。</p>
+
+<p>作为脚本语言目前最广为人知的是 Python，在各个领域都大放异彩，从 Linux shell script，到 Web development，再到越来越火爆的 Data mining, AI, Science computing。Python 由于其非常完善的第三方库资源以及社区资源而著称。</p>
+
+<p>而同样作为脚本语言的 Ruby，最广为人知的则是 Web Development， Ruby on Rails 框架可以说是快速开发的典型代表，一个简单的网站可以用几十行代码，甚至于只需要配置一下数据库，再用 rails 命令执行几个命令即可完成，非常的方便。但 RoR 的火爆，有利也有弊，很多人因此而开始了 Ruby 的使用，而很多人也因此给 Ruby 打上了 &quot;Web&quot; 这个标签。事实上，Ruby 作为脚本语言，Python 能够完成的大多数事情，Ruby 也能完成的很好甚至更好，但由于第三方库的缺失以及社区生态的原因，国内使用 Ruby 的人并不是很多，而且其中绝大部分也都是从事着 RoR 开发。</p>
+
+<p>作为一名 Ruby 爱好者，我想，我应该把我知道的关于 Ruby 的事情写下来。如果有不对的地方，还望不吝赐教。 🙏</p>
+
+<p>Dive into Ruby 会是一个系列，我会尽可能的写完每一篇。</p>
+
+<h3 id="toc_1">Ruby 初探</h3>
+
+<p>在我眼里，Ruby 与其它语言（C++, Java, Python, Javascript等) 一个很大的区别是，Ruby是一个 <strong>完全</strong> 面向对象的语言。<br/>
+  何为完全？ 比如说在 Java 中，数据类型分成几种，一种叫基本数据类型(primitive type)，例如 <code>int</code>, <code>float</code>, <code>boolean</code>, <code>char</code>, 这样的，另一种则是对象(Object)，例如 String 是一个字符串对象，Integer 是整型的对象。 这两者完全不同的两类。而在 Ruby 中，所有的一切都是对象(Object)，因此一个整数 <code>10</code> 是一个对象， <code>a = 10</code>，也就声明了一个值为<code>10</code>的对象<code>a</code>。这样做的意义是什么呢？举个例子。</p>
+
+<p>比如你可以在 Ruby 中这样去写一个循环：</p>
+
+<pre><code class="language-ruby">  # 循环输出10次 “hello world”
+  10.times do 
+     puts &quot;hello world&quot;。# =&gt; hello world
+  end
+</code></pre>
+
+<p>怎么样，是不是很直白明了。再比如，在 Ruby 中你可以这样去声明和计算时间。</p>
+
+<pre><code class="language-ruby">  duration = 1.year
+  one_hour = 60.mins
+  one_day = 24.hours
+  one_week = 7.days
+</code></pre>
+
+<p>看起来怎么样？<br/>
+  再来一个比较常用的，数组对象，怎么样遍历数组呢？ <code>for</code> 循环吗？你可以这样：</p>
+
+<pre><code class="language-ruby">  students = [&quot;Andy&quot;, &quot;Bill&quot;, &quot;Cindy&quot;]
+  students.each do |stu|
+    puts stu
+  end
+</code></pre>
+
+<p>当然了， for 循环也不是不可以，只是 Ruby 不推荐使用 for 循环，因为 for 循环本身的实现也是使用 <code>迭代器(iterator)</code>，因此使用 for 循环有点多此一举的感觉。</p>
+
+<pre><code class="language-ruby">  for stu in students 
+    puts stu
+  end
+  
+  for i in 0..5
+    puts &quot;value of i is: #{i}&quot;
+  end
+</code></pre>
+
+<p>等等，Ruby 中的字符串可以这样用的？</p>
+
+<p>是的，Ruby 中允许在字符串中使用变量，甚至于调用方法，只需要用 <code>#{}</code> 来标记即可。</p>
+
+<p>Ruby 中还有一个概念，叫<code>符号(Symbol)</code>。 符号有什么用呢？还是用一个例子来说明。</p>
+
+<p>如果我需要创建一个 Hash， 来记录每个省份的省会， 我可以这样写。</p>
+
+<pre><code class="language-ruby">  provinces = Hash.new
+  provinces[&quot;Anhui&quot;] = &quot;Hefei&quot;
+  provinces[&quot;Jiangxi&quot;] = &quot;Nanchang&quot;
+</code></pre>
+
+<p>这里的 Hash 表， Key 的类型是字符串，因此在需要使用的时候，要用字符串来调用。</p>
+
+<pre><code class="language-ruby">  puts provinces[&quot;Anhui&quot;]
+</code></pre>
+
+<p>而通常来说，省份名字是比较的固定的，而且每次用到的时候也都只有那几种，因此我们可以用 Symbol 来作为 Key。创建一个 Symbol 非常的简单，一个冒号<code>:</code>加上 Symbol 的名字就可以了，使用起来也一样。</p>
+
+<pre><code class="language-ruby">  provinces = Hash.new
+  provinces[:Anhui] = &quot;Hefei&quot;
+  provinces[:Jiangxi] = &quot;Nanchang&quot;
+  
+  puts provinces[:Anhui] # =&gt; Hefei
+</code></pre>
+
+<p>那么使用 Symbol 和 使用 String 有什么不同呢？</p>
+
+<p><strong>Attention please</strong></p>
+
+<p>Ruby 中同一个 Symbol 总是指向同一个 Symbol 对象，而多个 String 则是不同的 String 对象，哪怕它们的值是相同的。听起来是不是有点像 Java 中的字符串对象？<br/>
+  照样的还是例子，我们通过 Ruby 中对象的唯一标识符(Object Identifier)来判断是不是同一个对象。</p>
+
+<pre><code class="language-ruby">  puts :sym.object_id # =&gt; 781148
+  puts :sym.object_id # =&gt; 781148
+  puts :sym.object_id # =&gt; 781148
+  
+  puts &quot;str&quot;.object_id # =&gt; 70145943017540
+  puts &quot;str&quot;.object_id # =&gt; 70145943017480
+  puts &quot;str&quot;.object_id # =&gt; 70145943017420
+
+</code></pre>
+
+<p>这样是不是就清楚很多啦？</p>
+
+<p>好了，第一篇先写这么多，剩下的留着后面慢慢写～</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Keep three decimal places and throw the third if it's "0"]]></title>

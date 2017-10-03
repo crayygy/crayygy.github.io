@@ -2,7 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>http://blog.crayygy.com/</loc>
-  <lastmod>2017-08-10T22:55:03+08:00</lastmod>
+  <lastmod>2017-10-03T16:26:08+08:00</lastmod>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/15070154325076.html</loc>
+  <lastmod>2017-10-03T15:23:52+08:00</lastmod>
 </url>
 
 <url>
@@ -81,6 +86,10 @@
 
 <url>
   <loc>http://blog.crayygy.com/server.html</loc>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/programming-languages.html</loc>
 </url>
 
 
