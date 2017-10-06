@@ -180,7 +180,7 @@
   对于 <code>greeting</code> 这个变量，则是 <code>hello()</code> 这个函数的一个局部变量，只能在函数内使用，函数外无法调用。<br/>
   <strong>注意</strong>，通常不建议在程序中过多的使用全局变量，因为这样会无法保证是否有其它地方修改过这些变量，会给 debug 带来非常大的麻烦，而且在多线程调用的时候，也无法保证全局变量的共享问题。因此，给自己省点麻烦，除非迫不得已，否则尽量不用。</p>
 
-<p>那么对于实例变量和类变量呢？写过 Java 的人应该都知道，Java 中的对象有 <code>static</code> 与 <code>non static</code>的区别， <code>static</code> 的变量，可以通过<code>类名.对象名</code>来使用，例如 <code>Math.PI</code>，而<code>non static</code>的变量，则需要创建一个类的实例，通过实例来调用。Ruby 中的实例变量与类变量与 Java 中无异，实例变量需要通过类的实例去调用，而类变量则是通过类自身去调用。这就是它们之间的差别。<br/>
+<p>那么对于实例变量和类变量呢？写过 Java 的人应该都知道，Java 中的变量有 <code>static</code> 与 <code>non static</code>的区别， <code>static</code> 的变量，可以通过<code>类名.对象名</code>来使用，例如 <code>Math.PI</code>，而<code>non static</code>的变量，则需要创建一个类的实例，通过实例来调用。Ruby 中的实例变量与类变量与 Java 中无异，实例变量需要通过类的实例去调用，而类变量则是通过类自身去调用。这就是它们之间的差别。<br/>
   同样的区别也会发生在实例方法与类方法中，后面会详细介绍。</p>
 
 <p>好的，介绍完了变量类型，接下来继续介绍对象。</p>
