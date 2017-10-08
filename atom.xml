@@ -4,13 +4,292 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2017-10-06T15:14:23+08:00</updated>
+  <updated>2017-10-08T23:47:19+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[[Dive into Ruby] Ruby Control Flow 控制语句]]></title>
+    <link href="http://blog.crayygy.com/15074733157580.html"/>
+    <updated>2017-10-08T22:35:15+08:00</updated>
+    <id>http://blog.crayygy.com/15074733157580.html</id>
+    <content type="html"><![CDATA[
+<p><a href="15070154325076.html">[Dive into Ruby] Ruby 的介绍</a> 主要介绍了 Ruby 的一些特性，<a href="15072588525134.html">[Dive into Ruby] Ruby Basic 变量、常量以及对象</a> 则介绍了关于对象、变量常量的一些知识，这一篇将主要介绍 Ruby 中的程序控制语句，这一部分是每个编程语言的重点，因此会介绍的比较的详细，也会有一些小技巧。</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">条件控制语句与循环控制语句</h2>
+
+<h3 id="toc_1">条件语句 if\unless and case</h3>
+
+<p>首先介绍一下几乎所有高级语言都有的控制语句， <code>if-else</code>。<br/>
+  在 Ruby 中，<code>if</code> 判断语句跟其它语言没什么区别，如果满足一个条件，则进入一个代码块，否则进入另一个代码块，或者不执行任何操作。写起来也非常的通俗易懂。<br/>
+  需要注意的是，在 Ruby 中，只有<code>false</code>与<code>nil</code>这两种情况会导致条件不满足，也就是说，只要值不是<code>false</code>或者是<code>nil</code>，<code>if</code>就是满足的。</p>
+
+<pre><code class="language-ruby">  if condition then
+    # block
+  else
+    # block
+  end
+  
+  if x &gt; 10 
+    # block
+  end
+  
+  if &quot;this is a string&quot;
+    # runs into here
+  end
+  
+  if 12
+    # runs into here
+  end
+  
+  if user = User.find_by(id: uid) # 这里涉及到函数的返回值问题，后面会继续讨论
+    puts user.name
+  end
+  
+  if obj.instance_of? Object
+    # runs into here
+  end
+</code></pre>
+
+<p>在这里， <code>then</code> 这个关键字是可以省略的，大多数情况下都没有必要加上，少数特殊情况下不加会导致有歧义，但是也都可以改写。<br/>
+  而如果程序只有<code>if</code>没有<code>else</code>的代码块，而且<code>if</code>的代码块中只有一句话，那么可以缩短成一行实现。</p>
+
+<pre><code class="language-ruby">  do_sth if condition
+</code></pre>
+
+<p>如果是否定的语句，可以使用 <code>if not</code>，也可以使用另一个关键字<code>unless</code>，很直白的翻译成<code>除非（如果不）</code>。因此可以这样写。</p>
+
+<pre><code class="language-ruby">  do_sth unless condition 
+  
+  # 等价于
+  do_sth if not condition
+  
+</code></pre>
+
+<p>通常使用 <code>unless</code>是在只有一个否定的代码块的时候，这个时候使用<code>unless</code>能够表达比<code>if not</code>更加清晰的逻辑，并且避免了<code>逻辑非</code>的运算。在有条件分支的时候，应该使用<code>if-else</code>的逻辑，避免将<code>unless</code>与<code>else</code> 搭配（因为这样几乎毫无意义）。</p>
+
+<p>Ruby 中还有一种表示条件的控制语句，叫 <code>case</code>，用法基本与 Java 中的<code>Switch</code>相似。</p>
+
+<pre><code class="language-ruby">  arr = [&quot;string&quot;, 19, nil]
+  arr.each do |item|
+    case item
+    when String
+      puts &quot;It&#39;s a string&quot;
+    when Numeric
+      puts &quot;It&#39;s numeric&quot;
+    else
+      puts &quot;It&#39;s something not string nor number&quot;
+    end
+  end
+</code></pre>
+
+<blockquote>
+<p>Notes:<br/>
+值得注意的是， <code>case-when</code> 中的比较是一种比较广泛的比较，实际上使用的是<code>===</code>比较，除了比较值之外，还会比较两边是否正则匹配，右边的对象是否属于左边的类等等。因此，在<code>case-when</code>中是可以直接使用正则表达式的。</p>
+</blockquote>
+
+<h3 id="toc_2">循环语句 while\until and more</h3>
+
+<p>与<code>if</code>和<code>unless</code>的关系类似，<code>while</code>与<code>until</code>是一对互为否定的关系。<code>until</code> === <code>while not</code>，使用 <code>unless</code> 与 <code>until</code>的最主要目的是，使得程序更具有可读性，在看到代码的第一时刻就明白这段代码的条件所在。</p>
+
+<pre><code class="language-ruby">  while condition do # do 可以省略
+  
+  end
+  
+  until condition do # do 可以省略
+  
+  end
+</code></pre>
+
+<p>在 Ruby 中，实现循环有多种方式，如 <code>for</code> 循环、<code>loop</code>循环、<code>while/until</code>循环、<code>.each</code>循环、<code>.times</code>循环等等。在不同的情况下使用不同的循环方式，能够提升程序的可读性。</p>
+
+<p>例如，在需要某段代码执行指定次数的时候，使用 <code>n.times</code>循环会更加的直接，在需要依次访问数组的元素的时候，使用<code>array.each</code>，而在需要循环直到某个条件满足或不满足的时候，使用<code>while\until</code>循环。当然这些循环都是可以在这些场景下使用的，不同的场景使用不同的循环方式，主要是为了程序的可读性以及可理解性。</p>
+
+<pre><code class="language-ruby">  3.times do 
+    puts &quot;hello&quot;
+  end
+  
+  students = [&#39;Andy&#39;, &#39;Bob&#39;, &#39;Cindy&#39;]
+  
+  students.each do |stu|
+    puts stu # 通过迭代器能够更加简单的使用每一次迭代的元素
+  end
+  
+  file = File.new(&#39;path&#39;)
+  while line=file.readline
+    # runs until last line
+  end
+</code></pre>
+
+<p>Ruby 中的<code>for</code>循环在迭代的时候，使用的其实是 <code>.each</code> 方法，因此直接用<code>.each</code>来迭代就好了。</p>
+
+<h4 id="toc_3">循环控制语句</h4>
+
+<p>在循环中，有时候需要跳出当前循环，或者终止当前循环，那么就需要对应的控制语句来完成。<br/>
+  Ruby 中的循环控制语句有三个 <code>break</code>、<code>next</code>还有<code>redo</code>。<code>redo</code> 用到的非常少，因此暂时不管它。<br/>
+  <code>break</code> 在其它语言中也经常会见到，因此有基础的人也比较容易理解，即当执行到这个语句的时候，终止整个循环程序，进入与循环同一层次的另一段代码。而 <code>next</code>则没有这么极端，当执行到<code>next</code>的时候，当前的这次循环将会从这里被跳过，后面的语句不再执行，直接进行下一次循环。<br/>
+  照样来个简单的代码来说明一下。</p>
+
+<pre><code class="language-ruby">  
+  students = [&#39;Andy&#39;, &#39;Bob&#39;, &#39;Cindy&#39;, &#39;Dave&#39;]
+  
+  students.each do |stu|
+    if stu == &#39;Bob&#39;
+      break
+    end
+    puts stu
+  end
+  # 程序运行结果: 
+  # Andy
+  
+  students.each do |stu|
+    if stu == &#39;Bob&#39;
+      next
+    end
+    puts stu
+  end
+  # 程序运行结果: 
+  # Andy
+  # Cindy
+  # Dave
+</code></pre>
+
+<p>是不是很好理解？</p>
+
+<h3 id="toc_4">运算符优先级问题</h3>
+
+<p>在不使用括号的情况下，各种不同的运算符拥有不同的优先级，简单的例子如，乘除法总是拥有着比加减法更高的优先级，非运算拥有比与、或运算更高的优先级。Ruby 中的运算符非常的多，不同运算符之间的优先级排序表如下。<br/>
+  其中有一些需要特别注意，例如: 按位与(<code>&amp;</code>)比按位或<code>^</code>拥有更高的优先级，逻辑与(&amp;&amp;)比逻辑或(||)拥有更高的优先级。</p>
+
+<p>在 Ruby 中，逻辑运算除了与<code>&amp;&amp;</code>或<code>||</code> 以及非<code>!</code>三种运算符之外，还有更加可读的 <code>and</code> <code>or</code> 以及 <code>not</code> 运算符，后面三者在逻辑运算中起着与前面三者相同的作用，<strong>但是</strong>，注意这个但是，<code>and</code> <code>or</code> <code>not</code> 是拥有着更低的优先级的（仅高于控制语句），这意味着在同样的情况下，如果混用 <code>&amp;&amp;</code> 和 <code>not</code>，是会搞出大事情的。</p>
+
+<p>因此，通常情况下，能够使用逻辑运算符 <code>&amp;&amp;\||\!</code>的时候，尽量这样使用，一方面它们的优先级较高，可以避免出现很多的问题，另一方面，使用 <code>and\or\not</code> 不太适合加括号，很多时候并没有很方便。</p>
+
+<h4 id="toc_5">Ruby operators in precedence order.  优先级降序排列</h4>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center">Method</th>
+<th style="text-align: center">Operator</th>
+<th style="text-align: center">Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">[] []=</td>
+<td style="text-align: center">Element reference, element set</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">**</td>
+<td style="text-align: center">Exponentiation</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">! ~ + -</td>
+<td style="text-align: center">Not, complement, unary plus and minus (method names for the last two are +@ and -@)</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">* / %</td>
+<td style="text-align: center">Multiply, divide, and modulo</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">+ -</td>
+<td style="text-align: center">Plus and minus</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">&gt;&gt; &lt;&lt;</td>
+<td style="text-align: center">Right and left ⇧</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">&amp;</td>
+<td style="text-align: center">Bitwise `and&#39;</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">^</td>
+<td style="text-align: center">Bitwise exclusive &#39;or&#39; and regular &#39;or&#39;</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">&lt;= &lt; &gt; &gt;=</td>
+<td style="text-align: center">Comparison operators</td>
+</tr>
+<tr>
+<td style="text-align: center">Y</td>
+<td style="text-align: center">&lt;=&gt; == === != =~ !~</td>
+<td style="text-align: center">Equality and pattern match operators (!= and !~ may not be defined as methods)</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">&amp;&amp;</td>
+<td style="text-align: center">Logical &#39;and&#39;</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">||</td>
+<td style="text-align: center">Logical &#39;or&#39;</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">.. ...</td>
+<td style="text-align: center">Range (inclusive and exclusive)</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">? :</td>
+<td style="text-align: center">Ternary if-then-else</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">= %= { /= -= +=</td>
+<td style="text-align: center">= &amp;= &gt;&gt;= &lt;&lt;= *= &amp;&amp;=</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">defined?</td>
+<td style="text-align: center">Check if symbol defined</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">not</td>
+<td style="text-align: center">Logical negation</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">or and</td>
+<td style="text-align: center">Logical composition</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">if unless while until</td>
+<td style="text-align: center">Expression modifiers</td>
+</tr>
+<tr>
+<td style="text-align: center"></td>
+<td style="text-align: center">begin/end</td>
+<td style="text-align: center">Block expression</td>
+</tr>
+</tbody>
+</table>
+
+<p>关于 Ruby 中的条件以及循环语句就介绍到这里，下一篇会介绍 Ruby 中的方法以及类的概念。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Dive into Ruby] Ruby Basic 变量、常量以及对象]]></title>
@@ -122,7 +401,7 @@ puts hash[:name]
 
 <p>其它的像时间对象、文件对象的使用方法也都比较简单，可以通过API文档查询使用方法，这里就不过多介绍了。</p>
 
-<p>关于 Ruby 中的变量常量以及对象就介绍这么多，下一篇会开始介绍 Ruby 中的控制流，<code>if</code> <code>unless</code> <code>when</code> <code>while</code> <code>until</code>等等，再后面会介绍 Ruby 中的类(class)与类的继承(inheritance)，还有模块(module)相关的概念。</p>
+<p>关于 Ruby 中的变量常量以及对象就介绍这么多，下一篇会开始介绍 Ruby 中的控制流，<code>if</code> <code>unless</code> <code>when</code> <code>while</code> <code>until</code>等等，再后面会介绍 Ruby 中方法，以及类(class)与类的继承(inheritance)，还有模块(module)相关的概念。</p>
 
 ]]></content>
   </entry>
