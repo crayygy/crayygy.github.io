@@ -2,7 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>http://blog.crayygy.com/</loc>
-  <lastmod>2017-10-08T23:47:22+08:00</lastmod>
+  <lastmod>2018-01-27T00:21:24+08:00</lastmod>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/15169769464198.html</loc>
+  <lastmod>2018-01-26T22:29:06+08:00</lastmod>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/15118733745760.html</loc>
+  <lastmod>2017-11-28T20:49:34+08:00</lastmod>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/15080417250719.html</loc>
+  <lastmod>2017-10-15T12:28:45+08:00</lastmod>
 </url>
 
 <url>
@@ -100,6 +115,10 @@
 
 <url>
   <loc>http://blog.crayygy.com/programming-languages.html</loc>
+</url>
+
+<url>
+  <loc>http://blog.crayygy.com/Android.html</loc>
 </url>
 
 

@@ -4,13 +4,301 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2017-10-08T23:47:19+08:00</updated>
+  <updated>2018-01-27T00:20:22+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Android(Java) 中的单例类的实现]]></title>
+    <link href="http://blog.crayygy.com/15169769464198.html"/>
+    <updated>2018-01-26T22:29:06+08:00</updated>
+    <id>http://blog.crayygy.com/15169769464198.html</id>
+    <content type="html"><![CDATA[
+<p>单例模式(Singleton) 是我们常用的一种设计模式，通常用来保证在全局情况下总是能够拿到同样的一个类实例来实现相关的工作。<br/>
+  单例模式很常见，因此也有戏称：</p>
+
+<blockquote>
+<p>单例的写法茴香豆的<code>茴</code>的写法还多。</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 简单的单例类</h2>
+
+<p>单线程模式下的单例模式常见的写法比如：</p>
+
+<pre><code class="language-java">  public class Singleton {
+    private static Singleton INSTANCE; 
+    private Singleton() {}
+ 
+    public static Singleton getInstance() {
+        if(null==INSTANCE) INSTANCE = new Singleton()
+        return INSTANCE;
+    }
+  }
+
+</code></pre>
+
+<p>代码很简单，就是私有化构造方法，并且使用一个 public 方法来获取实例，但是仅限于单线程的时候。</p>
+
+<h2 id="toc_1">0x01 多线程下的一种实现</h2>
+
+<p>在多线程的时候这样的单例类如果在多个线程同时调用的时候，很可能就会导致初始化问题(两个线程同时拿到了一个 null 的实例，同时进入了新的初始化)，因此在多线程下，我们的代码中使用了这样的方式来实现单例。</p>
+
+<pre><code class="language-java">public class Singleton {
+    private static Singleton INSTANCE;
+    private Singleton() { }
+    public static Singleton getInstance() {
+        if (null == INSTANCE) {
+            synchronized (Singleton.class) {
+                if (null==INSTANCE) {
+                    INSTANCE = new Singleton();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+}
+
+</code></pre>
+
+<h2 id="toc_2">0x02 对比分析</h2>
+
+<p>上面实现的这样的单例类，通过加了<code>synchronized</code>锁来保证同一时刻只有一个线程能够进入到这个临界区中，并且通过两次的 null check 来确保不会重复创建实例，这样做对吗？好不好呢？</p>
+
+<p>在分析这段代码的问题之前，我们先看一下 Google 提倡的一种单例类的实现。</p>
+
+<pre><code class="language-java">public class Singleton {
+    private static Singleton INSTANCE;
+    private Singleton() { }
+
+     public static synchronized Singleton getInstance() {
+        if (null == INSTANCE) {
+            INSTANCE = new Singleton();
+        }
+        return INSTANCE;
+    }
+}
+
+</code></pre>
+
+<p>对比一下代码我们会发现，这两段代码的主要区别在于，一个是对创建新的实例进行了加锁，而另一个则是在每一次获取实例的时候，都加锁，这样来保证不会有异常情况。第一种写法在已经创建完实例后就不会再进行 <code>synchronized</code> 操作，这样可以节约一部分操作时间（毕竟不是经常需要加锁来创建新的实例的），第二段代码保证了每次调用都不会出问题，但是会多一些额外的消耗。</p>
+
+<p>说到异常，我们来看一下第一段代码为什么是有问题的，这个地方非常的有趣并且很不容易发现，我们是通过 Coverity 这个工具，看到了代码中这样的实现被它给标为 High level 的 bug，才想到这里可能会有这样的问题，一开始还很奇怪为什么加了两次 null check，还会丢 warning 出来，难不成还会创建两个实例不成？</p>
+
+<h2 id="toc_3">0x03 揭秘</h2>
+
+<p>让我们再来看一遍这段代码：</p>
+
+<pre><code class="language-java">    public static Singleton getInstance() {
+        if (null == INSTANCE) {
+            synchronized (Singleton.class) {
+                if (null==INSTANCE) {
+                    INSTANCE = new Singleton();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+</code></pre>
+
+<p>首先，通过一次 null check, 判断是否需要创建新的实例，如果已经有这个实例了，那么OK，直接返回，如果没有，我们先申请一下锁，拿到之后，进行第二次 null check，这是因为可能在线程等待锁的过程中，已经有另一个线程拿到了锁，并且创建好了资源，如果发现已经不是 null 了，不做任何事，安静的释放掉锁，然后返回，如果发现自己仍然是空的呢，那么就开始进行新的创建实例操作。</p>
+
+<p>到这里是不是还没有发现任何不太对劲的地方？放心，不可能出现两个实例。</p>
+
+<p>那么问题出现在哪里呢？</p>
+
+<p>我们来温习一下创建一个类的实例的过程：类加载(class loader)，分配方法区，堆，常量池，构造函数，初始化函数...等等等等</p>
+
+<p>让我们再来温习一个概念，<mark><em>原子操作</em></mark>。</p>
+
+<p>是不是终于意识到不对的地方了，恭喜！让我们一起来看看，为什么 coverity 会报出这段代码的 warning。</p>
+
+<p>首先，这段代码的核心在于要返回一个实例（废话），不管是已经存在的，还是新创建的，已经存在的自然不用说了，问题就出现在这个新创建的实例上。创建实例的时候我们用了这样的一句话：</p>
+
+<pre><code class="language-java">INSTANCE = new Singleton();
+</code></pre>
+
+<p>一切的烦恼皆因此而起。</p>
+
+<p>在我们初始化实例的时候，在某一个瞬间，<code>INSTANCE</code>已经有了引用（构造完成了），但是初始化并没有完成！假象一下有两个线程 <code>Thread A</code> 和 <code>Thread B</code>，最开始的时候，单例还没有被初始化，于是当 <code>Thread A</code> 调用 <code>Singleton.getInstance()</code> 的时候，初始化开始了。</p>
+
+<p>而刚好在这一时刻，<code>Thread B</code> 也来调用 <code>Singleton.getInstance()</code>，问题来了，在第一次 null check 的时候，INSTANCE 是 null 吗？</p>
+
+<p>是？不是？</p>
+
+<p>别急着回答。由于这个时候 <code>Thread A</code> 正在紧锣密鼓的筹办 <code>Singleton</code> 类的构造和初始化，究竟进行到了哪一步了我们也不知道，是正在构造呢，还是已经构造完了刚准备初始化，还是初始化到一半了？</p>
+
+<p>而此时的 <code>Thread B</code>，在第一次 null check 的时候内心是不安的，因为如果这个时候 <code>INSTANCE</code> 还是个 null 的，那还好，大不了我等嘛，等你释放锁了，我拿到锁了进去看一下，不是 null 的我就直接回去就是了，可万一 <code>INSTANCE</code> 不是 null 的，这个时候就头大了。</p>
+
+<p>不是 null 啊，初始化完成了吗？如果初始化过程中要做的事情非常的多，或者很耗时（比如注册一个服务，通过网络请求去拿一个config），这个时候就不好说了，虽然 <code>Thread B</code> 拿到了一个不是 null 的 <code>INSTANCE</code>，但是谁知道用起来会不会 <code>Crash</code>，这简直就是个定时炸弹啊！</p>
+
+<p>当然了，这样的情形我们假设的时候是遇到了，但是现实里两个线程在几乎同时（大概几百毫秒内）同时去拿一个单例，可能性虽然有，但毕竟还是比较小的。 但是！一旦出现了这样的bug，debug 的时候怎么去发现？？？ 也很难有办法重现，于是这里就成了一个埋藏至深的地雷，说不定哪天不开心了就炸了。</p>
+
+<h2 id="toc_4">0x04 解决方案</h2>
+
+<p>找到了问题的根源，要解决这样的 bug 就简单了。很好说，归根结底，这个问题出现是因为两个线程 <code>A</code> and <code>B</code> 在同一时刻对同一实例 <code>INSTANCE</code> 进行了读写操作。直接给你禁了呗。</p>
+
+<p>说的好！怎么禁？简单啊，一个单词的事儿，<code>volatile</code>，搞定！</p>
+
+<p>代码如下:<br/>
+```java<br/>
+public class Singleton {<br/>
+    private static volatile Singleton INSTANCE;</p>
+
+<pre><code>private Singleton() { }
+
+public static Singleton getInstance() {
+    if (null == INSTANCE) {
+        synchronized (Singleton.class) {
+            if (null == INSTANCE) {
+                INSTANCE = new Singleton();
+            }
+        }
+    }
+    return INSTANCE;
+}
+</code></pre>
+
+<p>}<br/>
+```</p>
+
+<p>跟最初的版本相比，只是多加了一个 <code>volatile</code> 关键字，但是就这样解决了这个看起来很麻烦的问题，是不是很开心！</p>
+
+<blockquote>
+<p>关于 <code>volatile</code> 关键字有机会再展开。</p>
+</blockquote>
+
+<h2 id="toc_5">0x05 能再简单点儿么？</h2>
+
+<p>能！</p>
+
+<p>让我们回到最初的起点，问一下自己，为什么要写出这么麻烦的 code？</p>
+
+<blockquote>
+<p>为了让单例类在多线程的情况下没有异常。</p>
+</blockquote>
+
+<p>那让我们以这个为目标，再重新思考一下，有没有别的方法。</p>
+
+<p>Talk is cheap, show me the code.</p>
+
+<pre><code class="language-java">public class Singleton {
+    private static class Holder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+    private Singleton() { }
+
+    public static Singleton getInstance() {
+        return Holder.INSTANCE;
+    }
+}
+</code></pre>
+
+<p>通过一个内部的静态类来完成实例的单例，并且保证了在多线程的时候不会有异常，为什么？提示，在内部静态类加载的时候进行的初始化。</p>
+
+<h2 id="toc_6">ox06 总结</h2>
+
+<p>小小的总结一下关于这篇文章。今天下午在公司里跟同事一起讨论单例的实现的时候，刚好看到 coverity 给我们报了这样的bug，几个人坐在那里简单讨论了一下，也没商量出个对策来，又因为时间紧迫，还要完成今天的测试，因此就搁置了。回到家闲着也是闲着，边备份 Time Machine 边想这个问题，顺带着看看其他人的博客什么的，也便有了这篇博客。</p>
+
+<p>里面出现的一些写法我相信都是经常出现的，包括有问题的，Google 推荐的，还有最后使用内部静态类的（其实这个方法是 Effective Java）中推荐过的，当然还有比如更新的使用一个 Enum 来实现的，单例的写法是真的要比<code>茴</code>字的写法还要多的。</p>
+
+<p>总结经验教训来看的话，</p>
+
+<ol>
+<li>Coverity 是个很不错的工具</li>
+<li>多思考（没事多想想为什么）</li>
+<li>多看书（强力推荐 Effective Java）</li>
+<li>多动手（写篇博客很有成就感的，真的）</li>
+</ol>
+
+<p>That&#39;s all! <br/>
+Thanks a lot~</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android MediaPlayer setData 0X8000000 error]]></title>
+    <link href="http://blog.crayygy.com/15118733745760.html"/>
+    <updated>2017-11-28T20:49:34+08:00</updated>
+    <id>http://blog.crayygy.com/15118733745760.html</id>
+    <content type="html"><![CDATA[
+<p>This issue might be caused by ringtone permission, if using a custom ringtone or ringtone set by other apps, must ensure your app has storage permission, otherwise, you cannot setDataUri to MediaPlayer instance.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[Dive into Ruby] Ruby 中的方法、类与模块]]></title>
+    <link href="http://blog.crayygy.com/15080417250719.html"/>
+    <updated>2017-10-15T12:28:45+08:00</updated>
+    <id>http://blog.crayygy.com/15080417250719.html</id>
+    <content type="html"><![CDATA[
+<p>介绍完了 Ruby 的语言基础与控制流，对于 Ruby 也算有了一个比较亲密的接触了，接下来是一些比较常用的面向对象（Object Oriented）的思想与方法。 这一部分与其它的面向对象语言比较的类似，但依然有很多地方有着鲜明的 Ruby 特色。</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">Ruby 中的函数/方法(function/method)</h2>
+
+<p>首先，什么是<code>函数</code>？</p>
+
+<p>对于已经有编程基础的人来说，这是一个非常直白的问题，但是如果是要向没有接触过编程的人介绍函数呢？ 我对函数的理解是这样的。</p>
+
+<blockquote>
+<p>函数是一系列操作的集合体，有着定义的输入（<code>参数</code>），通过这个操作集合之后输出定义的结果（返回值）。</p>
+</blockquote>
+
+<p>比如说，加法是一个函数，这个函数接收两个参数：加数与被加数，进行将两个输入参数相加的操作，最后返回出加法结果。</p>
+
+<p>要说明下，<code>函数</code>这个概念是属于面向过程的思想的，在面向对象的世界里，名字叫<code>方法</code>。</p>
+
+<p>那么<code>方法</code>是什么，应该怎么理解呢？同样附上我的个人看法。</p>
+
+<blockquote>
+<p><code>方法</code>是一个对象自身所能够拥有的操作手段，例如，<code>Object</code> 类实现了 <code>instanse_of?</code>方法，这个方法就是所有的<code>Object</code>类的实例所能够拥有的操作，再例如，<code>Math</code>类拥有<code>Math.asin()</code>方法，这是 <code>Math</code> 这个 <code>类</code> 所拥有的操作。</p>
+</blockquote>
+
+<p>从上面的描述中也可以看到，方法是属于 <code>Object</code> 的，而根据方法所属的 <code>Object</code> 不同，将方法分成两类：<code>实例方法</code>、<code>类方法</code>。</p>
+
+<h3 id="toc_1"><code>方法</code>的分类</h3>
+
+<p>实例方法与类方法，顾名思义，是分别属于实例的与类的方法。</p>
+
+<p>关于<code>实例</code>与<code>类</code>的关系，在介绍<code>类</code>的时候详细介绍。这里需要弄清楚的是：<code>实例方法</code>是通过<code>实例</code>来调用的，而<code>类方法</code>则是直接通过<code>类</code>来调用。</p>
+
+<p>同样的，对比 Java 中的概念，<code>实例方法</code>与<code>类方法</code>基本上等同于 Java 中的 <code>非静态方法</code> 与 <code>静态方法</code>。</p>
+
+<blockquote>
+<p>在 Java 中，非静态方法通过类的对象调用，静态方法需要通过类调用。</p>
+</blockquote>
+
+<p>简单的举两个例子。</p>
+
+<pre><code class="language-ruby">student = Student.new
+student.grade = 3
+student.read()
+student.calculate(Math.PI)
+
+Math.asin(Math.PI/2)
+</code></pre>
+
+<p>在这个例子中，分别出现了<code>类方法</code>与<code>实例方法</code>，<code>类变量</code>与<code>实例变量</code>。 <code>Student.new</code> 与 <code>Math.asin</code> 均是<code>类方法</code>，通过<code>类</code>(<code>Student</code>,<code>Math</code>)来调用，而<code>student.read</code>,<code>student.calculate</code> 则是 <code>Student</code> 类的 <code>student</code> 实例的<code>实例方法</code>。同样的，<code>Math.PI</code> 是 <code>Math</code> 类的<code>类变量</code>，而 <code>student.age</code> 是 <code>student</code> 实例的<code>实例变量</code>。</p>
+
+<blockquote>
+<p>关于实例变量与类变量，如果不理解可以看看 <a href="15072588525134.html">[Dive into Ruby] Ruby Basic 变量、常量以及对象</a></p>
+</blockquote>
+
+<h2 id="toc_2">Ruby 中的类(Class)</h2>
+
+<h2 id="toc_3">Ruby 中的模块(Module)</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Dive into Ruby] Ruby Control Flow 控制语句]]></title>
