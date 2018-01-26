@@ -4,7 +4,7 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2018-01-27T00:20:22+08:00</updated>
+  <updated>2018-01-27T00:21:24+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -145,27 +145,25 @@
 
 <p>说的好！怎么禁？简单啊，一个单词的事儿，<code>volatile</code>，搞定！</p>
 
-<p>代码如下:<br/>
-```java<br/>
-public class Singleton {<br/>
-    private static volatile Singleton INSTANCE;</p>
+<p>代码如下:</p>
 
-<pre><code>private Singleton() { }
+<pre><code class="language-java">public class Singleton {
+    private static volatile Singleton INSTANCE;
 
-public static Singleton getInstance() {
-    if (null == INSTANCE) {
-        synchronized (Singleton.class) {
-            if (null == INSTANCE) {
-                INSTANCE = new Singleton();
+    private Singleton() { }
+
+    public static Singleton getInstance() {
+        if (null == INSTANCE) {
+            synchronized (Singleton.class) {
+                if (null == INSTANCE) {
+                    INSTANCE = new Singleton();
+                }
             }
         }
+        return INSTANCE;
     }
-    return INSTANCE;
 }
 </code></pre>
-
-<p>}<br/>
-```</p>
 
 <p>跟最初的版本相比，只是多加了一个 <code>volatile</code> 关键字，但是就这样解决了这个看起来很麻烦的问题，是不是很开心！</p>
 
