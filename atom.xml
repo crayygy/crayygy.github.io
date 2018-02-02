@@ -4,13 +4,177 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2018-01-27T00:21:24+08:00</updated>
+  <updated>2018-02-02T10:37:12+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Android App Layout performance optimization investigation]]></title>
+    <link href="http://blog.crayygy.com/15174963911041.html"/>
+    <updated>2018-02-01T22:46:31+08:00</updated>
+    <id>http://blog.crayygy.com/15174963911041.html</id>
+    <content type="html"><![CDATA[
+<p><a href="https://developer.android.com/topic/performance/vitals/render.html">Slow rendering</a> can cause <code>Frozen Frames</code> issue.<br/>
+To avoid <code>Slow Rendering</code> issue. Try to analysis Android App with tools.</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 Tools used</h2>
+
+<p>There are serval tools can be used to help us check view/layout performance.</p>
+
+<ol>
+<li><p>Hierarchy viewer</p>
+
+<blockquote>
+<ul>
+<li><a href="https://developer.android.com/studio/profile/hierarchy-viewer.html">Hierarchy View</a></li>
+<li><a href="http://blog.csdn.net/xyz_lmn/article/details/14222975">Some blog</a></li>
+<li>Not very easy to use, loading slow.</li>
+<li>Can help detect the layout hierarchy and check if too many level of views(Can use lint instead)</li>
+</ul>
+</blockquote></li>
+<li><p>Trace view</p>
+
+<blockquote>
+<ul>
+<li><a href="https://developer.android.com/studio/profile/traceview.html">Trace View</a></li>
+<li>Need enable adb integration in Android Studio -&gt; Tools -&gt; Android -&gt; Enable ADB integration</li>
+<li><a href="https://developer.android.com/studio/preview/features/android-profiler.html?utm_source=android-studio">Android Profiler</a></li>
+<li>Using Android Profiler, choose CPU usage.</li>
+<li>Recoding the actions/CPU usage when doing somvething.</li>
+<li>References:
+&gt; 1. <a href="https://bxbxbai.github.io/2014/10/25/use-trace-view/">正确使用Android性能分析工具——TraceView</a>
+&gt; 2. <a href="http://blog.csdn.net/u011240877/article/details/54347396">Android 性能优化：使用 TraceView 找到卡顿的元凶</a></li>
+</ul>
+</blockquote></li>
+<li><p>systrace</p>
+
+<blockquote>
+<ul>
+<li><a href="https://developer.android.com/studio/command-line/systrace.html">systrace</a></li>
+<li>Useful ⌘: <code>python systrace.py -a com.cisco.im --time=15 -o ~/Desktop/trace.html sched gfx view wm</code></li>
+<li>Open this HTML file in Chrome(only Chrome)</li>
+<li>Find alert on the right side.</li>
+</ul>
+</blockquote></li>
+<li><p>Lint</p>
+
+<blockquote>
+<ul>
+<li>First config rules in Android studio -&gt; preferences -&gt; Editor -&gt; Inspections, check all related rules</li>
+<li>Goto Android studio -&gt; Analyze -&gt; Inspect code, choose res folder</li>
+<li>Start inspection</li>
+<li>Check out Android Studio panel</li>
+</ul>
+</blockquote></li>
+</ol>
+
+<h2 id="toc_1">0x01 Lint result</h2>
+
+<h3 id="toc_2">Main issues</h3>
+
+<ol>
+<li><p>Unused XML schema declaration</p>
+
+<blockquote>
+<p>A layout with children that has no siblings, is not a scrollview or a root layout, and does not have a background, can be removed and have its children moved directly into the parent for a flatter and more efficient layout hierarchy.</p>
+</blockquote></li>
+<li><p>Long vector paths</p>
+
+<blockquote>
+<p>Using long vector paths is bad for performance. There are several ways to make the pathData shorter:<br/>
+* Using less precision<br/>
+* Removing some minor details<br/>
+* Using the Android Studio vector conversion tool<br/>
+* Rasterizing the image (converting to PNG)</p>
+</blockquote></li>
+<li><p>Node can be replaced by a TextView with compound drawables</p>
+
+<blockquote>
+<p>A LinearLayout which contains an ImageView and a TextView can be more efficiently handled as a compound drawable (a single TextView, using the drawableTop, drawableLeft, drawableRight and/or drawableBottom attributes to draw one or more images adjacent to the text).</p>
+</blockquote></li>
+</ol>
+
+<p><img src="media/15174963911041/15172821034634.jpg" alt="XML lint result"/></p>
+
+<h2 id="toc_3">0x02 systrace results</h2>
+
+<p>Checked on four main page:[HomeActivity(Including contact list, profile), ChatActivity(Including sending chat, emoticon), Call(Incoming call), Settings(List)]</p>
+
+<h3 id="toc_4">Trace alert</h3>
+
+<p>These alerts are found in systrace.html</p>
+
+<ol>
+<li>Scheduling delay</li>
+<li>Expensive measure/layout pass    -&gt; Need more check</li>
+<li>Long View#draw()</li>
+<li>Inefficient View alpha usage</li>
+<li>Inflation during ListView recycling  -&gt; Need more check</li>
+</ol>
+
+<h2 id="toc_5">0x03 Trace view</h2>
+
+<p>Trace view can help check code call stack and find which piece of codes block the CPU time most.</p>
+
+<p><img src="media/15174963911041/15172899439685.jpg" alt="TraceView CPU Overview"/></p>
+
+<p>According to the result of trace view, the most time cost methods are from View, measure, layout, drawing..etc(excluding handler).</p>
+
+<ol>
+<li>When goto contact profile page in contact list:</li>
+</ol>
+
+<blockquote>
+<p><img src="media/15174963911041/15172911758858.jpg" alt="Contact Profile"/></p>
+</blockquote>
+
+<ol>
+<li>When Sign in: (Cost about 30s, debug mode, cisco.com)</li>
+</ol>
+
+<blockquote>
+<p><img src="media/15174963911041/15172915369332.jpg" alt="Sign in"/></p>
+
+<p>The main reason for time cost is the login flow(UI is not stuck)<br/>
+Signed in moment:<br/>
+<img src="media/15174963911041/15172920127852.jpg" alt="Signin to HomeActivity"/><br/>
+The most time cost is android.view.LayoutInfalter<br/>
+HomeActivity creation cost a lot of time. (Create all views, load all tabs, handle callback..etc.)</p>
+</blockquote>
+
+<h2 id="toc_6">0x04 Summary</h2>
+
+<h3 id="toc_7">Part 1: View measure/layout/drawing</h3>
+
+<ol>
+<li>Some layout can be replaced by a simpler layout, use RelativeLayout instead of complex LinearLayout.</li>
+<li>Using TextView with drawable instead of using a LinearLayout with a TextView and a ImageView.</li>
+</ol>
+
+<p><img src="media/15174963911041/15172930792094.jpg" alt="View drawing"/></p>
+
+<h3 id="toc_8">Part 2: Reduce unused callback/handler for sign in part</h3>
+
+<ol>
+<li>When signed in, we receive too many callbacks, handle too many event, such as: invalid credentials, popup fingerprint authentication, auto upgrade check, other handlers...
+&gt; For those not urgent event/handlers, we can put it back after signed in for a while, not the time when create HomeActivity</li>
+<li>Too many Views/Layouts/Loading time when create HomeActivity
+&gt; Reduce view hierarchy in HomeActivity, refactor View layouts</li>
+</ol>
+
+<h3 id="toc_9">Part 3: Telemetry</h3>
+
+<p>Telemetry data can be used to monitor application runtime CPU and memory usage information.<br/>
+There are some tools can help us. We can choose to use 3rd party tools or write by ourself.</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android(Java) 中的单例类的实现]]></title>
@@ -199,7 +363,20 @@
 
 <p>通过一个内部的静态类来完成实例的单例，并且保证了在多线程的时候不会有异常，为什么？提示，在内部静态类加载的时候进行的初始化。</p>
 
-<h2 id="toc_6">ox06 总结</h2>
+<p>其实呢，如果要求更低一点，在单例类的初始化过程没有那么复杂或者耗时的操作的时候，可以直接用最简单的实现，即直接初始化。</p>
+
+<pre><code class="language-java">public class Singleton {
+    private INSTANCE = new Singleton();
+    private Singleton() { }
+
+    public static Singleton getInstance() {
+        return INSTANCE;
+    }
+}
+
+</code></pre>
+
+<h2 id="toc_6">0x06 总结</h2>
 
 <p>小小的总结一下关于这篇文章。今天下午在公司里跟同事一起讨论单例的实现的时候，刚好看到 coverity 给我们报了这样的bug，几个人坐在那里简单讨论了一下，也没商量出个对策来，又因为时间紧迫，还要完成今天的测试，因此就搁置了。回到家闲着也是闲着，边备份 Time Machine 边想这个问题，顺带着看看其他人的博客什么的，也便有了这篇博客。</p>
 

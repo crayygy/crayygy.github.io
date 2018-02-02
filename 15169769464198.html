@@ -304,7 +304,20 @@
 
 <p>通过一个内部的静态类来完成实例的单例，并且保证了在多线程的时候不会有异常，为什么？提示，在内部静态类加载的时候进行的初始化。</p>
 
-<h2 id="toc_6">ox06 总结</h2>
+<p>其实呢，如果要求更低一点，在单例类的初始化过程没有那么复杂或者耗时的操作的时候，可以直接用最简单的实现，即直接初始化。</p>
+
+<pre><code class="language-java">public class Singleton {
+    private INSTANCE = new Singleton();
+    private Singleton() { }
+
+    public static Singleton getInstance() {
+        return INSTANCE;
+    }
+}
+
+</code></pre>
+
+<h2 id="toc_6">0x06 总结</h2>
 
 <p>小小的总结一下关于这篇文章。今天下午在公司里跟同事一起讨论单例的实现的时候，刚好看到 coverity 给我们报了这样的bug，几个人坐在那里简单讨论了一下，也没商量出个对策来，又因为时间紧迫，还要完成今天的测试，因此就搁置了。回到家闲着也是闲着，边备份 Time Machine 边想这个问题，顺带着看看其他人的博客什么的，也便有了这篇博客。</p>
 
@@ -330,6 +343,9 @@ Thanks a lot~</p>
       <div class="row">
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="15174963911041.html" 
+          title="Previous Post: Android App Layout performance optimization investigation">&laquo; Android App Layout performance optimization investigation</a>
       
         </p>
         </div>
@@ -433,6 +449,12 @@ s.setAttribute('data-timestamp', +new Date());
 	      
 		      
 			      <li class="post">
+			        <a href="15174963911041.html">Android App Layout performance optimization investigation</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
 			        <a href="15169769464198.html">Android(Java) 中的单例类的实现</a>
 			      </li>
 		     
@@ -456,10 +478,6 @@ s.setAttribute('data-timestamp', +new Date());
 		     
 		  
 		      
-			      <li class="post">
-			        <a href="15072588525134.html">[Dive into Ruby] Ruby Basic 变量、常量以及对象</a>
-			      </li>
-		     
 		  
 		      
 		  

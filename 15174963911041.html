@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  [Dive into Ruby] Ruby Basic 变量、常量以及对象 - 渐行渐远
+  Android App Layout performance optimization investigation - 渐行渐远
   
   </title>
   
@@ -101,19 +101,19 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>[Dive into Ruby] Ruby Basic 变量、常量以及对象</h1>
+          <h1>Android App Layout performance optimization investigation</h1>
      
         <div class="read-more clearfix">
-          <span class="date">10/6/2017</span>
+          <span class="date">2/1/2018</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='programming-languages.html'>编程语言</a></span>
+              <span class="posted-in"><a href='Android.html'>Android</a></span>
            
          
           <span class="comments">
             
-              <a href="http://blog.crayygy.com/15072588525134.html#disqus_thread">comments</a>
+              <a href="http://blog.crayygy.com/15174963911041.html#disqus_thread">comments</a>
             
 
             
@@ -123,111 +123,160 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p><a href="15070154325076.html">上一篇博客</a>主要介绍了一下 Ruby 的一些语法糖，以及作为脚本语言 Ruby 的优势所在。这一篇则开始正式介绍 Ruby 的基础语法，以及语言细节。由于 Ruby 是完全面向对象式的，因此，有 Java 基础的人能够很快的了解到 Ruby 的大部分特性，但是有一些是 Ruby 特有的，或者 Java 有而 Ruby 不支持的，这一部分会更加特别说明。</p>
+      <p><a href="https://developer.android.com/topic/performance/vitals/render.html">Slow rendering</a> can cause <code>Frozen Frames</code> issue.<br/>
+To avoid <code>Slow Rendering</code> issue. Try to analysis Android App with tools.</p>
 
 <span id="more"></span><!-- more -->
 
-<h2 id="toc_0">Ruby 中的对象</h2>
+<h2 id="toc_0">0x00 Tools used</h2>
 
-<p>在 Ruby 中，对象是表现数据的最基本单位。所有的对象都由 BaseObject 派生，而大部分的对象又是由 BaseObject 的子类 Object 派生。BaseObject 与 Object 类分别实现了一些所有的对象均需要的方法，例如 Object.nil? 方法（用以判断是否为空，返回 true 或者 false）等。<br/>
-  Ruby 中内置了一些常用的对象类型供我们使用，例如数值对象、字符串对象、数组对象、散列对象、时间对象、文件对象，甚至正则表达式对象，等等。<br/>
-  接下来会介绍一些比较常见的对象以及常用的方法。<br/>
-  在介绍对象之前，先介绍一些关于变量和常量的基本知识（与其它编程语言类似）。</p>
+<p>There are serval tools can be used to help us check view/layout performance.</p>
 
-<h3 id="toc_1">变量与常量</h3>
+<ol>
+<li><p>Hierarchy viewer</p>
 
-<p>与其它编程语言类似的，Ruby 中对变量和常量加以区分。何为变量(variable)？即变化的东西，定义一个人的年龄，<code>age = 10</code>，这是一个变量，因为人的年龄是会变的。何为常量(constant)呢？即不变的量，如定义一本书的序列号 <code>ISBN=&quot;SN12345&quot;</code>，在程序中是默认不会改变的。<br/>
-  Ruby 中对于变量和常量的命名有着一些默认的规则，变量一般使用下划线命名法或者驼峰命名法，如 <code>age</code>，<code>studentNumber</code>，这样都是可以的。但通常情况下，一般的变量使用下划线命名法，而对类的实例使用驼峰命名法，这样能够更加清楚的区分变量的类型。Ruby 中的常量使用全大写命名，中间加下划线，例如 <code>MAX_NUMBER</code>。<br/>
-  同时 Ruby 中又内置了一些全局的常量，例如 <code>RUBY_VERSION</code>，可以方便的在程序中调用来判断当前的环境等等。<br/>
-  <strong>注意</strong>， Ruby 中的<code>常量</code>并非真正的不可改变。例如这样一段代码。</p>
+<blockquote>
+<ul>
+<li><a href="https://developer.android.com/studio/profile/hierarchy-viewer.html">Hierarchy View</a></li>
+<li><a href="http://blog.csdn.net/xyz_lmn/article/details/14222975">Some blog</a></li>
+<li>Not very easy to use, loading slow.</li>
+<li>Can help detect the layout hierarchy and check if too many level of views(Can use lint instead)</li>
+</ul>
+</blockquote></li>
+<li><p>Trace view</p>
 
-<pre><code class="language-ruby">  NAME = &quot;HE&quot; # =&gt; HE
-  p NAME # =&gt; HE
-  NAME = &quot;SHE&quot; # =&gt; warning: already initialized constant NAME, warning: previous definition of NAME was ...
-  p NAME # =&gt; SHE
-</code></pre>
+<blockquote>
+<ul>
+<li><a href="https://developer.android.com/studio/profile/traceview.html">Trace View</a></li>
+<li>Need enable adb integration in Android Studio -&gt; Tools -&gt; Android -&gt; Enable ADB integration</li>
+<li><a href="https://developer.android.com/studio/preview/features/android-profiler.html?utm_source=android-studio">Android Profiler</a></li>
+<li>Using Android Profiler, choose CPU usage.</li>
+<li>Recoding the actions/CPU usage when doing somvething.</li>
+<li>References:
+&gt; 1. <a href="https://bxbxbai.github.io/2014/10/25/use-trace-view/">正确使用Android性能分析工具——TraceView</a>
+&gt; 2. <a href="http://blog.csdn.net/u011240877/article/details/54347396">Android 性能优化：使用 TraceView 找到卡顿的元凶</a></li>
+</ul>
+</blockquote></li>
+<li><p>systrace</p>
 
-<p>在试图修改常量时，Ruby会报出一个 warning，表明你正在修改一个常量的值，以及常量的定义位置。但同时也会默默的修改掉常量的值。</p>
+<blockquote>
+<ul>
+<li><a href="https://developer.android.com/studio/command-line/systrace.html">systrace</a></li>
+<li>Useful ⌘: <code>python systrace.py -a com.cisco.im --time=15 -o ~/Desktop/trace.html sched gfx view wm</code></li>
+<li>Open this HTML file in Chrome(only Chrome)</li>
+<li>Find alert on the right side.</li>
+</ul>
+</blockquote></li>
+<li><p>Lint</p>
 
-<h4 id="toc_2">变量的类型</h4>
+<blockquote>
+<ul>
+<li>First config rules in Android studio -&gt; preferences -&gt; Editor -&gt; Inspections, check all related rules</li>
+<li>Goto Android studio -&gt; Analyze -&gt; Inspect code, choose res folder</li>
+<li>Start inspection</li>
+<li>Check out Android Studio panel</li>
+</ul>
+</blockquote></li>
+</ol>
 
-<p>Ruby 中的变量分成四种类型，分别是局部变量(local variable)、全局变量(global variable)、实例变量(instance variable)、类变量(class variable)。<br/>
-  Ruby 中对不同变量的命名也是有着默认的规范的。<br/>
-  局部变量以小写字母或者<code>_</code>开头，<br/>
-  全局变量以<code>$</code>开头，<br/>
-  实例变量以<code>@</code>开头，<br/>
-  类变量以<code>@@</code>开头。</p>
+<h2 id="toc_1">0x01 Lint result</h2>
 
-<p>还有一种类型，叫做 伪变量，例如 nil\self\true\false 等等。伪变量是 Ruby 中预先定义好的表示某些特定值的特殊变量，即使我们在程序中人为的去改变，也不会生效。伪变量虽然看着像是变量，但是实际行为与变量有很多不同的地方。</p>
+<h3 id="toc_2">Main issues</h3>
 
-<p>要怎样去理解这些类型呢，其实很简单，看这些变量的作用域，以及谁来调用就可以了。<br/>
-  对于局部变量和全局变量，可以参考这样一段代码。</p>
+<ol>
+<li><p>Unused XML schema declaration</p>
 
-<pre><code class="language-ruby">  $name = &quot;Ruby&quot;
-  
-  def hello name
-    greeting = &quot;hello&quot;
-    puts &quot;#{greeting} #{name}&quot;
-  end
-  
-  my_name = &quot;Cray&quot;
-  hello my_name # =&gt; hello Cray
-  hello $name  # =&gt; hello Ruby
-</code></pre>
+<blockquote>
+<p>A layout with children that has no siblings, is not a scrollview or a root layout, and does not have a background, can be removed and have its children moved directly into the parent for a flatter and more efficient layout hierarchy.</p>
+</blockquote></li>
+<li><p>Long vector paths</p>
 
-<p>在这段代码中， <code>$name</code>是一个全局变量，在这个例子中并没有体现出它作为全局变量的能力，但是当这段代码被其它代码调用时，整个程序中共享着同一个全局变量 <code>$name</code>，因此可以在其它地方修改，调用。<br/>
-  而<code>my_name</code>是一个局部变量，这意味着它只能在整个程序的这个部分使用，如果你在另一个地方使用<code>my_name</code>，你用的变量跟这个完全没有任何关系。<br/>
-  对于 <code>greeting</code> 这个变量，则是 <code>hello()</code> 这个函数的一个局部变量，只能在函数内使用，函数外无法调用。<br/>
-  <strong>注意</strong>，通常不建议在程序中过多的使用全局变量，因为这样会无法保证是否有其它地方修改过这些变量，会给 debug 带来非常大的麻烦，而且在多线程调用的时候，也无法保证全局变量的共享问题。因此，给自己省点麻烦，除非迫不得已，否则尽量不用。</p>
+<blockquote>
+<p>Using long vector paths is bad for performance. There are several ways to make the pathData shorter:<br/>
+* Using less precision<br/>
+* Removing some minor details<br/>
+* Using the Android Studio vector conversion tool<br/>
+* Rasterizing the image (converting to PNG)</p>
+</blockquote></li>
+<li><p>Node can be replaced by a TextView with compound drawables</p>
 
-<p>那么对于实例变量和类变量呢？写过 Java 的人应该都知道，Java 中的变量有 <code>static</code> 与 <code>non static</code>的区别， <code>static</code> 的变量，可以通过<code>类名.对象名</code>来使用，例如 <code>Math.PI</code>，而<code>non static</code>的变量，则需要创建一个类的实例，通过实例来调用。Ruby 中的实例变量与类变量与 Java 中无异，实例变量需要通过类的实例去调用，而类变量则是通过类自身去调用。这就是它们之间的差别。<br/>
-  同样的区别也会发生在实例方法与类方法中，后面会详细介绍。</p>
+<blockquote>
+<p>A LinearLayout which contains an ImageView and a TextView can be more efficiently handled as a compound drawable (a single TextView, using the drawableTop, drawableLeft, drawableRight and/or drawableBottom attributes to draw one or more images adjacent to the text).</p>
+</blockquote></li>
+</ol>
 
-<p>好的，介绍完了变量类型，接下来继续介绍对象。</p>
+<p><img src="media/15174963911041/15172821034634.jpg" alt="XML lint result"/></p>
 
-<h3 id="toc_3">Ruby 中常用的对象</h3>
+<h2 id="toc_3">0x02 systrace results</h2>
 
-<p>在编程语言中，最基础的功能就应当是数的表达与运算，整型数、浮点数，加、减、乘、除等等。在 Ruby 中使用数值的方法与其它语言无异，但是有一点需要注意，在 Ruby 中，以加法为例：</p>
+<p>Checked on four main page:[HomeActivity(Including contact list, profile), ChatActivity(Including sending chat, emoticon), Call(Incoming call), Settings(List)]</p>
 
-<pre><code class="language-ruby">a = 3
-b = 4
-c = a + b
-</code></pre>
+<h3 id="toc_4">Trace alert</h3>
 
-<p>其中 <code>c = a + b</code>，这里的 <code>+</code>，其实是 <code>a.add(b)</code> 的一个语法糖，等效于调用对象 <code>a</code> 的方法。</p>
+<p>These alerts are found in systrace.html</p>
 
-<p>还有一点需要注意的是，在 Ruby 中，<code>1 == 1.0</code> 的返回值是 <code>true</code>，因为这里的<code>==</code>方法被重写了，在这里数值的 <code>==</code> 方法实现的是值比较，所以返回的是 <code>true</code>，而如果是 <code>eql?</code> 方法，<code>1.eql? 1.0</code>，返回的则是 <code>false</code>。 <code>equals?</code> 方法与 <code>eql?</code> 方法是不能够被子类所重写的，永远比较的是对象的引用，而不是值。</p>
+<ol>
+<li>Scheduling delay</li>
+<li>Expensive measure/layout pass    -&gt; Need more check</li>
+<li>Long View#draw()</li>
+<li>Inefficient View alpha usage</li>
+<li>Inflation during ListView recycling  -&gt; Need more check</li>
+</ol>
 
-<p>同样的，字符串对象的使用也很简单。在字符串对象中可以通过 <code>#{}</code> 来注入变量与方法。</p>
+<h2 id="toc_5">0x03 Trace view</h2>
 
-<pre><code class="language-ruby">name = &quot;Ruby&quot;
-greeting = &quot;hello #{name}&quot;
-  
-def hello name
-return &quot;hello #{name}&quot;
-end
-  
-puts &quot;Welcome, #{hello &#39;Ruby&#39;}&quot;
-</code></pre>
+<p>Trace view can help check code call stack and find which piece of codes block the CPU time most.</p>
 
-<p>Ruby 中的数组对象和散列对象内置了一些方便方法，如迭代器，排序等等。例如向数组中添加一个新的元素。</p>
+<p><img src="media/15174963911041/15172899439685.jpg" alt="TraceView CPU Overview"/></p>
 
-<pre><code class="language-ruby">arr = []
-arr &lt;&lt; &quot;Andy&quot;
-arr.append &quot;Bob&quot;
+<p>According to the result of trace view, the most time cost methods are from View, measure, layout, drawing..etc(excluding handler).</p>
 
-# 创建一个新的hash
-hash = Hash.new
-hash[:name] = &quot;Andy&quot;
-hash[:age] = 19
-hash[:grade] = 3
+<ol>
+<li>When goto contact profile page in contact list:</li>
+</ol>
 
-puts hash[:name]
-</code></pre>
+<blockquote>
+<p><img src="media/15174963911041/15172911758858.jpg" alt="Contact Profile"/></p>
+</blockquote>
 
-<p>其它的像时间对象、文件对象的使用方法也都比较简单，可以通过API文档查询使用方法，这里就不过多介绍了。</p>
+<ol>
+<li>When Sign in: (Cost about 30s, debug mode, cisco.com)</li>
+</ol>
 
-<p>关于 Ruby 中的变量常量以及对象就介绍这么多，下一篇会开始介绍 Ruby 中的控制流，<code>if</code> <code>unless</code> <code>when</code> <code>while</code> <code>until</code>等等，再后面会介绍 Ruby 中方法，以及类(class)与类的继承(inheritance)，还有模块(module)相关的概念。</p>
+<blockquote>
+<p><img src="media/15174963911041/15172915369332.jpg" alt="Sign in"/></p>
+
+<p>The main reason for time cost is the login flow(UI is not stuck)<br/>
+Signed in moment:<br/>
+<img src="media/15174963911041/15172920127852.jpg" alt="Signin to HomeActivity"/><br/>
+The most time cost is android.view.LayoutInfalter<br/>
+HomeActivity creation cost a lot of time. (Create all views, load all tabs, handle callback..etc.)</p>
+</blockquote>
+
+<h2 id="toc_6">0x04 Summary</h2>
+
+<h3 id="toc_7">Part 1: View measure/layout/drawing</h3>
+
+<ol>
+<li>Some layout can be replaced by a simpler layout, use RelativeLayout instead of complex LinearLayout.</li>
+<li>Using TextView with drawable instead of using a LinearLayout with a TextView and a ImageView.</li>
+</ol>
+
+<p><img src="media/15174963911041/15172930792094.jpg" alt="View drawing"/></p>
+
+<h3 id="toc_8">Part 2: Reduce unused callback/handler for sign in part</h3>
+
+<ol>
+<li>When signed in, we receive too many callbacks, handle too many event, such as: invalid credentials, popup fingerprint authentication, auto upgrade check, other handlers...
+&gt; For those not urgent event/handlers, we can put it back after signed in for a while, not the time when create HomeActivity</li>
+<li>Too many Views/Layouts/Loading time when create HomeActivity
+&gt; Reduce view hierarchy in HomeActivity, refactor View layouts</li>
+</ol>
+
+<h3 id="toc_9">Part 3: Telemetry</h3>
+
+<p>Telemetry data can be used to monitor application runtime CPU and memory usage information.<br/>
+There are some tools can help us. We can choose to use 3rd party tools or write by ourself.</p>
 
 
     
@@ -238,16 +287,13 @@ puts hash[:name]
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15074733157580.html" 
-          title="Previous Post: [Dive into Ruby] Ruby Control Flow 控制语句">&laquo; [Dive into Ruby] Ruby Control Flow 控制语句</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="15070154325076.html" 
-          title="Next Post: [Dive into Ruby] Ruby 的介绍">[Dive into Ruby] Ruby 的介绍 &raquo;</a>
+          <a  href="15169769464198.html" 
+          title="Next Post: Android(Java) 中的单例类的实现">Android(Java) 中的单例类的实现 &raquo;</a>
       
       </p>
         </div>
