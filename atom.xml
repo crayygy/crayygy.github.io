@@ -4,7 +4,7 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="http://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="http://blog.crayygy.com/"/>
-  <updated>2018-02-02T10:37:29+08:00</updated>
+  <updated>2018-04-13T15:50:44+08:00</updated>
   <id>http://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -21,6 +21,8 @@
 <h2 id="toc_0">0x00 Requirements background</h2>
 
 <p>When an application released and get used by customers, crashes and ANRs are usually the most annoying issues for developers, it&#39;s hard to get the specific context of the entire usage.</p>
+
+<span id="more"></span><!-- more -->
 
 <p>Usually for a wide used application, it is very important to have a feedback/help function. For a more modern way to detect where the issue is, logs and context are must. They can help developers find out how to reproduce the issue, if an issue is reproducible, in most cases it&#39;s much more easy to fix the issue or at least protect it from getting crash.</p>
 
@@ -88,6 +90,8 @@
 <h2 id="toc_0">0x00 Background</h2>
 
 <p>When we developing and releasing an Android Application, we might encounter issues like Frozen Frames(FF) or Janks(according to Android Developer), to detect Janks during developing or logging, we can add a simple detector to check whether an application is going through a Jank. </p>
+
+<span id="more"></span><!-- more -->
 
 <h2 id="toc_1">0x01 Detect strategy</h2>
 
