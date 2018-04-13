@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  Leetcode #169 Majority Element - 渐行渐远
+  Different ways to send problem report in app with screenshots - 渐行渐远
   
   </title>
   
@@ -101,19 +101,19 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>Leetcode #169 Majority Element</h1>
+          <h1>Different ways to send problem report in app with screenshots</h1>
      
         <div class="read-more clearfix">
-          <span class="date">7/30/2016</span>
+          <span class="date">4/12/2018</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
+              <span class="posted-in"><a href='Android.html'>Android</a></span>
            
          
           <span class="comments">
             
-              <a href="http://blog.crayygy.com/14698658453148.html#disqus_thread">comments</a>
+              <a href="http://blog.crayygy.com/15235097714605.html#disqus_thread">comments</a>
             
 
             
@@ -123,36 +123,63 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <blockquote>
-<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
-</blockquote>
+      <h2 id="toc_0">0x00 Requirements background</h2>
 
-<span id="more"></span><!-- more -->
+<p>When an application released and get used by customers, crashes and ANRs are usually the most annoying issues for developers, it&#39;s hard to get the specific context of the entire usage.</p>
+
+<p>Usually for a wide used application, it is very important to have a feedback/help function. For a more modern way to detect where the issue is, logs and context are must. They can help developers find out how to reproduce the issue, if an issue is reproducible, in most cases it&#39;s much more easy to fix the issue or at least protect it from getting crash.</p>
+
+<p>Currently, we have serval ways to get logs from for example, user feedback(send problem report)\Google Play console\Splunk data monitor. However, when a problem is sent with screenshots and descriptions, it&#39;s more easy to understand what an issue is and what are the bad behaviors.</p>
+
+<h2 id="toc_1">0x01 Common solutions</h2>
+
+<p>To get user upload screenshots, we can have serval ways to do this. We can screenshot our own application and send it when user send problem report, or ask user to upload manually. </p>
+
+<p>For summary, I have investigated serval other applications and find there are these ways to do so:</p>
+
+<h4 id="toc_2">1. Send feedback with auto screenshot</h4>
+
+<h5 id="toc_3">Examples</h5>
+
+<ul>
+<li>Facebook/Messenger/Instagram</li>
+</ul>
 
 <blockquote>
-<p>You may assume that the array is non-empty and the majority element always exist in the array.</p>
+<p><img src="media/15235097714605/WechatIMG34.jpeg" alt="Messenger" style="width:540px;"/></p>
 </blockquote>
 
-<p>Build a hash for the result, if a num is not in the hash, then make the hash[num] counts 1, else make the hash[num]+1.</p>
+<h5 id="toc_4">How to</h5>
 
-<p>To get the majority element of the array, just get the key with the max value in this hash.</p>
+<p>When user choose to send feedback or problem, add a photo selector for user to select photos that need to send.</p>
 
-<pre><code class="language-ruby"># @param {Integer[]} nums
-# @return {Integer}
-def majority_element(nums)
-  hash = Hash.new
-  
-  nums.each do |num| 
-    if hash.has_key? num
-      hash[num] += 1
-    else
-      hash[num] = 1
-    end
-  end
-  result = hash.key(hash.values.max)
-  return result
-end
-</code></pre>
+<p>For user who want to send problem report, user are supposed to input issue description and select a photo.</p>
+
+<h4 id="toc_5">2. Show send feedback hint when user screenshot</h4>
+
+<h5 id="toc_6">Examples</h5>
+
+<ul>
+<li>Snapchat</li>
+</ul>
+
+<blockquote>
+<p><img src="media/15235097714605/WechatIMG35.jpeg" alt="Snapchat" style="width:540px;"/></p>
+</blockquote>
+
+<h5 id="toc_7">How to</h5>
+
+<p>To get this notification when user screenshots, we need to register file observer to detect when user takes a screenshot.</p>
+
+<p>When this popup windows shows, we need to add some actions on it, like edit, send problem report, share..etc.</p>
+
+<h2 id="toc_8">0x02 Comparison and conclusion</h2>
+
+<p>The first way is more moderate and acceptable by users, when user choose to send problem reports, they can choose to add descriptions or screenshots if they have. </p>
+
+<p>The other solution is more convenient, when user take screenshot inside an application, they might want to share, or save for future usage, or maybe they are willing to send problem report.</p>
+
+<p>In conclusion, I think, in production mode, or released applications, the first solution is better. While for alpha users/tester/developers, the second way is more convenient to use.</p>
 
 
     
@@ -163,16 +190,13 @@ end
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14842384827556.html" 
-          title="Previous Post: Some Mongodb problems and solutions">&laquo; Some Mongodb problems and solutions</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14697688870593.html" 
-          title="Next Post: Leetcode #338 Counting Bits">Leetcode #338 Counting Bits &raquo;</a>
+          <a  href="15206668044525.html" 
+          title="Next Post: A simple Android JankDetecter design and implementation">A simple Android JankDetecter design and implementation &raquo;</a>
       
       </p>
         </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  Leetcode #169 Majority Element - 渐行渐远
+  A simple Android JankDetecter design and implementation - 渐行渐远
   
   </title>
   
@@ -101,19 +101,19 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>Leetcode #169 Majority Element</h1>
+          <h1>A simple Android JankDetecter design and implementation</h1>
      
         <div class="read-more clearfix">
-          <span class="date">7/30/2016</span>
+          <span class="date">3/10/2018</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
+              <span class="posted-in"><a href='Android.html'>Android</a></span>
            
          
           <span class="comments">
             
-              <a href="http://blog.crayygy.com/14698658453148.html#disqus_thread">comments</a>
+              <a href="http://blog.crayygy.com/15206668044525.html#disqus_thread">comments</a>
             
 
             
@@ -123,35 +123,77 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <blockquote>
-<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
-</blockquote>
+      <h2 id="toc_0">0x00 Background</h2>
 
-<span id="more"></span><!-- more -->
+<p>When we developing and releasing an Android Application, we might encounter issues like Frozen Frames(FF) or Janks(according to Android Developer), to detect Janks during developing or logging, we can add a simple detector to check whether an application is going through a Jank. </p>
 
-<blockquote>
-<p>You may assume that the array is non-empty and the majority element always exist in the array.</p>
-</blockquote>
+<h2 id="toc_1">0x01 Detect strategy</h2>
 
-<p>Build a hash for the result, if a num is not in the hash, then make the hash[num] counts 1, else make the hash[num]+1.</p>
+<p>To detect whether an application is on Jank state, we can post a Handler when MainThread looper starts a new message logging printer, we could override the default Printer, when Printer is start printing a new Main looper message, at the start of the Logging, main looper will dispatch a START_TAG(&quot;&gt;&gt;&gt;&gt;&gt; Dispatching&quot;), we can start a new LogMonitor instance, at the end of Logging, a END_TAG(&quot;&lt;&lt;&lt;&lt;&lt; Finished&quot;) will be dispatched, if all method run in the time block end during the main thread dispatch END_TAG, we can remove the LogMonitor handler.</p>
 
-<p>To get the majority element of the array, just get the key with the max value in this hash.</p>
+<h2 id="toc_2">Code implementation</h2>
 
-<pre><code class="language-ruby"># @param {Integer[]} nums
-# @return {Integer}
-def majority_element(nums)
-  hash = Hash.new
-  
-  nums.each do |num| 
-    if hash.has_key? num
-      hash[num] += 1
-    else
-      hash[num] = 1
-    end
-  end
-  result = hash.key(hash.values.max)
-  return result
-end
+<h3 id="toc_3">Start point</h3>
+
+<pre><code class="language-java">    // in MyApplication.java
+    if (BuildConfig.DEBUG) {
+        JankDetecter.start();
+    }
+</code></pre>
+
+<h3 id="toc_4">Detecter class</h3>
+
+<pre><code class="language-java">public class JankDetecter {
+    public static void start() {
+        Looper.getMainLooper().setMessageLogging(new Printer() {
+            private static final String START_TAG = &quot;&gt;&gt;&gt;&gt;&gt; Dispatching&quot;;
+            private static final String END_TAG = &quot;&lt;&lt;&lt;&lt;&lt; Finished&quot;;
+            @Override
+            public void println(String x) {
+                if (x.startsWith(START_TAG)) {
+                    LogMonitor.getInstance().startMonitor();
+                }
+                if (x.startsWith(END_TAG)) {
+                    LogMonitor.getInstance().removeMonitor();
+                }
+            }
+        });
+    }
+}
+</code></pre>
+
+<h3 id="toc_5">LogMonitor class</h3>
+
+<pre><code class="language-java">public class LogMonitor {
+    private static LogMonitor sInstance = new LogMonitor();
+    private HandlerThread mLogThread = new HandlerThread(&quot;log&quot;);
+    private Handler mIoHander;
+    private static final long TIME_BLOCK = 500L;
+
+    private LogMonitor() {
+        mLogThread.start();
+        mIoHander = new Handler(mLogThread.getLooper());
+    }
+    public static LogMonitor getInstance() {
+        return sInstance;
+    }
+    public void startMonitor() {
+        mIoHander.postDelayed(mLogRunnable, TIME_BLOCK);
+    }
+    public void removeMonitor() {
+        mIoHander.removeCallbacks(mLogRunnable);
+    }
+    private static Runnable mLogRunnable = new Runnable() {
+        @Override
+        public void run() {
+            StringBuilder stringBuilder = new StringBuilder();
+            StackTraceElement[] stackTraces = Looper.getMainLooper().getThread().getStackTrace();
+            for (StackTraceElement s : stackTraces) {
+                stringBuilder.append(s.toString() + &quot;\n&quot;);
+            }
+        }
+    };
+}
 </code></pre>
 
 
@@ -163,16 +205,16 @@ end
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14842384827556.html" 
-          title="Previous Post: Some Mongodb problems and solutions">&laquo; Some Mongodb problems and solutions</a>
+          <a href="15235097714605.html" 
+          title="Previous Post: Different ways to send problem report in app with screenshots">&laquo; Different ways to send problem report in app with screenshots</a>
       
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14697688870593.html" 
-          title="Next Post: Leetcode #338 Counting Bits">Leetcode #338 Counting Bits &raquo;</a>
+          <a  href="15174963911041.html" 
+          title="Next Post: Android App Layout performance optimization investigation">Android App Layout performance optimization investigation &raquo;</a>
       
       </p>
         </div>
