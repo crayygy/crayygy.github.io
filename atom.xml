@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[渐行渐远]]></title>
-  <link href="blog.crayygy.com/atom.xml" rel="self"/>
-  <link href="blog.crayygy.com/"/>
-  <updated>2018-05-02T20:35:04+08:00</updated>
-  <id>blog.crayygy.com/</id>
+  <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
+  <link href="https://blog.crayygy.com/"/>
+  <updated>2018-05-02T20:44:58+08:00</updated>
+  <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -14,9 +14,9 @@
   
   <entry>
     <title type="html"><![CDATA[Different ways to send problem report in app with screenshots]]></title>
-    <link href="blog.crayygy.com/15235097714605.html"/>
+    <link href="https://blog.crayygy.com/15235097714605.html"/>
     <updated>2018-04-12T13:09:31+08:00</updated>
-    <id>blog.crayygy.com/15235097714605.html</id>
+    <id>https://blog.crayygy.com/15235097714605.html</id>
     <content type="html"><![CDATA[
 <h2 id="toc_0">0x00 Requirements background</h2>
 
@@ -83,9 +83,9 @@
   
   <entry>
     <title type="html"><![CDATA[A simple Android JankDetecter design and implementation]]></title>
-    <link href="blog.crayygy.com/15206668044525.html"/>
+    <link href="https://blog.crayygy.com/15206668044525.html"/>
     <updated>2018-03-10T15:26:44+08:00</updated>
-    <id>blog.crayygy.com/15206668044525.html</id>
+    <id>https://blog.crayygy.com/15206668044525.html</id>
     <content type="html"><![CDATA[
 <h2 id="toc_0">0x00 Background</h2>
 
@@ -167,9 +167,9 @@
   
   <entry>
     <title type="html"><![CDATA[Android App Layout performance optimization investigation]]></title>
-    <link href="blog.crayygy.com/15174963911041.html"/>
+    <link href="https://blog.crayygy.com/15174963911041.html"/>
     <updated>2018-02-01T22:46:31+08:00</updated>
-    <id>blog.crayygy.com/15174963911041.html</id>
+    <id>https://blog.crayygy.com/15174963911041.html</id>
     <content type="html"><![CDATA[
 <p><a href="https://developer.android.com/topic/performance/vitals/render.html">Slow rendering</a> can cause <code>Frozen Frames</code> issue.<br/>
 To avoid <code>Slow Rendering</code> issue. Try to analysis Android App with tools.</p>
@@ -334,9 +334,9 @@ There are some tools can help us. We can choose to use 3rd party tools or write 
   
   <entry>
     <title type="html"><![CDATA[Android(Java) 中的单例类的实现]]></title>
-    <link href="blog.crayygy.com/15169769464198.html"/>
+    <link href="https://blog.crayygy.com/15169769464198.html"/>
     <updated>2018-01-26T22:29:06+08:00</updated>
-    <id>blog.crayygy.com/15169769464198.html</id>
+    <id>https://blog.crayygy.com/15169769464198.html</id>
     <content type="html"><![CDATA[
 <p>单例模式(Singleton) 是我们常用的一种设计模式，通常用来保证在全局情况下总是能够拿到同样的一个类实例来实现相关的工作。<br/>
   单例模式很常见，因此也有戏称：</p>
@@ -555,9 +555,9 @@ Thanks a lot~</p>
   
   <entry>
     <title type="html"><![CDATA[Android MediaPlayer setData 0X8000000 error]]></title>
-    <link href="blog.crayygy.com/15118733745760.html"/>
+    <link href="https://blog.crayygy.com/15118733745760.html"/>
     <updated>2017-11-28T20:49:34+08:00</updated>
-    <id>blog.crayygy.com/15118733745760.html</id>
+    <id>https://blog.crayygy.com/15118733745760.html</id>
     <content type="html"><![CDATA[
 <p>This issue might be caused by ringtone permission, if using a custom ringtone or ringtone set by other apps, must ensure your app has storage permission, otherwise, you cannot setDataUri to MediaPlayer instance.</p>
 
@@ -566,9 +566,9 @@ Thanks a lot~</p>
   
   <entry>
     <title type="html"><![CDATA[[Dive into Ruby] Ruby 中的方法、类与模块]]></title>
-    <link href="blog.crayygy.com/15080417250719.html"/>
+    <link href="https://blog.crayygy.com/15080417250719.html"/>
     <updated>2017-10-15T12:28:45+08:00</updated>
-    <id>blog.crayygy.com/15080417250719.html</id>
+    <id>https://blog.crayygy.com/15080417250719.html</id>
     <content type="html"><![CDATA[
 <p>介绍完了 Ruby 的语言基础与控制流，对于 Ruby 也算有了一个比较亲密的接触了，接下来是一些比较常用的面向对象（Object Oriented）的思想与方法。 这一部分与其它的面向对象语言比较的类似，但依然有很多地方有着鲜明的 Ruby 特色。</p>
 
@@ -633,9 +633,9 @@ Math.asin(Math.PI/2)
   
   <entry>
     <title type="html"><![CDATA[[Dive into Ruby] Ruby Control Flow 控制语句]]></title>
-    <link href="blog.crayygy.com/15074733157580.html"/>
+    <link href="https://blog.crayygy.com/15074733157580.html"/>
     <updated>2017-10-08T22:35:15+08:00</updated>
-    <id>blog.crayygy.com/15074733157580.html</id>
+    <id>https://blog.crayygy.com/15074733157580.html</id>
     <content type="html"><![CDATA[
 <p><a href="15070154325076.html">[Dive into Ruby] Ruby 的介绍</a> 主要介绍了 Ruby 的一些特性，<a href="15072588525134.html">[Dive into Ruby] Ruby Basic 变量、常量以及对象</a> 则介绍了关于对象、变量常量的一些知识，这一篇将主要介绍 Ruby 中的程序控制语句，这一部分是每个编程语言的重点，因此会介绍的比较的详细，也会有一些小技巧。</p>
 
@@ -912,9 +912,9 @@ Math.asin(Math.PI/2)
   
   <entry>
     <title type="html"><![CDATA[[Dive into Ruby] Ruby Basic 变量、常量以及对象]]></title>
-    <link href="blog.crayygy.com/15072588525134.html"/>
+    <link href="https://blog.crayygy.com/15072588525134.html"/>
     <updated>2017-10-06T11:00:52+08:00</updated>
-    <id>blog.crayygy.com/15072588525134.html</id>
+    <id>https://blog.crayygy.com/15072588525134.html</id>
     <content type="html"><![CDATA[
 <p><a href="15070154325076.html">上一篇博客</a>主要介绍了一下 Ruby 的一些语法糖，以及作为脚本语言 Ruby 的优势所在。这一篇则开始正式介绍 Ruby 的基础语法，以及语言细节。由于 Ruby 是完全面向对象式的，因此，有 Java 基础的人能够很快的了解到 Ruby 的大部分特性，但是有一些是 Ruby 特有的，或者 Java 有而 Ruby 不支持的，这一部分会更加特别说明。</p>
 
@@ -1027,9 +1027,9 @@ puts hash[:name]
   
   <entry>
     <title type="html"><![CDATA[[Dive into Ruby] Ruby 的介绍]]></title>
-    <link href="blog.crayygy.com/15070154325076.html"/>
+    <link href="https://blog.crayygy.com/15070154325076.html"/>
     <updated>2017-10-03T15:23:52+08:00</updated>
-    <id>blog.crayygy.com/15070154325076.html</id>
+    <id>https://blog.crayygy.com/15070154325076.html</id>
     <content type="html"><![CDATA[
 <h3 id="toc_0"><a href="https://www.ruby-lang.org/en/">Ruby</a> is</h3>
 
@@ -1143,9 +1143,9 @@ puts hash[:name]
   
   <entry>
     <title type="html"><![CDATA[Keep three decimal places and throw the third if it's "0"]]></title>
-    <link href="blog.crayygy.com/15023766649409.html"/>
+    <link href="https://blog.crayygy.com/15023766649409.html"/>
     <updated>2017-08-10T22:51:04+08:00</updated>
-    <id>blog.crayygy.com/15023766649409.html</id>
+    <id>https://blog.crayygy.com/15023766649409.html</id>
     <content type="html"><![CDATA[
 <p>For example:</p>
 
@@ -1184,9 +1184,9 @@ puts hash[:name]
   
   <entry>
     <title type="html"><![CDATA[Ruby Sample code of 2d Hash set]]></title>
-    <link href="blog.crayygy.com/15007372838208.html"/>
+    <link href="https://blog.crayygy.com/15007372838208.html"/>
     <updated>2017-07-22T23:28:03+08:00</updated>
-    <id>blog.crayygy.com/15007372838208.html</id>
+    <id>https://blog.crayygy.com/15007372838208.html</id>
     <content type="html"><![CDATA[
 <p>In fact, this can be a n dimension hash set code sample, actually I create a 3-d hash to construct some kind of data structure for API rendering, it&#39;s not so beautiful, but easy to work, and not cost so much.</p>
 
@@ -1222,9 +1222,9 @@ p hash
   
   <entry>
     <title type="html"><![CDATA[Ruby on Rails + Mongodb + AngularJS develop environment setup]]></title>
-    <link href="blog.crayygy.com/14890186322971.html"/>
+    <link href="https://blog.crayygy.com/14890186322971.html"/>
     <updated>2017-03-09T08:17:12+08:00</updated>
-    <id>blog.crayygy.com/14890186322971.html</id>
+    <id>https://blog.crayygy.com/14890186322971.html</id>
     <content type="html"><![CDATA[
 <p>Before start, make sure that:<br/>
 1. You are using macOS or Ubuntu 14.04(or higher)</p>
@@ -1307,9 +1307,9 @@ nvm guide:<br/>
   
   <entry>
     <title type="html"><![CDATA[Some Mongodb problems and solutions]]></title>
-    <link href="blog.crayygy.com/14842384827556.html"/>
+    <link href="https://blog.crayygy.com/14842384827556.html"/>
     <updated>2017-01-13T00:28:02+08:00</updated>
-    <id>blog.crayygy.com/14842384827556.html</id>
+    <id>https://blog.crayygy.com/14842384827556.html</id>
     <content type="html"><![CDATA[
 <p>Recently I have encountered some problems during my internship. One of our server suddenly goes very very slow, when I try to ping the server, it&#39;s always 2000-5000. After checked everything I think may cause the problem and got no answer, I decided to reboot the server.</p>
 
@@ -1356,9 +1356,9 @@ source=[master-db-ip-address]:[master-db-port]</p>
   
   <entry>
     <title type="html"><![CDATA[Leetcode #169 Majority Element]]></title>
-    <link href="blog.crayygy.com/14698658453148.html"/>
+    <link href="https://blog.crayygy.com/14698658453148.html"/>
     <updated>2016-07-30T16:04:05+08:00</updated>
-    <id>blog.crayygy.com/14698658453148.html</id>
+    <id>https://blog.crayygy.com/14698658453148.html</id>
     <content type="html"><![CDATA[
 <blockquote>
 <p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
@@ -1396,9 +1396,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Leetcode #338 Counting Bits]]></title>
-    <link href="blog.crayygy.com/14697688870593.html"/>
+    <link href="https://blog.crayygy.com/14697688870593.html"/>
     <updated>2016-07-29T13:08:07+08:00</updated>
-    <id>blog.crayygy.com/14697688870593.html</id>
+    <id>https://blog.crayygy.com/14697688870593.html</id>
     <content type="html"><![CDATA[
 <blockquote>
 <p>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1&#39;s in their binary representation and return them as an array.</p>
@@ -1530,9 +1530,9 @@ Python 代码如下：</p>
   
   <entry>
     <title type="html"><![CDATA[数组乱序算法]]></title>
-    <link href="blog.crayygy.com/14639202546153.html"/>
+    <link href="https://blog.crayygy.com/14639202546153.html"/>
     <updated>2016-05-22T20:30:54+08:00</updated>
-    <id>blog.crayygy.com/14639202546153.html</id>
+    <id>https://blog.crayygy.com/14639202546153.html</id>
     <content type="html"><![CDATA[
 <blockquote>
 <p>给定一个已知数组<code>array[]</code>， 将 <code>array[]</code> 乱序后输出。<br/>
@@ -1661,9 +1661,9 @@ puts
   
   <entry>
     <title type="html"><![CDATA[爬楼梯算法分析详解及扩展(最大步长从2升级为m)]]></title>
-    <link href="blog.crayygy.com/14599905787744.html"/>
+    <link href="https://blog.crayygy.com/14599905787744.html"/>
     <updated>2016-04-07T08:56:18+08:00</updated>
-    <id>blog.crayygy.com/14599905787744.html</id>
+    <id>https://blog.crayygy.com/14599905787744.html</id>
     <content type="html"><![CDATA[
 <p>几天前在公司面试的时候，第二轮的面试官问了我几道算法题，第一题是Nil Game，因为之前在Leetcode上刷过这题，也在《编程之美》上看到过几种解法，很轻松就给出了正确答案。第二题问的是爬楼梯问题，即一个N阶的楼梯，每次能走1～2阶，问走到N阶一共多少种走法。之前在Leetcode上也刷过<a href="https://leetcode.com/problems/climbing-stairs/">Link</a>，面试的时候临时也想了几种不同的方法去解，回来之后又思考了一番，想出了如下几种解法。</p>
 
@@ -1891,9 +1891,9 @@ x_{0}<br/>
   
   <entry>
     <title type="html"><![CDATA[从二叉查找树到红黑树]]></title>
-    <link href="blog.crayygy.com/14584879845645.html"/>
+    <link href="https://blog.crayygy.com/14584879845645.html"/>
     <updated>2016-03-20T23:33:04+08:00</updated>
-    <id>blog.crayygy.com/14584879845645.html</id>
+    <id>https://blog.crayygy.com/14584879845645.html</id>
     <content type="html"><![CDATA[
 <p>作为常用的数据结构之一，二叉查找树具有非常好的查找、插入时间复杂度。但是，在最优情况下和最坏情况下，二叉查找树的性能差异非常的大，因此我们需要一种更优化的方式实现二叉树，红黑树闪亮登场。</p>
 
@@ -2384,9 +2384,9 @@ get()方法代码如下:</p>
   
   <entry>
     <title type="html"><![CDATA[二叉树的深度问题]]></title>
-    <link href="blog.crayygy.com/14591320972722.html"/>
+    <link href="https://blog.crayygy.com/14591320972722.html"/>
     <updated>2016-03-28T10:28:17+08:00</updated>
-    <id>blog.crayygy.com/14591320972722.html</id>
+    <id>https://blog.crayygy.com/14591320972722.html</id>
     <content type="html"><![CDATA[
 <p>昨天笔试的时候做到了一题求二叉树深度的问题，刚刚在Leetcode上刷题的时候刚好也遇到了，就顺手刷了。但是仔细思考发现，这个问题背后所反应的思想很值得我注重，因此写了这篇文章。</p>
 
@@ -2469,9 +2469,9 @@ public class Solution {
   
   <entry>
     <title type="html"><![CDATA[个人博客搭建完毕]]></title>
-    <link href="blog.crayygy.com/14582820943493.html"/>
+    <link href="https://blog.crayygy.com/14582820943493.html"/>
     <updated>2016-03-18T14:21:34+08:00</updated>
-    <id>blog.crayygy.com/14582820943493.html</id>
+    <id>https://blog.crayygy.com/14582820943493.html</id>
     <content type="html"><![CDATA[
 <p>纠结了很久，终于这次把博客平台都给弄好了。<br/>
 想想还是写点东西，给自己留个念想。</p>
