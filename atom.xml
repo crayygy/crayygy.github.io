@@ -4,7 +4,7 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2018-06-01T23:10:17+08:00</updated>
+  <updated>2018-06-01T23:10:53+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -35,7 +35,7 @@
 
 <p><img src="media/15278616674467/15278630338751.jpg" alt="小米智能家居系列产品"/></p>
 
-<h2 id="toc_1">0x01 Android Things</h2>
+<h2 id="toc_1">0x01 Android Things 是什么</h2>
 
 <p>介绍完了 Internet of Things, 那么什么是 Android Things 呢？<br/>
 <img src="media/15278616674467/15278635101077.jpg" alt="Android Things 官网介绍"/></p>
@@ -43,7 +43,7 @@
 <p>Android Things 是 Google 开发的一款针对物联网产品的操作系统。早在2016年底，Google 就 release 了最初的 Android Things 开发者版本，它的前身其实就是 Google 的 Brillo 操作系统，添加了更多的 Android Java API 以方便开发者进行开发，并且支持使用 Android Studio 进行开发。对于一个 Android 开发者而言，Google 此举无疑是重大利好。<br/>
 <img src="media/15278616674467/15278652306941.jpg" alt=""/></p>
 
-<h2 id="toc_2">0x01 Android Things 能用来做什么</h2>
+<h2 id="toc_2">0x02 Android Things 能用来做什么</h2>
 
 <p>对于我这样的实用主义者而言，对于一个产品我更关注的是，我能用它来做些什么，或者说，我能用它来改变些什么。如果只是一个用来写个 Hello world 或者点个灯看 Bling Bling，那也没必要再多费口舌了。</p>
 
@@ -51,7 +51,7 @@
 
 <p>从2017年开始，Google 的口号便从 Mobile First 转向 AI First，今年的 IO 我们也看到了 Google Assistant 恐怖的以假乱真的能力（Refer to <a href="https://www.bilibili.com/video/av23217154/">here</a>）。 而更多的连接到 Google 云端的设备也将会为我们提供更多更便利的服务（国内的笑笑就行了）。</p>
 
-<h2 id="toc_3">0x01 Android Things Power</h2>
+<h2 id="toc_3">0x03 Android Things Power</h2>
 
 <p><img src="media/15278616674467/15278635528927.jpg" alt="Android Things 架构"/></p>
 
