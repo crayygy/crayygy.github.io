@@ -4,7 +4,7 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2018-06-01T23:10:53+08:00</updated>
+  <updated>2018-06-01T23:18:09+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -398,120 +398,6 @@ Tasks list
 <li>Big changes are supposed to split into serval small reviews and commits to make it simple and easy to recover.</li>
 </ol></li>
 </ul>
-
-<p>Some code review examples from myself:</p>
-
-<ul>
-<li><a href="https://ccollab.cisco.com:8080/ui#review:id=320405">Fix Google Play Crash</a></li>
-<li><a href="https://ccollab.cisco.com:8080/ui#review:id=320908">Diagnosis User Story JCF</a></li>
-<li><a href="https://ccollab.cisco.com:8080/ui#review:id=321146">Diagnosis User Story UI</a></li>
-</ul>
-
-<h2 id="toc_18">0x05 Code share Season 1 review and look head for Season 2</h2>
-
-<h3 id="toc_19">Season 1 reviews</h3>
-
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Presenter</th>
-<th>Docs/Wiki/Links</th>
-<th>Comments</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>2017/12/29</td>
-<td>Zhaofeng</td>
-<td></td>
-<td>register/unregister listeners</td>
-</tr>
-<tr>
-<td>2018/1/12</td>
-<td>Mingmin</td>
-<td></td>
-<td>Memory leak/Crash</td>
-</tr>
-<tr>
-<td>2018/01/26</td>
-<td>Yuan Cui</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>2018/02/02</td>
-<td>Peng Liu</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>2018/03/02</td>
-<td>Wenzheng</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>2018/03/16</td>
-<td>Bin Wu</td>
-<td></td>
-<td>ActivityManager</td>
-</tr>
-<tr>
-<td>2018/04/20</td>
-<td>Qingyuan</td>
-<td></td>
-<td>AlarmManager TimerTasks</td>
-</tr>
-<tr>
-<td>2018/05/04</td>
-<td>Guangyu</td>
-<td></td>
-<td>Wikis Reviews</td>
-</tr>
-</tbody>
-</table>
-
-<p>Since first code share by Zhaofeng, we have already shared 8 sharing for serval parts of codes, register/unregister listeners/crash types/memory leaks/inheritance/view drawing/ActivityManager/AlarmManager, these sharing are somewhat useful, at least the sharer have a better understanding about what they shared.</p>
-
-<p>Thanks for all of you to spend your time on code sharing!</p>
-
-<p>Some tips for code sharing.</p>
-
-<ol>
-<li>Wiki records -- without wikis, sharing knowledges are hard to documented.</li>
-<li>Be well prepared -- also: wikis, slides</li>
-<li>Make up your languages to make your sharing alive.</li>
-</ol>
-
-<h3 id="toc_20">Season 2 planning</h3>
-
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Presenter</th>
-<th>Docs/Wikis/Links</th>
-<th>Comments</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>TBD</td>
-<td>TBD</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>TBD</td>
-<td>TBD</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 
 ]]></content>
   </entry>
