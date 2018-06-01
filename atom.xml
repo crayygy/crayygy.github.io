@@ -4,13 +4,517 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2018-05-02T21:04:39+08:00</updated>
+  <updated>2018-06-01T23:10:17+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="//www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[智能生活的坚实一步-- Android Things 1.0]]></title>
+    <link href="https://blog.crayygy.com/15278616674467.html"/>
+    <updated>2018-06-01T22:01:07+08:00</updated>
+    <id>https://blog.crayygy.com/15278616674467.html</id>
+    <content type="html"><![CDATA[
+<p>2018 年 Google IO 大会给我们带来了最新的 Android Things 1.0 版本，也为与会者提供了一份完整的 Android Things develop kit。刚好有一个好朋友也去参加了这一次的 IO（羡慕ing），拿到了一套，并且慷慨的送给了我，在此先谢谢方大神！<br/>
+<img src="media/15278616674467/kDmfBBTATlKjSFoZz89uGw_thumb_891.jpg" alt="kDmfBBTATlKjSFoZz89uGw_thumb_891" style="width:512px;"/></p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 物联网简述</h2>
+
+<p>在正式了解 Android Things 之前，先介绍一下 Iot(Internet of Things)，即所谓的物联网。</p>
+
+<p>从最早期的短距离组网技术，到全球范围内的因特网，逐渐进化到如今的无线网络时代，接入网络的设备数量越来越庞大，接入的种类越来越多，而接入的方式也是越来越简单，物联网描述了一个所有可接入网络设备进行无缝衔接并交流的一种全新的生活方式。当生活中的种种设备都能够通过网络，甚至于通过智能家庭中心进行控制的时候，可以想象未来的生活便利程度。</p>
+
+<p>物联网技术的普及其实是基于非常多的技术的广泛运用，从底层使用的协议栈，到应用层的智能化，早在1999年便开始提起的技术，直到最近几年才真正的有机会被应用到市场中。</p>
+
+<p>物联网的最常见的例子有，智能家居（包括但不限于智能灯泡，智能扫地机器人，智能音箱），车载物联网系统（定位，导航等），共享单车（解锁，定位等）。随着应用的不断普及，接入的厂商越来越多，整个市场规模也越来越庞大。</p>
+
+<p><img src="media/15278616674467/15278630338751.jpg" alt="小米智能家居系列产品"/></p>
+
+<h2 id="toc_1">0x01 Android Things</h2>
+
+<p>介绍完了 Internet of Things, 那么什么是 Android Things 呢？<br/>
+<img src="media/15278616674467/15278635101077.jpg" alt="Android Things 官网介绍"/></p>
+
+<p>Android Things 是 Google 开发的一款针对物联网产品的操作系统。早在2016年底，Google 就 release 了最初的 Android Things 开发者版本，它的前身其实就是 Google 的 Brillo 操作系统，添加了更多的 Android Java API 以方便开发者进行开发，并且支持使用 Android Studio 进行开发。对于一个 Android 开发者而言，Google 此举无疑是重大利好。<br/>
+<img src="media/15278616674467/15278652306941.jpg" alt=""/></p>
+
+<h2 id="toc_2">0x01 Android Things 能用来做什么</h2>
+
+<p>对于我这样的实用主义者而言，对于一个产品我更关注的是，我能用它来做些什么，或者说，我能用它来改变些什么。如果只是一个用来写个 Hello world 或者点个灯看 Bling Bling，那也没必要再多费口舌了。</p>
+
+<p>简单而言，Android Things 可以为你的智能家居，智能出行，智能生活打下坚实的软件基础。未来生活中的智能设备，可能都会有 Android Things 参与其中，当然目前而言这还是个幻想，怎样拿下这块市场是 Google 需要操心的事情。</p>
+
+<p>从2017年开始，Google 的口号便从 Mobile First 转向 AI First，今年的 IO 我们也看到了 Google Assistant 恐怖的以假乱真的能力（Refer to <a href="https://www.bilibili.com/video/av23217154/">here</a>）。 而更多的连接到 Google 云端的设备也将会为我们提供更多更便利的服务（国内的笑笑就行了）。</p>
+
+<h2 id="toc_3">0x01 Android Things Power</h2>
+
+<p><img src="media/15278616674467/15278635528927.jpg" alt="Android Things 架构"/></p>
+
+<p>熟悉 Android 开发的同学可能会对这张图感到十分的眼熟，图中除了 Support Library 与 Android 架构不同之外，几乎可以说是一模一样。再加上可以使用 Android Studio 进行开发（Kotlin 也同样支持），支持 Firebase API 的一些子集（去除了认证等模块），支持基于 <a href="https://www.tensorflow.org">Tensorflow</a> 的本地机器学习能力，基于 Google Cloud 的连接能力，基于 Google Assistant 的智能化程度， 再加上无比庞大的 Android 使用者与开发者群体。随着厂商的逐步接入与适配，相信 Android Things 的正式产品离我们不会很远了。</p>
+
+<p><img src="media/15278616674467/15278649325937.jpg" alt=""/></p>
+
+<h2 id="toc_4">0x04 说了这么多...然后呢？</h2>
+
+<p>作为一名消费者，对于 Android Things 暂时还不需要抱有特别多的关注，目前智能家居的体系还不是非常成熟，国外的 Google/Apple/Amazon，国内的小米/天猫/京东，大家都还处于一个探索阶段，想尝鲜的话可以考虑国内厂商的某些产品（本土化更好）。</p>
+
+<p>对于开发者而言，由于 Android Things 采用了与 Android 类似的架构设计与 API，未来想要接入到 Things 平台想必也不会特别麻烦。</p>
+
+<p>对于智能硬件厂商而言，那些有实力有资源自己开发操作系统的厂商自然不用多说，而那些资源不是很充足的厂商，未来更有可能采用某一家公司提供的操作系统方案，而选择某一个方案的时候最优先考虑到的应当是安全性和开发难度。Android Things 背靠着 Google 这棵大树，相信未来也会有很多的厂商愿意采用。</p>
+
+<p>而对于我们而言，这只是一家不存在的公司发布的一个不存在的产品，洗洗睡吧。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[First step to love writing wikis and blogs]]></title>
+    <link href="https://blog.crayygy.com/15254241548087.html"/>
+    <updated>2018-05-04T16:55:54+08:00</updated>
+    <id>https://blog.crayygy.com/15254241548087.html</id>
+    <content type="html"><![CDATA[
+<p>With the power of <em>Markdown</em>.</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 Introduction to Markdown</h2>
+
+<h3 id="toc_1">What is <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></h3>
+
+<p><em>Markdown</em> is a simple but yet powerful <em>Markup Language</em>, it&#39;s more like a simpler version of HTML, and in fact, it sure be able to transform into HTML.</p>
+
+<p>And almost all HTML tags are supported in <em>Markdown</em>. Some extensions also help <em>Markdown</em> to become a powerful note taking and blogging tool.</p>
+
+<h3 id="toc_2">Why using Markdown</h3>
+
+<p>There are serval reasons for you to fall in love with <em>Markdown</em>.</p>
+
+<ol>
+<li>Simple</li>
+<li>Expressive</li>
+<li>Beautiful and optional themes(Make a theme by yourself)</li>
+</ol>
+
+<h3 id="toc_3">How to use Markdown</h3>
+
+<ol>
+<li>Make your decision to use Markdown -- Motivation</li>
+<li>Choose a editor  -- Tool</li>
+<li>Start writing -- Just do IT!</li>
+</ol>
+
+<h2 id="toc_4">0x01 MD101 -- Basic syntax</h2>
+
+<p>Markdown is <em>Simple</em>, with a few symbols, you can have a styled documents.</p>
+
+<p>Let&#39;s start with some examples.</p>
+
+<h3 id="toc_5">Titles</h3>
+
+<p>First, let&#39;s create a <strong>Title</strong>, like titles in <code>HTML</code>, there are serval levels of title in <code>Markdown</code>.</p>
+
+<p>From <code>h1</code> to <code>h6</code> in HTML, markdown use <code>#</code> to represent titles.</p>
+
+<pre><code class="language-markdown"># H1 Title
+## H2 Title
+### H3 Title
+.
+.
+.
+</code></pre>
+
+<p>Easy, right?</p>
+
+<p>What if I want to create a list? With or without sequences.</p>
+
+<h3 id="toc_6">Lists</h3>
+
+<pre><code class="language-markdown">&lt;!-- Ordered List --&gt;
+1. 
+1. Banana
+1. Cherry
+
+&lt;!-- Un-Ordered List --&gt;
+* Java
+* Ruby
+* Python
+
+</code></pre>
+
+<!-- Ordered List -->
+
+<ol>
+<li></li>
+<li>Banana</li>
+<li>Cheery</li>
+</ol>
+
+<!-- Un-Ordered List -->
+
+<ul>
+<li>Java</li>
+<li>Ruby</li>
+<li>Python</li>
+</ul>
+
+<p>And tables are also supported.</p>
+
+<h3 id="toc_7">Tables</h3>
+
+<pre><code class="language-markdown">Title|Description|Comments
+---|---|---
+| Red| Love it!|
+Banana| Yellow| Delicious|
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td></td>
+<td>Red</td>
+<td>Love it!</td>
+</tr>
+<tr>
+<td>Banana</td>
+<td>Yellow</td>
+<td>Delicious</td>
+</tr>
+</tbody>
+</table>
+
+<p>You can write it all by hands or some tools may also support quick actions.</p>
+
+<h3 id="toc_8">Links and images</h3>
+
+<p>You might have already known that a <code>&lt;a&gt;</code> tag can support hyper links in HTML.</p>
+
+<p>In Markdown, it&#39;s even simpler. Just use like this.</p>
+
+<pre><code class="language-markdown">[Descriptions](urls)
+For example:
+
+[Google](https://google.com)
+</code></pre>
+
+<p>It will look like this: <a href="https://google.com">Google</a></p>
+
+<p>Images are the same. Just add a <code>!</code> in the front of the links.</p>
+
+<pre><code class="language-markdown">![Image Descriptions](URL)
+
+Local images are also supported, just use absolute path or relative path instead of URL.
+
+For example:
+
+![Google](https://commons.wikimedia.org/wiki/File:Google_%22G%22_Logo.svg)
+
+![Google](/path/to/your/image)
+
+</code></pre>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"/></p>
+
+<h3 id="toc_9">Comments/Strong/Underline/Block quote/Codes/Highlights</h3>
+
+<p>Comments are like comments in codes, they just exist in plain markdown files, will not show in previews.</p>
+
+<!-- Comments here -->
+
+<p>Strong will make text in Strong mode.<br/>
+<strong>Strong text</strong></p>
+
+<p>Underline will add a underline in texts<br/>
+<u>underline texts</u></p>
+
+<p>Strike Through<br/>
+<del>Strike texts</del></p>
+
+<p>Inline codes<br/>
+<code>Inline codes</code></p>
+
+<p><code>int a = 1;</code></p>
+
+<p>Code blocks</p>
+
+<pre><code class="language-java">
+int a = 0;
+</code></pre>
+
+<p>Block Quotes</p>
+
+<blockquote>
+<p>Quote texts</p>
+
+<p>Another line</p>
+</blockquote>
+
+<h3 id="toc_10">Sequence diagrams(Not for all)</h3>
+
+<blockquote>
+<p>Some editors are also support LaTex and flow charts. Also simple to use and powerful.</p>
+</blockquote>
+
+<pre><code class="language-sequence">
+Andrew-&gt;China: Says Hello
+Note right of China: China thinks about it
+China--&gt;Andrew: How are you?
+Andrew-&gt;&gt;China: I am good thanks!
+
+</code></pre>
+
+<pre><code class="language-flow">
+st=&gt;start: Start:&gt;http://www.google.com[blank]
+e=&gt;end:&gt;http://www.google.com
+op1=&gt;operation: My Operation
+sub1=&gt;subroutine: My Subroutine
+cond=&gt;condition: Yes
+or No?:&gt;http://www.google.com
+io=&gt;inputoutput: catch something...
+
+st-&gt;op1-&gt;cond
+cond(yes)-&gt;io-&gt;e
+cond(no)-&gt;sub1(right)-&gt;op1
+
+</code></pre>
+
+<h3 id="toc_11">Tasks</h3>
+
+<pre><code class="language-markdown">
+Tasks list
+
+- [ ] task one not finish `- + SPACE + [ ]`
+- [x] task two finished `- + SPACE + [x]`
+
+</code></pre>
+
+<ul>
+<li><p>[] task one not finish</p></li>
+<li class="task-list-item"><p><input disabled="disabled" type="checkbox" checked /> task two finished</p>
+</li>
+</ul>
+
+<h3 id="toc_12">MathJax(Math LaTeX support)(Not for all)</h3>
+
+<p>For example this is a Block level \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}\] formula, and this is an inline Level \(x = {-b \pm \sqrt{b^2-4ac} \over 2a}\) formula.</p>
+
+<p>\[ \frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} =<br/>
+1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}}<br/>
+{1+\frac{e^{-8\pi}} {1+\ldots} } } } \]</p>
+
+<h2 id="toc_13">0x02 Powerful tools for <strong>Markdown</strong></h2>
+
+<p>There are plenty of tools for <em>Markdown</em>, usually there are two types of editors for writing <em>Markdown</em>.</p>
+
+<ol>
+<li><p>Preview</p>
+
+<blockquote>
+<p>MWeb, MacDown, SimpleNote, VSCode, Atom etc..</p>
+
+<p><img src="media/15253199464747/15253199799490.jpg" alt="MWeb" style="width:1150px;"/></p>
+</blockquote></li>
+<li><p>See what you write</p>
+
+<blockquote>
+<p>Typora, Bear etc...</p>
+
+<p><img src="media/15253199464747/15253200320024.jpg" alt="Typora" style="width:650px;"/></p>
+</blockquote></li>
+</ol>
+
+<h2 id="toc_14">0x03 Publishing your wikis and blogs</h2>
+
+<p>Since Markdown can be converted to HTML easily, so all you need is a tool that can help you do this convert job.</p>
+
+<p>When I publish my notes on Wiki, my step is:</p>
+
+<ol>
+<li>Write in MWeb(Copy paste images are easy)</li>
+<li>Convert markdown in VSCode(With preview extension)</li>
+<li>Copy paste VSCode preview into wiki editor, and upload images.</li>
+</ol>
+
+<h3 id="toc_15"><a href="https://pages.github.com/">GitHub Pages</a></h3>
+
+<p>GitHub Pages is a simple and free way to host your static website in HTML, the official support tool is <a href="https://jekyllrb.com/">Jekyll</a>, it&#39;s also easy to use.</p>
+
+<p>Other un-official tools like:</p>
+
+<ul>
+<li><a href="hexi.io">Hexo</a></li>
+<li><a href="https://gohugo.io/">Hugo</a></li>
+<li>and more</li>
+</ul>
+
+<p>Generate static files in local, just push to your GitHub repo, and all will be host in GitHub pages service.</p>
+
+<p>The default domain for your pages is <code>username.github.io</code>, you can also add your custom domain to this repo, so you can visit your pages via your domain like <code>https://blog.crayygy.com</code>. HTTPS support over custom domain has been added recently.</p>
+
+<h2 id="toc_16">0x04 Something more</h2>
+
+<h3 id="toc_17">Code review practice</h3>
+
+<p>We have a force rule for code review, that all review must have at least two other reviewers&#39; approval and add code review mailer as observer. And all commit must after code review commit.</p>
+
+<p>This is good for us to keep a robust code base. But sometimes code reviews are annoying, a bunch of files and codes, you even cannot find where to start reviewing without author&#39;s explanation. Authors are always need to explain once or even twice for the same codes. The worst thing is, after a few months, if you find there is a bug/or worse (bugs) insides these codes, you have to read the code review again. It&#39;s hard to find useful information without author&#39;s help. This is all because we just start a code review without explanation in documents.</p>
+
+<p>We developers might have something in faith that <code>The best comments are codes</code>. But in code reviews, if you just leave codes there without comments, you might forget why you change conditions after months yourself.</p>
+
+<p>Last time I attends Windows team&#39;s tools sharing meeting, and I found their practice for code reviews are what we can learn and follow.</p>
+
+<p>I think these rules are useful for code reviews:</p>
+
+<blockquote>
+<p>Some from others and some are what I follow and find it useful.</p>
+</blockquote>
+
+<ul>
+<li><p>Common rules for code commits:</p>
+
+<ol>
+<li>All commits must have code review, even simple codes or change strings.</li>
+<li>All files must be commit after code review completed.</li>
+<li>Commit files must be the same with code review files. Nothing more, nothing left.</li>
+</ol></li>
+<li><p>Rules for code reviews:</p>
+
+<ol>
+<li>Two reviewer and mailer observer</li>
+<li>Add overview as a short introduction of your changes, CDETS bug fix(CDETS ID)\PRT fix(PRT link)\User story(US link), Root causes, behavior changes and more.</li>
+<li>Add comments at important lines and methods, this is helpful when others read your review and have a better understating of why you do this in that way.</li>
+<li>Big changes are supposed to split into serval small reviews and commits to make it simple and easy to recover.</li>
+</ol></li>
+</ul>
+
+<p>Some code review examples from myself:</p>
+
+<ul>
+<li><a href="https://ccollab.cisco.com:8080/ui#review:id=320405">Fix Google Play Crash</a></li>
+<li><a href="https://ccollab.cisco.com:8080/ui#review:id=320908">Diagnosis User Story JCF</a></li>
+<li><a href="https://ccollab.cisco.com:8080/ui#review:id=321146">Diagnosis User Story UI</a></li>
+</ul>
+
+<h2 id="toc_18">0x05 Code share Season 1 review and look head for Season 2</h2>
+
+<h3 id="toc_19">Season 1 reviews</h3>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Presenter</th>
+<th>Docs/Wiki/Links</th>
+<th>Comments</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2017/12/29</td>
+<td>Zhaofeng</td>
+<td></td>
+<td>register/unregister listeners</td>
+</tr>
+<tr>
+<td>2018/1/12</td>
+<td>Mingmin</td>
+<td></td>
+<td>Memory leak/Crash</td>
+</tr>
+<tr>
+<td>2018/01/26</td>
+<td>Yuan Cui</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2018/02/02</td>
+<td>Peng Liu</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2018/03/02</td>
+<td>Wenzheng</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2018/03/16</td>
+<td>Bin Wu</td>
+<td></td>
+<td>ActivityManager</td>
+</tr>
+<tr>
+<td>2018/04/20</td>
+<td>Qingyuan</td>
+<td></td>
+<td>AlarmManager TimerTasks</td>
+</tr>
+<tr>
+<td>2018/05/04</td>
+<td>Guangyu</td>
+<td></td>
+<td>Wikis Reviews</td>
+</tr>
+</tbody>
+</table>
+
+<p>Since first code share by Zhaofeng, we have already shared 8 sharing for serval parts of codes, register/unregister listeners/crash types/memory leaks/inheritance/view drawing/ActivityManager/AlarmManager, these sharing are somewhat useful, at least the sharer have a better understanding about what they shared.</p>
+
+<p>Thanks for all of you to spend your time on code sharing!</p>
+
+<p>Some tips for code sharing.</p>
+
+<ol>
+<li>Wiki records -- without wikis, sharing knowledges are hard to documented.</li>
+<li>Be well prepared -- also: wikis, slides</li>
+<li>Make up your languages to make your sharing alive.</li>
+</ol>
+
+<h3 id="toc_20">Season 2 planning</h3>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Presenter</th>
+<th>Docs/Wikis/Links</th>
+<th>Comments</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>TBD</td>
+<td>TBD</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>TBD</td>
+<td>TBD</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Different ways to send problem report in app with screenshots]]></title>
@@ -2378,122 +2882,6 @@ get()方法代码如下:</p>
 <p>2-3查找树最重要的特征是，在3-结点上插入而生成的4-结点会进行分裂，保证了2-3树的平衡性。</p>
 
 <p>在此基础上实现了红黑树，在保持了二叉树的结构的情况下，大幅度优化了插入算法，虽然在实现上稍微复杂了一些，但能保证插入之后的树始终是一棵黑色平衡的树，因此也保证了二叉树的查询复杂度始终为O(log n)，并且不影响其它的操作。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[二叉树的深度问题]]></title>
-    <link href="https://blog.crayygy.com/14591320972722.html"/>
-    <updated>2016-03-28T10:28:17+08:00</updated>
-    <id>https://blog.crayygy.com/14591320972722.html</id>
-    <content type="html"><![CDATA[
-<p>昨天笔试的时候做到了一题求二叉树深度的问题，刚刚在Leetcode上刷题的时候刚好也遇到了，就顺手刷了。但是仔细思考发现，这个问题背后所反应的思想很值得我注重，因此写了这篇文章。</p>
-
-<span id="more"></span><!-- more -->
-
-<p>这个算法并不难，利用递归可以非常简单的求解。因此我在看到题目之后，给出的第一个解法是这样的(Java版本):</p>
-
-<pre><code class="language-java">/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
-        int depth = 0;
-        if(root.left != null &amp;&amp; root.right != null){
-            int l = maxDepth(root.left);
-            int r = maxDepth(root.right);
-            depth = (l &gt; r? l : r) + 1;
-        } else if (root.left == null){
-            depth = maxDepth(root.right) + 1;
-        } else if (root.right == null){
-            depth = maxDepth(root.left) + 1;
-        } else {
-            depth = 0;
-        }
-        return depth;
-    }
-}
-
-</code></pre>
-
-<p><img src="media/14591320972722/14591324511074.jpg" alt=""/></p>
-
-<p>解法是没有错误的，并且Leetcode上也是直接Accept了，但总是看起来让人觉得这个代码非常的丑，太杂乱了。</p>
-
-<p>因此我又花了一点时间思考如何优化这段代码，让它看起来不至于这么的复杂。<br/>
-在这个代码中，复杂的部分全部在 if-else代码块中，那么是不是可以通过其他的方式来取消掉这些判断呢？</p>
-
-<p>答案是肯定的。因此有了下面的代码(Java版本):</p>
-
-<pre><code class="language-java">/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-public class Solution {
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
-        
-        int lDepth = maxDepth(root.left);
-        int rDepth = maxDepth(root.right);
-        
-        return lDepth &gt; rDepth? lDepth + 1 : rDepth + 1;
-    }
-}
-</code></pre>
-
-<p><img src="media/14591320972722/14591326336170.jpg" alt=""/></p>
-
-<p>可以看到，时间复杂度几乎没有变化，但是从直观上，第二段代码比之之前的版本，代码非常的简洁，并且让人一眼就能看懂意思。</p>
-
-<p>很不幸，在笔试的时候我用的是第一段代码，并且没有考虑到优化和精简问题，不知道这个是否有影响。</p>
-
-<p>对我而言，这两段代码给我的启发是巨大的。同样的效率的代码，如何能写的更漂亮，让别人看起来更舒服，也很重要。</p>
-
-<p>希望以后能够多注意类似的问题，不再犯同样的错误。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[个人博客搭建完毕]]></title>
-    <link href="https://blog.crayygy.com/14582820943493.html"/>
-    <updated>2016-03-18T14:21:34+08:00</updated>
-    <id>https://blog.crayygy.com/14582820943493.html</id>
-    <content type="html"><![CDATA[
-<p>纠结了很久，终于这次把博客平台都给弄好了。<br/>
-想想还是写点东西，给自己留个念想。</p>
-
-<span id="more"></span><!-- more -->
-
-<h3 id="toc_0">服务商选择</h3>
-
-<p>之前一直在动态博客和静态博客中纠结。但我是个不喜欢折腾的人，所以Hexo和Jekyll我都不是很喜欢，配置起来实在是有些麻烦。而Wordpress这类的动态博客又需要去自己搭建一个虚拟主机，或者去购买一个主机空间，也是比较的麻烦。索性，直接使用MWeb自带的站点功能，主题什么的我也不是很在意，就这样也挺不错。<br/>
-世界上最好用的免费博客空间是什么？ 当然是Github Pages了。用MWeb生成的静态文件，直接通过git提交到Github的仓库中，便实现了静态博客的功能，评论用了多说，也挺好的。昨天刚好看到一个网友用Coding.net 和 Github Pages 加上Dnspod实现了国内外分流。于是索性也加上了Coding的Pages服务，感觉似乎也挺好的，这样blog.crayygy.com等于是拥有了两个备份，即使其中一个除了问题，我相信Dnspod也可以帮我搞定。</p>
-
-<h3 id="toc_1">博客的内容</h3>
-
-<p>之前也零零散散写过一些文章，要么是一些无聊的心情文字，要么就是些烂大街的教程或者评测，没什么太多意义。这次开始写博客，我想从最近开始学习的一些技术上开始入手，比如，马上就要开始学习Django和Android开发，在开发过程中必然也会遇到一些这样那样的问题，把学习过程中遇到的这样那样的问题总结一些，写一写自己的感受。</p>
-
-<p>今天偶然间发现，SegmentFault也有写博客的功能，不过暂时还不打算去写，等到自己的文字有一定的质量的时候再转一些过去吧。</p>
-
-<h3 id="toc_2">给自己的约定</h3>
-
-<p>争取每周都能写一篇技术博客，一点点成长。</p>
-
-<h4 id="toc_3">希望我能如博客名称一般，渐行渐远，哪怕走的很缓慢。</h4>
 
 ]]></content>
   </entry>

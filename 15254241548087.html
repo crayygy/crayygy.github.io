@@ -1,0 +1,810 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  First step to love writing wikis and blogs - 渐行渐远
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="渐行渐远" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:blog.crayygy.com ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 渐行渐远</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="drafts.html">随笔</a></li>
+        
+            <li><a href="coding.html">编程</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>First step to love writing wikis and blogs</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">5/4/2018</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='drafts.html'>随笔</a></span>
+           
+         
+          <span class="comments">
+            
+              <a href="https://blog.crayygy.com/15254241548087.html#disqus_thread">comments</a>
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p>With the power of <em>Markdown</em>.</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 Introduction to Markdown</h2>
+
+<h3 id="toc_1">What is <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a></h3>
+
+<p><em>Markdown</em> is a simple but yet powerful <em>Markup Language</em>, it&#39;s more like a simpler version of HTML, and in fact, it sure be able to transform into HTML.</p>
+
+<p>And almost all HTML tags are supported in <em>Markdown</em>. Some extensions also help <em>Markdown</em> to become a powerful note taking and blogging tool.</p>
+
+<h3 id="toc_2">Why using Markdown</h3>
+
+<p>There are serval reasons for you to fall in love with <em>Markdown</em>.</p>
+
+<ol>
+<li>Simple</li>
+<li>Expressive</li>
+<li>Beautiful and optional themes(Make a theme by yourself)</li>
+</ol>
+
+<h3 id="toc_3">How to use Markdown</h3>
+
+<ol>
+<li>Make your decision to use Markdown -- Motivation</li>
+<li>Choose a editor  -- Tool</li>
+<li>Start writing -- Just do IT!</li>
+</ol>
+
+<h2 id="toc_4">0x01 MD101 -- Basic syntax</h2>
+
+<p>Markdown is <em>Simple</em>, with a few symbols, you can have a styled documents.</p>
+
+<p>Let&#39;s start with some examples.</p>
+
+<h3 id="toc_5">Titles</h3>
+
+<p>First, let&#39;s create a <strong>Title</strong>, like titles in <code>HTML</code>, there are serval levels of title in <code>Markdown</code>.</p>
+
+<p>From <code>h1</code> to <code>h6</code> in HTML, markdown use <code>#</code> to represent titles.</p>
+
+<pre><code class="language-markdown"># H1 Title
+## H2 Title
+### H3 Title
+.
+.
+.
+</code></pre>
+
+<p>Easy, right?</p>
+
+<p>What if I want to create a list? With or without sequences.</p>
+
+<h3 id="toc_6">Lists</h3>
+
+<pre><code class="language-markdown">&lt;!-- Ordered List --&gt;
+1. 
+1. Banana
+1. Cherry
+
+&lt;!-- Un-Ordered List --&gt;
+* Java
+* Ruby
+* Python
+
+</code></pre>
+
+<!-- Ordered List -->
+
+<ol>
+<li></li>
+<li>Banana</li>
+<li>Cheery</li>
+</ol>
+
+<!-- Un-Ordered List -->
+
+<ul>
+<li>Java</li>
+<li>Ruby</li>
+<li>Python</li>
+</ul>
+
+<p>And tables are also supported.</p>
+
+<h3 id="toc_7">Tables</h3>
+
+<pre><code class="language-markdown">Title|Description|Comments
+---|---|---
+| Red| Love it!|
+Banana| Yellow| Delicious|
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Description</th>
+<th>Comments</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td></td>
+<td>Red</td>
+<td>Love it!</td>
+</tr>
+<tr>
+<td>Banana</td>
+<td>Yellow</td>
+<td>Delicious</td>
+</tr>
+</tbody>
+</table>
+
+<p>You can write it all by hands or some tools may also support quick actions.</p>
+
+<h3 id="toc_8">Links and images</h3>
+
+<p>You might have already known that a <code>&lt;a&gt;</code> tag can support hyper links in HTML.</p>
+
+<p>In Markdown, it&#39;s even simpler. Just use like this.</p>
+
+<pre><code class="language-markdown">[Descriptions](urls)
+For example:
+
+[Google](https://google.com)
+</code></pre>
+
+<p>It will look like this: <a href="https://google.com">Google</a></p>
+
+<p>Images are the same. Just add a <code>!</code> in the front of the links.</p>
+
+<pre><code class="language-markdown">![Image Descriptions](URL)
+
+Local images are also supported, just use absolute path or relative path instead of URL.
+
+For example:
+
+![Google](https://commons.wikimedia.org/wiki/File:Google_%22G%22_Logo.svg)
+
+![Google](/path/to/your/image)
+
+</code></pre>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"/></p>
+
+<h3 id="toc_9">Comments/Strong/Underline/Block quote/Codes/Highlights</h3>
+
+<p>Comments are like comments in codes, they just exist in plain markdown files, will not show in previews.</p>
+
+<!-- Comments here -->
+
+<p>Strong will make text in Strong mode.<br/>
+<strong>Strong text</strong></p>
+
+<p>Underline will add a underline in texts<br/>
+<u>underline texts</u></p>
+
+<p>Strike Through<br/>
+<del>Strike texts</del></p>
+
+<p>Inline codes<br/>
+<code>Inline codes</code></p>
+
+<p><code>int a = 1;</code></p>
+
+<p>Code blocks</p>
+
+<pre><code class="language-java">
+int a = 0;
+</code></pre>
+
+<p>Block Quotes</p>
+
+<blockquote>
+<p>Quote texts</p>
+
+<p>Another line</p>
+</blockquote>
+
+<h3 id="toc_10">Sequence diagrams(Not for all)</h3>
+
+<blockquote>
+<p>Some editors are also support LaTex and flow charts. Also simple to use and powerful.</p>
+</blockquote>
+
+<pre><code class="language-sequence">
+Andrew-&gt;China: Says Hello
+Note right of China: China thinks about it
+China--&gt;Andrew: How are you?
+Andrew-&gt;&gt;China: I am good thanks!
+
+</code></pre>
+
+<pre><code class="language-flow">
+st=&gt;start: Start:&gt;http://www.google.com[blank]
+e=&gt;end:&gt;http://www.google.com
+op1=&gt;operation: My Operation
+sub1=&gt;subroutine: My Subroutine
+cond=&gt;condition: Yes
+or No?:&gt;http://www.google.com
+io=&gt;inputoutput: catch something...
+
+st-&gt;op1-&gt;cond
+cond(yes)-&gt;io-&gt;e
+cond(no)-&gt;sub1(right)-&gt;op1
+
+</code></pre>
+
+<h3 id="toc_11">Tasks</h3>
+
+<pre><code class="language-markdown">
+Tasks list
+
+- [ ] task one not finish `- + SPACE + [ ]`
+- [x] task two finished `- + SPACE + [x]`
+
+</code></pre>
+
+<ul>
+<li><p>[] task one not finish</p></li>
+<li class="task-list-item"><p><input disabled="disabled" type="checkbox" checked /> task two finished</p>
+</li>
+</ul>
+
+<h3 id="toc_12">MathJax(Math LaTeX support)(Not for all)</h3>
+
+<p>For example this is a Block level \[x = {-b \pm \sqrt{b^2-4ac} \over 2a}\] formula, and this is an inline Level \(x = {-b \pm \sqrt{b^2-4ac} \over 2a}\) formula.</p>
+
+<p>\[ \frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} =<br/>
+1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}}<br/>
+{1+\frac{e^{-8\pi}} {1+\ldots} } } } \]</p>
+
+<h2 id="toc_13">0x02 Powerful tools for <strong>Markdown</strong></h2>
+
+<p>There are plenty of tools for <em>Markdown</em>, usually there are two types of editors for writing <em>Markdown</em>.</p>
+
+<ol>
+<li><p>Preview</p>
+
+<blockquote>
+<p>MWeb, MacDown, SimpleNote, VSCode, Atom etc..</p>
+
+<p><img src="media/15253199464747/15253199799490.jpg" alt="MWeb" style="width:1150px;"/></p>
+</blockquote></li>
+<li><p>See what you write</p>
+
+<blockquote>
+<p>Typora, Bear etc...</p>
+
+<p><img src="media/15253199464747/15253200320024.jpg" alt="Typora" style="width:650px;"/></p>
+</blockquote></li>
+</ol>
+
+<h2 id="toc_14">0x03 Publishing your wikis and blogs</h2>
+
+<p>Since Markdown can be converted to HTML easily, so all you need is a tool that can help you do this convert job.</p>
+
+<p>When I publish my notes on Wiki, my step is:</p>
+
+<ol>
+<li>Write in MWeb(Copy paste images are easy)</li>
+<li>Convert markdown in VSCode(With preview extension)</li>
+<li>Copy paste VSCode preview into wiki editor, and upload images.</li>
+</ol>
+
+<h3 id="toc_15"><a href="https://pages.github.com/">GitHub Pages</a></h3>
+
+<p>GitHub Pages is a simple and free way to host your static website in HTML, the official support tool is <a href="https://jekyllrb.com/">Jekyll</a>, it&#39;s also easy to use.</p>
+
+<p>Other un-official tools like:</p>
+
+<ul>
+<li><a href="hexi.io">Hexo</a></li>
+<li><a href="https://gohugo.io/">Hugo</a></li>
+<li>and more</li>
+</ul>
+
+<p>Generate static files in local, just push to your GitHub repo, and all will be host in GitHub pages service.</p>
+
+<p>The default domain for your pages is <code>username.github.io</code>, you can also add your custom domain to this repo, so you can visit your pages via your domain like <code>https://blog.crayygy.com</code>. HTTPS support over custom domain has been added recently.</p>
+
+<h2 id="toc_16">0x04 Something more</h2>
+
+<h3 id="toc_17">Code review practice</h3>
+
+<p>We have a force rule for code review, that all review must have at least two other reviewers&#39; approval and add code review mailer as observer. And all commit must after code review commit.</p>
+
+<p>This is good for us to keep a robust code base. But sometimes code reviews are annoying, a bunch of files and codes, you even cannot find where to start reviewing without author&#39;s explanation. Authors are always need to explain once or even twice for the same codes. The worst thing is, after a few months, if you find there is a bug/or worse (bugs) insides these codes, you have to read the code review again. It&#39;s hard to find useful information without author&#39;s help. This is all because we just start a code review without explanation in documents.</p>
+
+<p>We developers might have something in faith that <code>The best comments are codes</code>. But in code reviews, if you just leave codes there without comments, you might forget why you change conditions after months yourself.</p>
+
+<p>Last time I attends Windows team&#39;s tools sharing meeting, and I found their practice for code reviews are what we can learn and follow.</p>
+
+<p>I think these rules are useful for code reviews:</p>
+
+<blockquote>
+<p>Some from others and some are what I follow and find it useful.</p>
+</blockquote>
+
+<ul>
+<li><p>Common rules for code commits:</p>
+
+<ol>
+<li>All commits must have code review, even simple codes or change strings.</li>
+<li>All files must be commit after code review completed.</li>
+<li>Commit files must be the same with code review files. Nothing more, nothing left.</li>
+</ol></li>
+<li><p>Rules for code reviews:</p>
+
+<ol>
+<li>Two reviewer and mailer observer</li>
+<li>Add overview as a short introduction of your changes, CDETS bug fix(CDETS ID)\PRT fix(PRT link)\User story(US link), Root causes, behavior changes and more.</li>
+<li>Add comments at important lines and methods, this is helpful when others read your review and have a better understating of why you do this in that way.</li>
+<li>Big changes are supposed to split into serval small reviews and commits to make it simple and easy to recover.</li>
+</ol></li>
+</ul>
+
+<p>Some code review examples from myself:</p>
+
+<ul>
+<li><a href="https://ccollab.cisco.com:8080/ui#review:id=320405">Fix Google Play Crash</a></li>
+<li><a href="https://ccollab.cisco.com:8080/ui#review:id=320908">Diagnosis User Story JCF</a></li>
+<li><a href="https://ccollab.cisco.com:8080/ui#review:id=321146">Diagnosis User Story UI</a></li>
+</ul>
+
+<h2 id="toc_18">0x05 Code share Season 1 review and look head for Season 2</h2>
+
+<h3 id="toc_19">Season 1 reviews</h3>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Presenter</th>
+<th>Docs/Wiki/Links</th>
+<th>Comments</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2017/12/29</td>
+<td>Zhaofeng</td>
+<td></td>
+<td>register/unregister listeners</td>
+</tr>
+<tr>
+<td>2018/1/12</td>
+<td>Mingmin</td>
+<td></td>
+<td>Memory leak/Crash</td>
+</tr>
+<tr>
+<td>2018/01/26</td>
+<td>Yuan Cui</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2018/02/02</td>
+<td>Peng Liu</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2018/03/02</td>
+<td>Wenzheng</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2018/03/16</td>
+<td>Bin Wu</td>
+<td></td>
+<td>ActivityManager</td>
+</tr>
+<tr>
+<td>2018/04/20</td>
+<td>Qingyuan</td>
+<td></td>
+<td>AlarmManager TimerTasks</td>
+</tr>
+<tr>
+<td>2018/05/04</td>
+<td>Guangyu</td>
+<td></td>
+<td>Wikis Reviews</td>
+</tr>
+</tbody>
+</table>
+
+<p>Since first code share by Zhaofeng, we have already shared 8 sharing for serval parts of codes, register/unregister listeners/crash types/memory leaks/inheritance/view drawing/ActivityManager/AlarmManager, these sharing are somewhat useful, at least the sharer have a better understanding about what they shared.</p>
+
+<p>Thanks for all of you to spend your time on code sharing!</p>
+
+<p>Some tips for code sharing.</p>
+
+<ol>
+<li>Wiki records -- without wikis, sharing knowledges are hard to documented.</li>
+<li>Be well prepared -- also: wikis, slides</li>
+<li>Make up your languages to make your sharing alive.</li>
+</ol>
+
+<h3 id="toc_20">Season 2 planning</h3>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Presenter</th>
+<th>Docs/Wikis/Links</th>
+<th>Comments</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>TBD</td>
+<td>TBD</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>TBD</td>
+<td>TBD</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="15278616674467.html" 
+          title="Previous Post: 智能生活的坚实一步-- Android Things 1.0">&laquo; 智能生活的坚实一步-- Android Things 1.0</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="15235097714605.html" 
+          title="Next Post: Different ways to send problem report in app with screenshots">Different ways to send problem report in app with screenshots &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://crayygy.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+          
+            <div id="disqus_thread"></div>
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/14582780488696/14582794682117.jpg" /></div>
+            
+                <h1>渐行渐远</h1>
+                <div class="site-des">慢慢走</div>
+                <div class="social">
+
+
+
+
+
+
+
+<a target="_blank" class="weibo" href="https://weibo.com/crayygy" title="weibo">Weibo</a>
+<a target="_blank" class="twitter" target="_blank" href="https://twitter.com/crayygy" title="Twitter">Twitter</a>
+<a target="_blank" class="github" target="_blank" href="https://github.com/crayygy" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:me@crayygy.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="drafts.html"><strong>随笔</strong></a>
+        
+            <a href="coding.html"><strong>编程</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="15278616674467.html">智能生活的坚实一步-- Android Things 1.0</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15254241548087.html">First step to love writing wikis and blogs</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15235097714605.html">Different ways to send problem report in app with screenshots</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15206668044525.html">A simple Android JankDetecter design and implementation</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15174963911041.html">Android App Layout performance optimization investigation</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2018
+Powered by <a target="_blank" href="//www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="//github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'crayygy'; 
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+<script type="text/javascript">
+var disqus_shortname = 'crayygy'; 
+
+(function () {
+var s = document.createElement('script'); s.async = true;
+s.type = 'text/javascript';
+s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    <script src="asset/chart/all-min.js"></script><script type="text/javascript">$(function(){    var mwebii=0;    var mwebChartEleId = 'mweb-chart-ele-';    $('pre>code').each(function(){        mwebii++;        var eleiid = mwebChartEleId+mwebii;        if($(this).hasClass('language-sequence')){            var ele = $(this).addClass('nohighlight').parent();            $('<div id="'+eleiid+'"></div>').insertAfter(ele);            ele.hide();            var diagram = Diagram.parse($(this).text());            diagram.drawSVG(eleiid,{theme: 'simple'});        }else if($(this).hasClass('language-flow')){            var ele = $(this).addClass('nohighlight').parent();            $('<div id="'+eleiid+'"></div>').insertAfter(ele);            ele.hide();            var diagram = flowchart.parse($(this).text());            diagram.drawSVG(eleiid);        }    });});</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-69531240-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

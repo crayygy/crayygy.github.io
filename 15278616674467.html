@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  个人博客搭建完毕 - 渐行渐远
+  智能生活的坚实一步-- Android Things 1.0 - 渐行渐远
   
   </title>
   
@@ -102,10 +102,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>个人博客搭建完毕</h1>
+          <h1>智能生活的坚实一步-- Android Things 1.0</h1>
      
         <div class="read-more clearfix">
-          <span class="date">3/18/2016</span>
+          <span class="date">6/1/2018</span>
 
           <span>posted in&nbsp;</span> 
           
@@ -114,7 +114,7 @@
          
           <span class="comments">
             
-              <a href="https://blog.crayygy.com/14582820943493.html#disqus_thread">comments</a>
+              <a href="https://blog.crayygy.com/15278616674467.html#disqus_thread">comments</a>
             
 
             
@@ -124,27 +124,56 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>纠结了很久，终于这次把博客平台都给弄好了。<br/>
-想想还是写点东西，给自己留个念想。</p>
+      <p>2018 年 Google IO 大会给我们带来了最新的 Android Things 1.0 版本，也为与会者提供了一份完整的 Android Things develop kit。刚好有一个好朋友也去参加了这一次的 IO（羡慕ing），拿到了一套，并且慷慨的送给了我，在此先谢谢方大神！<br/>
+<img src="media/15278616674467/kDmfBBTATlKjSFoZz89uGw_thumb_891.jpg" alt="kDmfBBTATlKjSFoZz89uGw_thumb_891" style="width:512px;"/></p>
 
 <span id="more"></span><!-- more -->
 
-<h3 id="toc_0">服务商选择</h3>
+<h2 id="toc_0">0x00 物联网简述</h2>
 
-<p>之前一直在动态博客和静态博客中纠结。但我是个不喜欢折腾的人，所以Hexo和Jekyll我都不是很喜欢，配置起来实在是有些麻烦。而Wordpress这类的动态博客又需要去自己搭建一个虚拟主机，或者去购买一个主机空间，也是比较的麻烦。索性，直接使用MWeb自带的站点功能，主题什么的我也不是很在意，就这样也挺不错。<br/>
-世界上最好用的免费博客空间是什么？ 当然是Github Pages了。用MWeb生成的静态文件，直接通过git提交到Github的仓库中，便实现了静态博客的功能，评论用了多说，也挺好的。昨天刚好看到一个网友用Coding.net 和 Github Pages 加上Dnspod实现了国内外分流。于是索性也加上了Coding的Pages服务，感觉似乎也挺好的，这样blog.crayygy.com等于是拥有了两个备份，即使其中一个除了问题，我相信Dnspod也可以帮我搞定。</p>
+<p>在正式了解 Android Things 之前，先介绍一下 Iot(Internet of Things)，即所谓的物联网。</p>
 
-<h3 id="toc_1">博客的内容</h3>
+<p>从最早期的短距离组网技术，到全球范围内的因特网，逐渐进化到如今的无线网络时代，接入网络的设备数量越来越庞大，接入的种类越来越多，而接入的方式也是越来越简单，物联网描述了一个所有可接入网络设备进行无缝衔接并交流的一种全新的生活方式。当生活中的种种设备都能够通过网络，甚至于通过智能家庭中心进行控制的时候，可以想象未来的生活便利程度。</p>
 
-<p>之前也零零散散写过一些文章，要么是一些无聊的心情文字，要么就是些烂大街的教程或者评测，没什么太多意义。这次开始写博客，我想从最近开始学习的一些技术上开始入手，比如，马上就要开始学习Django和Android开发，在开发过程中必然也会遇到一些这样那样的问题，把学习过程中遇到的这样那样的问题总结一些，写一写自己的感受。</p>
+<p>物联网技术的普及其实是基于非常多的技术的广泛运用，从底层使用的协议栈，到应用层的智能化，早在1999年便开始提起的技术，直到最近几年才真正的有机会被应用到市场中。</p>
 
-<p>今天偶然间发现，SegmentFault也有写博客的功能，不过暂时还不打算去写，等到自己的文字有一定的质量的时候再转一些过去吧。</p>
+<p>物联网的最常见的例子有，智能家居（包括但不限于智能灯泡，智能扫地机器人，智能音箱），车载物联网系统（定位，导航等），共享单车（解锁，定位等）。随着应用的不断普及，接入的厂商越来越多，整个市场规模也越来越庞大。</p>
 
-<h3 id="toc_2">给自己的约定</h3>
+<p><img src="media/15278616674467/15278630338751.jpg" alt="小米智能家居系列产品"/></p>
 
-<p>争取每周都能写一篇技术博客，一点点成长。</p>
+<h2 id="toc_1">0x01 Android Things</h2>
 
-<h4 id="toc_3">希望我能如博客名称一般，渐行渐远，哪怕走的很缓慢。</h4>
+<p>介绍完了 Internet of Things, 那么什么是 Android Things 呢？<br/>
+<img src="media/15278616674467/15278635101077.jpg" alt="Android Things 官网介绍"/></p>
+
+<p>Android Things 是 Google 开发的一款针对物联网产品的操作系统。早在2016年底，Google 就 release 了最初的 Android Things 开发者版本，它的前身其实就是 Google 的 Brillo 操作系统，添加了更多的 Android Java API 以方便开发者进行开发，并且支持使用 Android Studio 进行开发。对于一个 Android 开发者而言，Google 此举无疑是重大利好。<br/>
+<img src="media/15278616674467/15278652306941.jpg" alt=""/></p>
+
+<h2 id="toc_2">0x01 Android Things 能用来做什么</h2>
+
+<p>对于我这样的实用主义者而言，对于一个产品我更关注的是，我能用它来做些什么，或者说，我能用它来改变些什么。如果只是一个用来写个 Hello world 或者点个灯看 Bling Bling，那也没必要再多费口舌了。</p>
+
+<p>简单而言，Android Things 可以为你的智能家居，智能出行，智能生活打下坚实的软件基础。未来生活中的智能设备，可能都会有 Android Things 参与其中，当然目前而言这还是个幻想，怎样拿下这块市场是 Google 需要操心的事情。</p>
+
+<p>从2017年开始，Google 的口号便从 Mobile First 转向 AI First，今年的 IO 我们也看到了 Google Assistant 恐怖的以假乱真的能力（Refer to <a href="https://www.bilibili.com/video/av23217154/">here</a>）。 而更多的连接到 Google 云端的设备也将会为我们提供更多更便利的服务（国内的笑笑就行了）。</p>
+
+<h2 id="toc_3">0x01 Android Things Power</h2>
+
+<p><img src="media/15278616674467/15278635528927.jpg" alt="Android Things 架构"/></p>
+
+<p>熟悉 Android 开发的同学可能会对这张图感到十分的眼熟，图中除了 Support Library 与 Android 架构不同之外，几乎可以说是一模一样。再加上可以使用 Android Studio 进行开发（Kotlin 也同样支持），支持 Firebase API 的一些子集（去除了认证等模块），支持基于 <a href="https://www.tensorflow.org">Tensorflow</a> 的本地机器学习能力，基于 Google Cloud 的连接能力，基于 Google Assistant 的智能化程度， 再加上无比庞大的 Android 使用者与开发者群体。随着厂商的逐步接入与适配，相信 Android Things 的正式产品离我们不会很远了。</p>
+
+<p><img src="media/15278616674467/15278649325937.jpg" alt=""/></p>
+
+<h2 id="toc_4">0x04 说了这么多...然后呢？</h2>
+
+<p>作为一名消费者，对于 Android Things 暂时还不需要抱有特别多的关注，目前智能家居的体系还不是非常成熟，国外的 Google/Apple/Amazon，国内的小米/天猫/京东，大家都还处于一个探索阶段，想尝鲜的话可以考虑国内厂商的某些产品（本土化更好）。</p>
+
+<p>对于开发者而言，由于 Android Things 采用了与 Android 类似的架构设计与 API，未来想要接入到 Things 平台想必也不会特别麻烦。</p>
+
+<p>对于智能硬件厂商而言，那些有实力有资源自己开发操作系统的厂商自然不用多说，而那些资源不是很充足的厂商，未来更有可能采用某一家公司提供的操作系统方案，而选择某一个方案的时候最优先考虑到的应当是安全性和开发难度。Android Things 背靠着 Google 这棵大树，相信未来也会有很多的厂商愿意采用。</p>
+
+<p>而对于我们而言，这只是一家不存在的公司发布的一个不存在的产品，洗洗睡吧。</p>
 
 
     
@@ -155,13 +184,13 @@
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14591320972722.html" 
-          title="Previous Post: 二叉树的深度问题">&laquo; 二叉树的深度问题</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="15254241548087.html" 
+          title="Next Post: First step to love writing wikis and blogs">First step to love writing wikis and blogs &raquo;</a>
       
       </p>
         </div>
