@@ -4,7 +4,7 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2018-06-26T22:53:52+08:00</updated>
+  <updated>2018-06-26T22:54:05+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -93,34 +93,42 @@
 </code></pre>
 
 <ol>
-<li>Split screen
+<li><p>Split screen</p>
 
 <ol>
-<li>Phone size
-&gt; <code>
-&gt; +-----+-----------+
-&gt; |     |           |
-&gt; | App |           |
-&gt; |     |           |
-&gt; +-----+-----------+
-&gt;</code></li>
-<li>Tablet landscape
-&gt; <code>
-&gt; +-----+-----------+
-&gt; |     |           |
-&gt; |     |    App    |
-&gt; |     |           |
-&gt; +-----+-----------+
-&gt;</code></li>
-<li>Tablet portrait
-&gt; <code>
-&gt; +--------+--------+
-&gt; |        |        |
-&gt; |  App   |        |
-&gt; |        |        |
-&gt; +--------+--------+
-&gt;</code></li>
-</ol></li>
+<li>Phone size</li>
+</ol>
+
+<blockquote>
+<pre><code>+-----+-----------+
+|     |           |
+| App |           |
+|     |           |
++-----+-----------+
+</code></pre>
+
+<ol>
+<li>Tablet landscape</li>
+</ol>
+
+<pre><code>+-----+-----------+
+|     |           |
+|     |    App    |
+|     |           |
++-----+-----------+
+</code></pre>
+
+<ol>
+<li>Tablet portrait</li>
+</ol>
+
+<pre><code>+--------+--------+
+|        |        |
+|  App   |        |
+|        |        |
++--------+--------+
+</code></pre>
+</blockquote></li>
 </ol>
 
 <p>Of course, for split screen, Tablet landscape and portrait are the same as a smaller size of a tablet, but Phone-size is more like a normal phone.</p>
