@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  Leetcode #169 Majority Element - 渐行渐远
+  Android dynamic UI for phones and tablets - 渐行渐远
   
   </title>
   
@@ -102,19 +102,19 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>Leetcode #169 Majority Element</h1>
+          <h1>Android dynamic UI for phones and tablets</h1>
      
         <div class="read-more clearfix">
-          <span class="date">7/30/2016</span>
+          <span class="date">6/26/2018</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
+              <span class="posted-in"><a href='programming-languages.html'>编程语言</a></span>
            
          
           <span class="comments">
             
-              <a href="https://blog.crayygy.com/14698658453148.html#disqus_thread">comments</a>
+              <a href="https://blog.crayygy.com/15300248044929.html#disqus_thread">comments</a>
             
 
             
@@ -125,34 +125,152 @@
 
       <div class="article-content">
       <blockquote>
-<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
+<p>This is mainly for Phone UI and Tablet UI. Since Android has supported split screen since Android OS 7.0. It&#39;s not suitable to use isTablet to check whether App runs on a tablet. It might be a tablet but shows a phone UI.</p>
 </blockquote>
 
 <span id="more"></span><!-- more -->
 
+<h2 id="toc_0">0x00 Phones and Laptops</h2>
+
+<p>The common way to distinguish between phones and tablets is using screen size. The default boundary is 600dp. If any of the device width and height is higher than 600dp, than it&#39;s a tablet.</p>
+
+<table>
+<thead>
+<tr>
+<th>Devices</th>
+<th>Screen size</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Phones</td>
+<td>&lt; sw600dp</td>
+</tr>
+<tr>
+<td>Tablets</td>
+<td>&gt; sw600dp</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_1">0x01 Differences between isTablet and isTabletLayout</h2>
+
+<ul>
+<li><p>isTablet</p>
+
 <blockquote>
-<p>You may assume that the array is non-empty and the majority element always exist in the array.</p>
-</blockquote>
+<p>This method is used to check Application context, will never changed after app starts. For example: if you start an app on a tablet, this will always return true, whatever you do with the app or tablet.</p>
+</blockquote></li>
+<li><p>isTabletLayout</p>
 
-<p>Build a hash for the result, if a num is not in the hash, then make the hash[num] counts 1, else make the hash[num]+1.</p>
+<blockquote>
+<p>This method is used to check current layout for the app. Will change dynamically when the app window size change. For example: if you split screen and make this app runs in a smaller screen, you will get a phone size screen for the app, then this method will return false.</p>
+</blockquote></li>
+</ul>
 
-<p>To get the majority element of the array, just get the key with the max value in this hash.</p>
+<h3 id="toc_2">App windows size</h3>
 
-<pre><code class="language-ruby"># @param {Integer[]} nums
-# @return {Integer}
-def majority_element(nums)
-  hash = Hash.new
-  
-  nums.each do |num| 
-    if hash.has_key? num
-      hash[num] += 1
-    else
-      hash[num] = 1
-    end
-  end
-  result = hash.key(hash.values.max)
-  return result
-end
+<p>For a tablet that OS version higher then 7.0, screen size for App can be in this three types:</p>
+
+<ol>
+<li>Landscape</li>
+</ol>
+
+<pre><code>+----------------+
+|                |
+|      App       |
+|                |
++----------------+
+</code></pre>
+
+<ol>
+<li>Portrait</li>
+</ol>
+
+<pre><code>+----------+
+|          |
+|          |
+|   App    |
+|          |
+|          |
++----------+
+
+</code></pre>
+
+<ol>
+<li>Split screen
+
+<ol>
+<li>Phone size
+&gt; <code>
+&gt; +-----+-----------+
+&gt; |     |           |
+&gt; | App |           |
+&gt; |     |           |
+&gt; +-----+-----------+
+&gt;</code></li>
+<li>Tablet landscape
+&gt; <code>
+&gt; +-----+-----------+
+&gt; |     |           |
+&gt; |     |    App    |
+&gt; |     |           |
+&gt; +-----+-----------+
+&gt;</code></li>
+<li>Tablet portrait
+&gt; <code>
+&gt; +--------+--------+
+&gt; |        |        |
+&gt; |  App   |        |
+&gt; |        |        |
+&gt; +--------+--------+
+&gt;</code></li>
+</ol></li>
+</ol>
+
+<p>Of course, for split screen, Tablet landscape and portrait are the same as a smaller size of a tablet, but Phone-size is more like a normal phone.</p>
+
+<p>So, on tablet, we have to detect whether it&#39;s a tablet layout(no matter landscape or portrait) or a phone layout.</p>
+
+<h2 id="toc_3">0x02 How to do</h2>
+
+<p>To detect current layout or context, we can use a small trick, <code>R.bool.tablet</code>, add this value to <code>res/values/bool.xml</code> and <code>res/values-sw600dp/bool.xml</code> and <code>res/values-sw720dp/bool.xml</code> and set the first value as <code>false</code>, follow two value as <code>true</code>.</p>
+
+<p>In this way, when you try to get value of this bool value, you can know whether you are using a table layout or not.</p>
+
+<p>And, if we need to get current context of app, we should use isTablet method, and use Application context to get the value.</p>
+
+<p>In this case, on tablet, this method will always return true, no matter what layout you are using.</p>
+
+<pre><code class="language-java">public static boolean isTablet() {
+  return getApplicationContext().getResources().getBoolean(R.bool.tablet);
+}
+</code></pre>
+
+<p>If we need to get current layout, we can use isTabletLayout method.</p>
+
+<pre><code class="language-java">public static boolean isTabletLayout(Context c) {
+  if (c == c.getApplicationContext) {
+    throw new IllgalArgumentException(&quot;Must not call this method using Application context&quot;)
+  }
+  return c.getResources().getBoolean(R.bool.tablet);
+}
+</code></pre>
+
+<p>We must ensure that this method is not called on Application context, because if this happens, this is actually isTablet method, and will return true even if you are using a phone layout on a table.</p>
+
+<p>That is all for Android dynamic UI for tablet layout :-)</p>
+
+<p>Hope you enjoy it.</p>
+
+<h2 id="toc_4">0x03 Something more...</h2>
+
+<p>With the change of screen size of phones, 16:9 is not the only supported screen size. </p>
+
+<p>To support 18:9 and split screen, need to add this to <code>&lt;Application&gt;</code> tag in manifest.</p>
+
+<pre><code class="language-xml">&lt;meta-data android:name=&quot;android.max_aspect&quot; android:value=&quot;2.1&quot; /&gt;
 </code></pre>
 
 
@@ -164,16 +282,13 @@ end
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="14842384827556.html" 
-          title="Previous Post: Some Mongodb problems and solutions">&laquo; Some Mongodb problems and solutions</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="14697688870593.html" 
-          title="Next Post: Leetcode #338 Counting Bits">Leetcode #338 Counting Bits &raquo;</a>
+          <a  href="15278616674467.html" 
+          title="Next Post: 智能生活的坚实一步-- Android Things 1.0">智能生活的坚实一步-- Android Things 1.0 &raquo;</a>
       
       </p>
         </div>

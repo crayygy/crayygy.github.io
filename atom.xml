@@ -4,13 +4,171 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2018-06-01T23:18:09+08:00</updated>
+  <updated>2018-06-26T22:53:52+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="//www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[Android dynamic UI for phones and tablets]]></title>
+    <link href="https://blog.crayygy.com/15300248044929.html"/>
+    <updated>2018-06-26T22:53:24+08:00</updated>
+    <id>https://blog.crayygy.com/15300248044929.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>This is mainly for Phone UI and Tablet UI. Since Android has supported split screen since Android OS 7.0. It&#39;s not suitable to use isTablet to check whether App runs on a tablet. It might be a tablet but shows a phone UI.</p>
+</blockquote>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 Phones and Laptops</h2>
+
+<p>The common way to distinguish between phones and tablets is using screen size. The default boundary is 600dp. If any of the device width and height is higher than 600dp, than it&#39;s a tablet.</p>
+
+<table>
+<thead>
+<tr>
+<th>Devices</th>
+<th>Screen size</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Phones</td>
+<td>&lt; sw600dp</td>
+</tr>
+<tr>
+<td>Tablets</td>
+<td>&gt; sw600dp</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="toc_1">0x01 Differences between isTablet and isTabletLayout</h2>
+
+<ul>
+<li><p>isTablet</p>
+
+<blockquote>
+<p>This method is used to check Application context, will never changed after app starts. For example: if you start an app on a tablet, this will always return true, whatever you do with the app or tablet.</p>
+</blockquote></li>
+<li><p>isTabletLayout</p>
+
+<blockquote>
+<p>This method is used to check current layout for the app. Will change dynamically when the app window size change. For example: if you split screen and make this app runs in a smaller screen, you will get a phone size screen for the app, then this method will return false.</p>
+</blockquote></li>
+</ul>
+
+<h3 id="toc_2">App windows size</h3>
+
+<p>For a tablet that OS version higher then 7.0, screen size for App can be in this three types:</p>
+
+<ol>
+<li>Landscape</li>
+</ol>
+
+<pre><code>+----------------+
+|                |
+|      App       |
+|                |
++----------------+
+</code></pre>
+
+<ol>
+<li>Portrait</li>
+</ol>
+
+<pre><code>+----------+
+|          |
+|          |
+|   App    |
+|          |
+|          |
++----------+
+
+</code></pre>
+
+<ol>
+<li>Split screen
+
+<ol>
+<li>Phone size
+&gt; <code>
+&gt; +-----+-----------+
+&gt; |     |           |
+&gt; | App |           |
+&gt; |     |           |
+&gt; +-----+-----------+
+&gt;</code></li>
+<li>Tablet landscape
+&gt; <code>
+&gt; +-----+-----------+
+&gt; |     |           |
+&gt; |     |    App    |
+&gt; |     |           |
+&gt; +-----+-----------+
+&gt;</code></li>
+<li>Tablet portrait
+&gt; <code>
+&gt; +--------+--------+
+&gt; |        |        |
+&gt; |  App   |        |
+&gt; |        |        |
+&gt; +--------+--------+
+&gt;</code></li>
+</ol></li>
+</ol>
+
+<p>Of course, for split screen, Tablet landscape and portrait are the same as a smaller size of a tablet, but Phone-size is more like a normal phone.</p>
+
+<p>So, on tablet, we have to detect whether it&#39;s a tablet layout(no matter landscape or portrait) or a phone layout.</p>
+
+<h2 id="toc_3">0x02 How to do</h2>
+
+<p>To detect current layout or context, we can use a small trick, <code>R.bool.tablet</code>, add this value to <code>res/values/bool.xml</code> and <code>res/values-sw600dp/bool.xml</code> and <code>res/values-sw720dp/bool.xml</code> and set the first value as <code>false</code>, follow two value as <code>true</code>.</p>
+
+<p>In this way, when you try to get value of this bool value, you can know whether you are using a table layout or not.</p>
+
+<p>And, if we need to get current context of app, we should use isTablet method, and use Application context to get the value.</p>
+
+<p>In this case, on tablet, this method will always return true, no matter what layout you are using.</p>
+
+<pre><code class="language-java">public static boolean isTablet() {
+  return getApplicationContext().getResources().getBoolean(R.bool.tablet);
+}
+</code></pre>
+
+<p>If we need to get current layout, we can use isTabletLayout method.</p>
+
+<pre><code class="language-java">public static boolean isTabletLayout(Context c) {
+  if (c == c.getApplicationContext) {
+    throw new IllgalArgumentException(&quot;Must not call this method using Application context&quot;)
+  }
+  return c.getResources().getBoolean(R.bool.tablet);
+}
+</code></pre>
+
+<p>We must ensure that this method is not called on Application context, because if this happens, this is actually isTablet method, and will return true even if you are using a phone layout on a table.</p>
+
+<p>That is all for Android dynamic UI for tablet layout :-)</p>
+
+<p>Hope you enjoy it.</p>
+
+<h2 id="toc_4">0x03 Something more...</h2>
+
+<p>With the change of screen size of phones, 16:9 is not the only supported screen size. </p>
+
+<p>To support 18:9 and split screen, need to add this to <code>&lt;Application&gt;</code> tag in manifest.</p>
+
+<pre><code class="language-xml">&lt;meta-data android:name=&quot;android.max_aspect&quot; android:value=&quot;2.1&quot; /&gt;
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[智能生活的坚实一步-- Android Things 1.0]]></title>
@@ -2275,499 +2433,6 @@ x_{0}<br/>
     }
 }
 </code></pre>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[从二叉查找树到红黑树]]></title>
-    <link href="https://blog.crayygy.com/14584879845645.html"/>
-    <updated>2016-03-20T23:33:04+08:00</updated>
-    <id>https://blog.crayygy.com/14584879845645.html</id>
-    <content type="html"><![CDATA[
-<p>作为常用的数据结构之一，二叉查找树具有非常好的查找、插入时间复杂度。但是，在最优情况下和最坏情况下，二叉查找树的性能差异非常的大，因此我们需要一种更优化的方式实现二叉树，红黑树闪亮登场。</p>
-
-<span id="more"></span><!-- more -->
-
-<h2 id="toc_0">本文目录</h2>
-
-<ul>
-<li>
-<a href="#toc_0">本文目录</a>
-</li>
-<li>
-<a href="#toc_1">一、二叉查找树（BST）Wiki</a>
-</li>
-<li>
-<a href="#toc_2">二、2-3查找树 Wiki</a>
-<ul>
-<li>
-<a href="#toc_3">2-3查找树的性质</a>
-</li>
-<li>
-<a href="#toc_4">2-3查找树中的查找</a>
-</li>
-<li>
-<a href="#toc_5">2-3查找树中的插入</a>
-<ul>
-<li>
-<a href="#toc_6">1. 向2-结点插入新键</a>
-</li>
-<li>
-<a href="#toc_7">2. 向一棵只含有3-结点的树中插入新键</a>
-</li>
-<li>
-<a href="#toc_8">3. 向一棵父结点为2-结点的3-结点中插入新键</a>
-</li>
-<li>
-<a href="#toc_9">4. 向一棵父结点为3-结点的3-结点中插入新键</a>
-</li>
-<li>
-<a href="#toc_10">5. 分解根结点</a>
-</li>
-</ul>
-</li>
-<li>
-<a href="#toc_11">小结</a>
-</li>
-</ul>
-</li>
-<li>
-<a href="#toc_12">三、红黑树 Wiki</a>
-<ul>
-<li>
-<a href="#toc_13">红黑树的性质</a>
-</li>
-<li>
-<a href="#toc_14">红黑树中的变换</a>
-<ul>
-<li>
-<a href="#toc_15">1. 旋转</a>
-</li>
-<li>
-<a href="#toc_16">2. 颜色变化</a>
-</li>
-</ul>
-</li>
-<li>
-<a href="#toc_17">红黑树中的插入</a>
-<ul>
-<li>
-<a href="#toc_18">向单个的2-结点插入新键</a>
-</li>
-<li>
-<a href="#toc_19">向一棵双键树(即一个3-结点)中插入新键</a>
-</li>
-<li>
-<a href="#toc_20">插入算法的实现</a>
-</li>
-</ul>
-</li>
-<li>
-<a href="#toc_21">红黑树中的查找</a>
-</li>
-<li>
-<a href="#toc_22">红黑树中的删除</a>
-</li>
-<li>
-<a href="#toc_23">红黑树评价</a>
-</li>
-</ul>
-</li>
-<li>
-<a href="#toc_24">总结</a>
-</li>
-</ul>
-
-
-<h2 id="toc_1">一、二叉查找树（BST）<a href="https://en.wikipedia.org/wiki/Binary_search_tree">Wiki</a></h2>
-
-<p>作为常用的数据结构之一，二叉查找树具有非常好的查找、插入时间复杂度。二叉查找树的基本规则是：</p>
-
-<ol>
-<li>非空情况下，左结点及其子结点均小于父结点，右结点及其子结点均大于父结点</li>
-<li>任意一个结点的左子结点和右子结点均是二叉查找树</li>
-<li>没有两个值相等的结点</li>
-</ol>
-
-<p>二叉查找树B中查找值x的查找逻辑为：</p>
-
-<ol>
-<li>若B是空树，则搜索失败，否则：</li>
-<li>若x等于根结点的值，则返回根结点；</li>
-<li>若x小于根结点的值，则在左子树中搜索</li>
-<li>否则，在右子树中搜索。</li>
-</ol>
-
-<p>这是个递归调用的过程(循环也可以实现)</p>
-
-<p>二叉查找树的实现非常的简洁，但是，在最坏情况下，BST的查询时间复杂度为O(n)，即从父结点开始，所有结点均只有左子结点或者右子结点(如图1)，因此，对二叉查找树进行适当的补充修改，让它能够自动平衡树的高度，就可以实现最坏情况下也有O(log n)的时间复杂度。</p>
-
-<p><img src="media/14584879845645/14585680661674.jpg" alt=""/></p>
-
-<h2 id="toc_2">二、2-3查找树 <a href="https://en.wikipedia.org/wiki/2%E2%80%933_tree">Wiki</a></h2>
-
-<h3 id="toc_3">2-3查找树的性质</h3>
-
-<p>2-3查找树的特点是，一个结点可能具有两个子链接，也有可能具有三个子链接，取决于这个结点是2-结点还是3-结点。如图2所示。<br/>
-<img src="media/14584879845645/14585758076941.jpg" alt=""/></p>
-
-<p>可以看到，这里面所有的空链接到根结点的距离相等。在2-结点中，左结点均小于父结点，右结点均大于父结点，在3-结点中，左边值小于右边值，左结点小于左边值，右结点大于右边值，中间结点处于两值中间。</p>
-
-<h3 id="toc_4">2-3查找树中的查找</h3>
-
-<p>在2-3查找树中的查找与普通的二叉查找树类似，在树T中查找值x，首先x与根结点的值比较，若等于则直接返回，若小于则在左结点中查找，若大于则在右结点中查找，如果是个3-结点，则比较与左右两个值的大小，小于左值，则左子树，大于右值则右子树，大于左值小于右值则在中间结点中寻找。</p>
-
-<h3 id="toc_5">2-3查找树中的插入</h3>
-
-<p>在2-3查找树中的插入分成几种不同的情况：</p>
-
-<h4 id="toc_6">1. 向2-结点插入新键</h4>
-
-<p>如果插入的结点是一个2-结点，那么将这个结点升级成为3-结点即可(如图3)。<br/>
-<img src="media/14584879845645/14587468453810.jpg" alt=""/></p>
-
-<h4 id="toc_7">2. 向一棵只含有3-结点的树中插入新键</h4>
-
-<p><img src="media/14584879845645/14587488829621.jpg" alt=""/></p>
-
-<h4 id="toc_8">3. 向一棵父结点为2-结点的3-结点中插入新键</h4>
-
-<p>这里的重点在于，插入了结点Z，之后，SX结点从3-结点变为4-结点，然后分裂成两个2-结点，将中间值X上浮到R，R所在2-结点编程3-结点，最后形成图5中的模式。<br/>
-<img src="media/14584879845645/14587489097083.jpg" alt=""/></p>
-
-<h4 id="toc_9">4. 向一棵父结点为3-结点的3-结点中插入新键</h4>
-
-<p>向父结点为3-结点的3-结点中插入新键与上一个类似，但是需要经过多次的结点升级-&gt;裂变，因此最后构成的2-3查找树，依然是上图中的形式。</p>
-
-<h4 id="toc_10">5. 分解根结点</h4>
-
-<p>当根结点是一个4-结点的时候，根结点分裂成为三个2-结点，并且树的高度增加1。如图6所示。<br/>
-<img src="media/14584879845645/14587498914851.jpg" alt=""/></p>
-
-<h3 id="toc_11">小结</h3>
-
-<p>在2-3查找树的插入操作中，最重要的是向2-和3-结点中插入结点，在结点升级之后进行的分裂操作，以及向上浮动的操作。几乎所有的插入结点都可以认为是这些操作的组合。<br/>
-另外，这些变换均属于局部变换，不影响整棵树的全局有序性和平衡性。任意一个空链接到根结点的深度都是一定的。</p>
-
-<h2 id="toc_12">三、红黑树 <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Wiki</a></h2>
-
-<p>2-3查找树已经基本上实现了比较友好的查询时间复杂度和插入时间复杂度，重点在于如何在代码层面上实现2-3查找树。<br/>
-红黑树就是一种非常简洁的实现方式。</p>
-
-<h3 id="toc_13">红黑树的性质</h3>
-
-<p>红黑树的链接分成两种，红链接和黑链接，红链接对应着3-的子结点，黑链接对应着2-的子结点。如图7所示。<br/>
-<img src="media/14584879845645/14591302817466.jpg" alt=""/></p>
-
-<p>3-结点 <em>AB</em>，在红黑树中的画法为右上图所示，对于红黑树而言，黑链接的深度为1，红链接的深度为0，因此可以将红链接拉平，即右下图的画法。可以看到，红黑树的红链接就是将2-3查找树中的3-结点的两个相邻结点之间用红链接来连接，在其他性质上几乎完全相同，因此，实现红黑树的算法与2-3查找树类似，如插入结点时需要用到的旋转操作等。</p>
-
-<p>后面的实现均使用Java语言。</p>
-
-<p>需要注意的特征有:</p>
-
-<ol>
-<li>红链接均为左链接</li>
-<li>没有任何一个结点同时和两个红链接相连</li>
-<li>红黑树是黑链接完美平衡的，即，任意空链接到根结点的路径上的黑链接数量相同。</li>
-</ol>
-
-<p>size()方法代码如下:</p>
-
-<pre><code class="language-java">    public int size(){
-        return size(root);
-    }
-
-    private int size(Node x) {
-        if (x==null) {
-            return 0;
-        }
-        return x.N;
-    }
-</code></pre>
-
-<h3 id="toc_14">红黑树中的变换</h3>
-
-<h4 id="toc_15">1. 旋转</h4>
-
-<p>旋转有几种可能性，一是某结点的右链接(即右结点)为红色，我们需要将它旋转到左侧，二是将一个结点向右旋转。即，我们需要完成两个方法 rotateLeft()和rotateRight(),两个方法本身没有什么关联性，左旋转的代码和右旋转的代码只需要改变其中的right 和left即可。<br/>
-代码如下:</p>
-
-<pre><code class="language-java">    // 左旋转
-    Node rotateLeft(Node h){
-        Node x = h.right;
-        h.right = x.left;
-        x.left = h;
-        x.color = h.color;
-        x.N = h.N;
-        h.N = 1 + size(h.left) + size(h.right);
-        return x;
-    }
-    // 右旋转
-    Node rotateRight (Node h){
-        Node x = h.left;
-        h.left = x.right;
-        x.right = h;
-        x.color = h.color;
-        x.N = h.N;
-        h.N = 1 + size(h.left) + size(h.right);
-        return x;
-    }
-</code></pre>
-
-<h4 id="toc_16">2. 颜色变化</h4>
-
-<p>当一个结点同时连接两个红链接的时候，我们使用flipColors()方法来转换颜色。除了将子结点的颜色由红变黑外，还需要将父结点的颜色由黑变红。</p>
-
-<pre><code class="language-java">    void flipColor(Node h){
-        h.color = RED;
-        h.left.color = BLACK;
-        h.right.color = BLACK;
-    }
-</code></pre>
-
-<p>另外，我们需要保证，根结点永远是黑色结点，因此在根结点为红色的时候需要进行上浮，并且树的高度增加一。</p>
-
-<h3 id="toc_17">红黑树中的插入</h3>
-
-<p>我们使用RED 和 BLACK 两个bool变量来标志结点的颜色，以此为链接的颜色。使用私有方法isRed()来测试一个结点和父结点之间的颜色。可以获得以下代码(在<code>RedBlackBST</code>类中):</p>
-
-<pre><code class="language-java">    private static final boolean RED = true;
-    private static final boolean BLACK = false;
-
-    private class Node {
-        Key key;
-        Value val;
-        Node left, right;
-        int N;
-        boolean color;
-
-        Node(Key key, Value val, int N, boolean color){
-            this.key = key;
-            this.val = val;
-            this.N = N;
-            this.color = color;
-        } 
-    }
-
-    private boolean isRed(Node x){
-        if (x==null) {
-            return false;
-        }
-        return x.color == RED;
-    }
-</code></pre>
-
-<p>和2-3查找树一样，插入分为几种可能，即向2-和3-结点插入的不同。</p>
-
-<h4 id="toc_18">向单个的2-结点插入新键</h4>
-
-<p>一棵只有一个键的红黑树只有一个2-结点，因此，插入了一个键之后，我们需要旋转来平衡这棵树。</p>
-
-<ol>
-<li>如果新键小于旧键，则在左侧新增一个红色结点即可，新的红黑树与单个的3-结点等价。</li>
-<li>如果新键大于旧键，则在右侧新增一个红色结点，然后右旋转来保证满足我们对红黑树的约束，即使用 <code>root = rotateRight(root)</code>，来将其旋转为左红链接并且修正根结点的链接，这样才算完整的完成了插入操作。</li>
-<li>如果新键等于旧键，则更新旧键的值。</li>
-</ol>
-
-<p>不管是如何插入，除了更新结点外，另外两个操作最后都生成了一棵和单个的3-结点等价的红黑树，其中有两个键，左连接为红链接，树的黑链接高度为1。</p>
-
-<h4 id="toc_19">向一棵双键树(即一个3-结点)中插入新键</h4>
-
-<p>同样的，这种情况分为3种子情况，即新键的值与两个旧键的比较。小于两者，两者中间，大于两者。</p>
-
-<ol>
-<li>新键大于两个旧键，插入到右结点，此时这棵树是平衡的，根结点是中间大小的键，此时会产生一个具有两个红链接的父结点，此时我们将两个红结点通过颜色变换成黑色，即得到一棵由三个结点组成的高度为2的平衡树，正好能对应一棵2-3树。</li>
-<li>新键小于两个旧键，新键会被建立为左结点，同样的产生了两个连续的红链接，此时只需要将上层的红链接通过右旋转即可得到第一种情况。</li>
-<li>新键处于两者中间。同样的会产生两个连续的红链接，一个红色链接接一条红色右链接。将下层的红链接左旋转，即可得到第二种情况。</li>
-</ol>
-
-<p>如下图(图8)所示。<br/>
-<img src="media/14584879845645/14592345345364.jpg" alt=""/></p>
-
-<h4 id="toc_20">插入算法的实现</h4>
-
-<pre><code class="language-java">    public void put(Key key, Value val){
-        root = put(root, key, val);
-        root.color = BLACK;
-    }
-
-    private Node put(Node h, Key key, Value val){
-        if (h==null) {
-            return new Node(key, val,1,RED);
-        }
-        int cmp = Key.compareTo(h.key);
-        if (cmp &lt; 0) {
-            h.left = put(h.left, key, val);
-        }else if (cmp &gt; 0) {
-            h.right = put(h.right, key, val);
-        }else {
-            h.val = val;
-        }
-
-        if (isRed(h.right) &amp;&amp; !isRed(h.left)) {
-            h = rotateLeft(h);
-        }else if (isRed(h.left) &amp;&amp; isRed(h.left.left)) {
-            h = rotateRight(h);
-        }else (isRed(h.left) &amp;&amp; isRed(h.right)) {
-            flipColor(h);
-        }
-
-        h.N = size(h.left) + size(h.right) + 1;
-        return h;
-    }
-</code></pre>
-
-<h3 id="toc_21">红黑树中的查找</h3>
-
-<p>红黑树中的查找与一般的二叉查找树的查找方法完全相同。<br/>
-get()方法代码如下:</p>
-
-<pre><code class="language-java">    public Value get(Key key) {
-        return get(root, key);
-    }
-
-    private Value get(Node x, Key key) {
-        if(x == null) return null;
-        int cmp = Key.compareTo(x.key);
-        if(cmp &lt; 0) return get(x.left, key);
-        else if(cmp = 0) return get(x.right, key);
-        else return x.val;
-    }
-</code></pre>
-
-<h3 id="toc_22">红黑树中的删除</h3>
-
-<p>红黑树中的删除操作也是比较的复杂，直接上代码。</p>
-
-<pre><code class="language-java">    private Node moveRedLeft(Node h) {
-        // h is RED, h.left &amp; h.left.left is BLACK
-        // turn h.left or one child of h.left RED
-        flipColor(h);
-        if (isRed(h.right.left)) {
-            h.right = rotateRight(h.right);
-            h.rotateLeft(h);
-        }
-    }
-
-    public void deleteMin() {
-        if (!isRed(root.left) &amp;&amp; !isRed(root.right)) {
-            root.color = RED;
-        }
-        root = deleteMin(root);
-        if(!isEmpty()) {
-            root.color = BLACK;
-        }
-    }
-
-    private Node deleteMin(Node h) {
-        if (h.left == null) {
-            return null;
-        }
-        if (!isRed(h.left) &amp;&amp; !isRed(h.left.left)) {
-            h = moveRedLeft(h);
-        }
-        h.left = deleteMin(h.left);
-        return balance(h);
-    }
-
-    private void balance(){
-        if (isRed(h.right)) {
-            h = rotateLeft(h);
-        }
-        if (isRed(h.right) &amp;&amp; !isRed(h.left)) {
-            h = rotateLeft(h);
-        }else if (isRed(h.left) &amp;&amp; isRed(h.left.left)) {
-            h = rotateRight(h);
-        }else (isRed(h.left) &amp;&amp; isRed(h.right)) {
-            flipColor(h);
-        }
-    }
-
-    private Node moveRedRight(Node h) {
-        // h is RED, h.right and h.right.left is BLACK
-        // turn h.right or one child of h.right RED
-        flipColor(h);
-        if (!isRed(h.left.left)) {
-            h= rotateRight(h);
-        }
-        return h;
-    }
-
-    public void deleteMax() {
-        if(!isRed(root.left) &amp;&amp; !isRed(root.right)) {
-            root.color = RED;
-        }
-        root = deleteMax(root);
-        if(!isEmpty()) {
-            root.color = BLACK;
-        }
-    }
-
-    private Node deleteMax(Node h) {
-        if (isRed(h.left)) {
-            h = rotateRight(h);
-        }
-        if (h.right == null) {
-            return null;
-        }
-        if (!isRed(h.right) &amp;&amp; !isRed(h.right.left)) {
-            h = moveRedRight(h);
-        }
-        h.right = deleteMax(h.right);
-        return balance(h);
-    }
-
-
-    public void delete(Key key) {
-        if(!isRed(root.left) &amp;&amp; !isRed(root.right)) {
-            root.color = RED;
-        }
-        root = delete(root.key);
-        if(isEmpty(root)) root.color = BLACK;
-    }
-
-    private void delete(Node h, Key key) {
-        if(key.compareTo(h.key) &lt; 0) {
-            if( !isRed(h.left) &amp;&amp; !isRed(h.left.left) ) {
-                h = moveRedLeft(h);
-            }
-            h.left = delete(h.left, key);
-        } else {
-            if (isRed(h.left)) {
-                h = rotateRight(h);
-            }
-            if (key.compareTo(h.key) == 0 &amp;&amp; h.right == null) {
-                return null;
-            }
-            if (!isRed(h.right) &amp;&amp; !isRed(h.right.left)) {
-                h= moveRedRight(h);
-            }
-            if (key.compareTo(h.key) == 0) {
-                h.val = get(h.right, min(h.right).key)
-                h.key = min(h.right).key;
-                h.right = deleteMin(h.right);
-            } else {
-                h.right = delete(h.right, key);
-            }
-        }
-        return balance(h);
-    }
-
-</code></pre>
-
-<h3 id="toc_23">红黑树评价</h3>
-
-<p>红黑树是一棵几乎完美平衡的树，无论键的插入顺序如何，总能得到稳定的结果，在时间复杂度上也达到了非常高的效率，而在空间复杂度上，仅在二叉查找树的每个结点上增加了一个标注颜色的布尔变量，没有增加非常多的消耗，在查找上与二叉查找树最优情况完全相同(O(log n)), 在插入操作上增加了一些旋转操作等。<br/>
-并且，红黑树本质上还是一棵二叉查找树，因此二叉查找树中用到的rank(), floor(), ceiling()等方法可以不经过任何修改就可以直接使用。</p>
-
-<h2 id="toc_24">总结</h2>
-
-<p>首先，从简洁性上看，二叉树明显是最简单的实现方式，对于查找在最优情况下也可以实现O(log n)的复杂度，然而比较严重的问题是，如果构建这棵树时选择的根结点不是很合理，那么整棵树有可能发生严重的倾斜(最坏情况下为O(n))，如图1。因此，在二叉查找树的基础上，产生了2-3查找树。</p>
-
-<p>2-3查找树最重要的特征是，在3-结点上插入而生成的4-结点会进行分裂，保证了2-3树的平衡性。</p>
-
-<p>在此基础上实现了红黑树，在保持了二叉树的结构的情况下，大幅度优化了插入算法，虽然在实现上稍微复杂了一些，但能保证插入之后的树始终是一棵黑色平衡的树，因此也保证了二叉树的查询复杂度始终为O(log n)，并且不影响其它的操作。</p>
 
 ]]></content>
   </entry>
