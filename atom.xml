@@ -4,13 +4,308 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2018-06-26T22:54:05+08:00</updated>
+  <updated>2018-08-13T21:05:04+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="//www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[RecyclerView with SortedList]]></title>
+    <link href="https://blog.crayygy.com/15341654537382.html"/>
+    <updated>2018-08-13T21:04:13+08:00</updated>
+    <id>https://blog.crayygy.com/15341654537382.html</id>
+    <content type="html"><![CDATA[
+<h2 id="toc_0">0x00 Background</h2>
+
+<p>It is common for a list to have a specific order, assuming you have a bunch of contacts in your list, you might want to sort them in alphabet order, or if you have some kind of notes, you like to sort them in time order. These sorting requirements are common and easy, you can just use a list and a comparator, just use the <code>compare()</code> method, however some are much complicated, like different kind of data, different sort rules, how to deal with the duplicated names. Also, you need to handle all the changes like insert, remove and updates. Sometimes it can be annoying, no worry, we have <code>SortedList</code>.</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_1">0x01 What is a SortedList</h2>
+
+<p>In order to have a sorted list in recycler view, and update automatically, we used a library from RecyclerView, it is <code>SortedList</code> from <code>android.support.v7.util</code>. </p>
+
+<p>As we can find in <code>SortedList</code> implementation. </p>
+
+<pre><code class="language-java">/**
+ * A Sorted list implementation that can keep items in order and also notify for changes in the
+ * list
+ * such that it can be bound to a {@link android.support.v7.widget.RecyclerView.Adapter
+ * RecyclerView.Adapter}.
+ * &lt;p&gt;
+ * It keeps items ordered using the {@link Callback#compare(Object, Object)} method and uses
+ * binary search to retrieve items. If the sorting criteria of your items may change, make sure you
+ * call appropriate methods while editing them to avoid data inconsistencies.
+ * &lt;p&gt;
+ * You can ⌃ the order of items and change notifications via the {@link Callback} parameter.
+ */
+</code></pre>
+
+<p><code>SortedList</code> holds a recycler view adapter and manages updates like insertion\delete\item updates. And also supports serval useful functions like batch updates. </p>
+
+<h2 id="toc_2">0x02 SortedList and updates</h2>
+
+<p><code>SortedList</code> is just like its name, it is sorted since created, all operations will just update the list, and it will always be sorted, it can help you handle UI update and data change. </p>
+
+<h3 id="toc_3">Create a sorted list and callback</h3>
+
+<p><code>SortedList</code> is easy to use. We can create our own instance of <code>SortedList</code> by inheriting the original <code>SortedList</code> and add our methods there.</p>
+
+<p>To have our own compare rules, all we need to do is to implement a <code>SortedCallback</code> from <code>SortedList.Callback&lt;T&gt;</code>, where <code>T</code> is the generic type of your data, and override these methods.</p>
+
+<pre><code class="language-java">abstract public int compare(T2 o1, T2 o2);
+abstract public boolean areContentsTheSame(T2 oldItem, T2 newItem);
+abstract public boolean areItemsTheSame(T2 item1, T2 item2);
+</code></pre>
+
+<p>I will explain these methods later in next section <code>0x03 Sort rules</code>.</p>
+
+<p>After create your own <code>SortedList</code> instance and create your own <code>SortedCallback</code>, you can easily add your data to your sorted list.</p>
+
+<p>Just like a normal list, you are able to use <code>add()</code> <code>addAll()</code> <code>remove()</code>, you can also write your own useful methods like <code>removeById()</code>. Most methods are used like in a normal recycler list adapter. Just remember to call the methods from <code>SortedList</code>.</p>
+
+<p>In fragment, like all recycler view, you crate your adapter, set your adapter to recycler view, and here comes the differences. You have to create a sorted list and put your own <code>SortedCallback</code> instance to it.</p>
+
+<pre><code class="language-java">adapter = new MyAdapter(this);
+recyclerView.setAdapter(adapter);
+mySortedList = new MySortedList(ListItem.class, new SortedCallback(adapter));
+adapter.initDataList(mySortedList);
+</code></pre>
+
+<p>After all these done, you can happily use your <code>mySortedList</code> to update items.</p>
+
+<h3 id="toc_4">Batch updates</h3>
+
+<p>Since we have to sort the whole list and update them on UI, if we have serval data to update, it is expensive to update them one by one, we need to update them once and all. That is why we need <code>batch updates</code>.</p>
+
+<p>By using <code>SortedList</code>, it is very easy to have batch updates, when you have multiple data to update, you can do it either in your list or in UI.</p>
+
+<pre><code class="language-java">// In your sorted list
+beginBatchedUpdates();
+// Do the updates like insert or remove or update
+endBatchedUpdates();
+
+// In UI
+mySortedList.beginBatchedUpdates();
+// Do the updates like insert or remove or update
+mySortedList.endBatchedUpdates();
+</code></pre>
+
+<p><code>SortedList</code> will handle batch updates during your event and update them to UI once for all.</p>
+
+<h3 id="toc_5">Delayed refresh</h3>
+
+<p>For some reason, some callback might call frequently, we also need a buffer to cache the updates and update them once in a time slot, like 1 second.</p>
+
+<p>We create a set to hold the data, and post a handler delay for 1 second if there is any update.</p>
+
+<pre><code class="language-java">// Create the buffer set
+private Set&lt;ListItemData&gt; dataSet = new HashSet&lt;&gt;(10);
+
+// In Callback method that called frequently
+@Override
+public void onDataChange(ListItemData data) {
+    dataSet.add(data);
+    if (!handler.hasMessages(1)) {
+        handler.sendEmptyMessageDelayed(1, 1000);
+    }
+}
+
+// Handler
+private Handler handler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        if (msg.what == 1) {
+            beginBatchedUpdates();
+            for (ListItemData data : dataSet) {
+                int index = indexOf(data);
+                if (index &gt;= 0) {
+                    callback.setPayload(TYPE_CHANGE); // For partial updates
+                    updateItemAt(index, data);
+                }
+            }
+            endBatchedUpdates();
+            dataSet.clear(); // Clear for next update
+        }
+    }
+};
+</code></pre>
+
+<blockquote>
+<p>Note:<br/>
+Remember to remove the handler when clear the list or UI destroy, or it might cause memory leak.</p>
+</blockquote>
+
+<h3 id="toc_6">Partial updates</h3>
+
+<p>Sometimes we have serval fields on UI need to update, like photos\names\status, when one field update, we want to only refresh the specific view rather than the whole view holder. That comes the <code>partial updates</code>.</p>
+
+<p>To understand partial updates in recycler view. One thing to know is the <code>payloads</code> in <code>onBindViewHolder(RecyclerView.ViewHolder holder, int position, List&lt;Object&gt; payloads)</code>. We can set our own payloads and update using adapter&#39;s update method.</p>
+
+<p>In your own <code>SortedCallBack</code>, override the <code>onChange()</code> method and notify the changes.</p>
+
+<pre><code class="language-java">@Override
+public void onChanged(int position, int count) {
+    mAdapter.notifyItemRangeChanged(position, count, payload);
+}
+</code></pre>
+
+<p>Also in <code>Adapter</code>, we need to implement two <code>onBindViewHolder()</code> methods. One with payloads and one not.</p>
+
+<p>If update with payloads, first retrieve the payload list to detect what need to be updated, then update them separately.</p>
+
+<h3 id="toc_7">Performance considering</h3>
+
+<p>UI updates are expensive, we have to do them in main thread, and sometimes you have to be careful about refreshing UI, loading bitmaps or refreshing too frequently might cost a lot of CPU or memory resourse.</p>
+
+<p>To avoid the performance issues of refreshing list, we combine the batched updates, delayed refresh and partial updates, try to refresh UI less but never miss a point. When data changed, data list is able to get the change event in time and cache them in buffer, then batch update them, when it comes to UI, just refresh the changed part without refreshing other views. This can help a lot for CPU and memory usage.</p>
+
+<h2 id="toc_8">0x03 Sort rules</h2>
+
+<p>Here comes the most important part for sorted list: the sort rules.</p>
+
+<p>For a sorted list, we have to decide, which one should be at the top, which one should be after, that is why we need a rule.</p>
+
+<p>Remember the methods in <code>SortedList.Callback</code>?</p>
+
+<pre><code class="language-java">abstract public int compare(T2 o1, T2 o2);
+abstract public boolean areContentsTheSame(T2 oldItem, T2 newItem);
+abstract public boolean areItemsTheSame(T2 item1, T2 item2);
+</code></pre>
+
+<p>I will explain them one by one.</p>
+
+<p>First, the <code>compare()</code> method. Actually it is from <code>Comparator</code> interface, <code>SortedList.Callback</code> implements it and makes it abstract, so we need to override it. For two items the <code>compare()</code> method decides which one is <strong>Bigger</strong> than the other one, if o1&gt;o2, then returns 1, if o1&lt;02, then returns -1, if they are the same, then 0 will be returned. </p>
+
+<p>Then, the <code>areContentsTheSame()</code> method, like described in comments(which you can find in codes), this method decides whether it need to refresh the UI or not. Mostly it compares the UI related data, since it might need to refresh.</p>
+
+<blockquote>
+<p>From comments:</p>
+
+<p>Called by the SortedList when it wants to check whether two items have the same data or not. SortedList uses this information to decide whether it should call {@link #onChanged(int, int)} or not.</p>
+</blockquote>
+
+<p>Lastly, the <code>areItemsTheSame()</code> method, it is more like an <code>equals()</code> method, it decides whether two object represent the same Item or not. If you have an unique ID for your data, you should use that ID. </p>
+
+<blockquote>
+<p>From comments:</p>
+
+<p>@return True if the two items represent the same object or false if they are different.</p>
+</blockquote>
+
+<p>In order to have a completely sorted list for different kind of data, we need a common field to compare and keep the order.</p>
+
+<p>So we need an interface, to mark the common fields for different kind of data.</p>
+
+<pre><code class="language-java">public interface DataItem {
+    int TYPE_A = 1;
+    int TYPE_B = 2;
+    int TYPE_C = 3;
+
+    protected String sortName;
+
+    int getType(); // For adapter to create view holder
+
+    String getSortName(); // For sorting
+}
+</code></pre>
+
+<p>For different types of data class, they all need to implement from <code>DataItem</code>.</p>
+
+<pre><code class="language-java">class DataTypeA implements DataItem {
+
+    @Override
+    public int getType {
+        return TYPE_A;
+    }
+
+    @Override
+    public String getSortName() {
+        return sortName;
+    }
+}
+
+class DataTypeB implements DataItem {
+    @Override
+    public int getType {
+        return TYPE_B;
+    }
+
+    @Override
+    public String getSortName() {
+        return sortName;
+    }
+}
+
+class DataTypeC implements DataItem {
+    @Override
+    public int getType {
+        return TYPE_C;
+    }
+
+    @Override
+    public String getSortName() {
+        return sortName;
+    }
+}
+</code></pre>
+
+<p>In order to have different priority of sort, we can define different <code>sortName</code> rules. For example, A must sort before B, B must sort before C.</p>
+
+<p>So we have a specific order of type A B and C, to archive this, we can add a prefix to every different instance of A B and C, let them start with different character.</p>
+
+<p>Assuming that A B and C are all related with field <code>displayName</code>, never mind how to generate a display name, just remember, we need A &lt; B &lt; C.</p>
+
+<p>What can we do?</p>
+
+<p>Ok, it is pretty easy, see codes below. </p>
+
+<pre><code class="language-java">class DataTypeA {
+    private void initSortName() {
+        sortName = &#39;\u0000&#39; + displayName;
+    }
+}
+
+class DataTypeB {
+    private void initSortName() {
+        sortName = &#39;\u0001&#39; + displayName;
+    }
+}
+
+class DataTypeC {
+    private void initSortName() {
+        sortName = &#39;\u0002&#39; + displayName;
+    }
+}
+</code></pre>
+
+<p>Now we have orders for A B and C, but we might meet another issue about sorting, what if two A instances have the same <code>displayName</code>, it is OK if just want to sort them in order, but it is an unstable sorting, we need them to keep in the same order. It is also easy, just add a random string after the <code>sortName</code>.</p>
+
+<p>However, if you just do so, you might found that, if two people both named <code>yang</code>, after adding the random string, it might be <code>yang001</code> and <code>yang900</code>, now they are different, and they will keep in different order, but what if there is another person named as <code>yang2</code>, this will break the rules using random string, luckily we have another fix for this: adding a postfix to the <code>sortName</code>, then the random string. We can use the minimal character <code>\u0000</code> to keep the order, so now, the <code>yang</code> guys might have sortName like <code>yang&#39;\u0000&#39;001</code> and <code>yang&#39;\u0000&#39;900</code>, this will work even when there is another guy named like <code>yang2</code>. </p>
+
+<p>See codes below:</p>
+
+<pre><code class="language-java">class DataTypeA {
+    private void initSortName() {
+        sortName = &#39;\u0000&#39; + displayName + &#39;\u0000&#39; + String.valueOf(Math.random());
+    }
+}
+</code></pre>
+
+<p>These are the complete rules for the sorted list.</p>
+
+<h2 id="toc_9">0x04 Summary</h2>
+
+<p>SortedList is a helper for creating a UI related sorted list when using recycler view, with some methods you can have a powerful yet simple list with orders, even if you have some other kind of requirements like change the sort type, like sometimes I want it sorted by alphabet, sometimes I want it sorted by time, just modify the <code>compare()</code> method and add a different <code>sortName</code> like <code>timeOrder</code>, also some helper methods, this is completely under your ⌃.</p>
+
+<p>Hope you enjoy it.</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android dynamic UI for phones and tablets]]></title>
@@ -2211,236 +2506,6 @@ puts
 <p>简直黑科技...</p>
 
 <p>让我们大喊一声: “Ruby 大法好！”</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[爬楼梯算法分析详解及扩展(最大步长从2升级为m)]]></title>
-    <link href="https://blog.crayygy.com/14599905787744.html"/>
-    <updated>2016-04-07T08:56:18+08:00</updated>
-    <id>https://blog.crayygy.com/14599905787744.html</id>
-    <content type="html"><![CDATA[
-<p>几天前在公司面试的时候，第二轮的面试官问了我几道算法题，第一题是Nil Game，因为之前在Leetcode上刷过这题，也在《编程之美》上看到过几种解法，很轻松就给出了正确答案。第二题问的是爬楼梯问题，即一个N阶的楼梯，每次能走1～2阶，问走到N阶一共多少种走法。之前在Leetcode上也刷过<a href="https://leetcode.com/problems/climbing-stairs/">Link</a>，面试的时候临时也想了几种不同的方法去解，回来之后又思考了一番，想出了如下几种解法。</p>
-
-<span id="more"></span><!-- more -->
-
-<h2 id="toc_0">本文目录</h2>
-
-<ul>
-<li>
-<a href="#toc_0">本文目录</a>
-</li>
-<li>
-<a href="#toc_1">递归解法</a>
-</li>
-<li>
-<a href="#toc_2">表达式法</a>
-</li>
-<li>
-<a href="#toc_3">动态规划的数组实现</a>
-</li>
-<li>
-<a href="#toc_4">队列实现</a>
-</li>
-<li>
-<a href="#toc_5">矩阵算法</a>
-</li>
-<li>
-<a href="#toc_6">扩展: N阶楼梯，每步可走0～m步，求解算法</a>
-</li>
-</ul>
-
-
-<h2 id="toc_1">递归解法</h2>
-
-<p>首先最直观的方法当然是递归求解。因为每次只能走1或2阶，因此，走上第n阶的走法应该等于第n-1阶和n-2阶的和(先走到第n-2阶然后走两阶，或者先走上第n-1阶然后走一阶)。利用 \[\\f(n) = f(n-1) + f(n-2)，f(0) = 1，f(1) = 1\]直接求解。</p>
-
-<pre><code class="language-java">public class Solution {
-    public int climbStairs(int n) {
-        if (n == 0 || n == 1) {
-            return 1;
-        }
-        return climbStairs(n-1) + climbStairs(n-2);
-    }
-}
-</code></pre>
-
-<p><img src="media/14599905787744/14602749249993.jpg" alt=""/></p>
-
-<p>随便给了几个测试用例，都是通过的，但是递归解法实在是太消耗资源了，因此在提交答案的时候我们会看到...<br/>
-<img src="media/14599905787744/14602750216512.jpg" alt=""/><br/>
-啊哦，超时了。<br/>
-我们不可能局限于递归解法，因此如何对这个算法进行优化，成为了现在需要思考的问题。<br/>
-PS: 如果你在面试中用了这个解法，并且没有提到说要用其他算法进行优化的话...请节哀。</p>
-
-<h2 id="toc_2">表达式法</h2>
-
-<p>高中学二阶数列的时候学过类似的问题，即汉诺塔问题(<a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi">Link</a>)，当时不会计算机，得到的解法是 \(f(n) = 2＊f(n-1)+1\)，直接求出通项公式，代入求解。</p>
-
-<p>对于爬楼梯算法，我们只需要求解下面这个数列的通项公式:<br/>
-\[f(n) =\<br/>
-\begin{cases} <br/>
-f(n-1)+f(n-2)  &amp; n&gt;2 \\\<br/>
-1 &amp; n=0, 1<br/>
-\end{cases}<br/>
-\]</p>
-
-<p>使用数学方法可以解出 \(f(n)\)的通项公式，代入求解即可，时间复杂度为\(O(1)\)，空间复杂度，呃...和其他的相比几乎没有吧。</p>
-
-<p>但是这种方法很不好，因为把计算的过程交给了人来完成。我们使用计算机的一个理由就是为了利用计算机解决计算问题，节约人的时间，如此算法太过于本末倒置。因此我们需要一种算法，既解决了人计算的步骤，也让计算机拥有快速的运行时间复杂度。</p>
-
-<h2 id="toc_3">动态规划的数组实现</h2>
-
-<p>使用数组解法，我们需要创建一个大小为n+1的数组。如果说递归解法是自顶向下的话，数组实现动态规划即是自底向上。在这个算法中，和递归解法类似，只是将<code>f(n)=f(n-1)+f(n-2)</code>换成 <code>result[n] = result[n-1]+result[n-2]</code>即可。</p>
-
-<pre><code class="language-java">public class Solution {
-    public int climbStairs(int n) {
-        int[] result = new int[n];
-        result[0] = 1;
-        if( n&gt;= 2) {
-            result[1] = 2;
-        }
-        for(int i = 2; i &lt; n; i++){
-            result[i] = result[i-1] + result[i-2];
-        }
-        return result[n-1];
-    }
-}
-</code></pre>
-
-<p><img src="media/14599905787744/14602778120512.jpg" alt=""/></p>
-
-<p>采用数组实现的时间复杂度为\(O(n)\)，空间复杂度为\(O(n)\)。</p>
-
-<h2 id="toc_4">队列实现</h2>
-
-<p>注意观察公式 \[f(n)=f(n-1)+f(n-2)\] 当求解到第n项的时候，我们实际上只需要前面两项的值，在计算第n-1项的时候，事实上需要的是第n-1项和第n项，从始至终我们接触到的值都只有三个。</p>
-
-<p>因此，考虑一种队列实现，这个队列共有三个元素，第一个元素我们可以看成是 \(f(n-2)\)，第二个元素看成是\(f(n-1)\)，第三个元素看成是\(f(n)\)。</p>
-
-<table>
-<thead>
-<tr>
-<th>第一项</th>
-<th>第二项</th>
-<th>第三项</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>\(f(n-2)\)</td>
-<td>\(f(n-1)\)</td>
-<td>\(f(n)\)</td>
-</tr>
-</tbody>
-</table>
-
-<p>在计算到 \(f(n+1)\)时，我们只需要将\(f(n-2)\)出队列，然后将\(f(n+1)\)入队列，此时的队列既变成了 \(f(n-1)\)，\(f(n)\)和\(f(n+1)\)。计算方法和数组实现类似。</p>
-
-<table>
-<thead>
-<tr>
-<th>第一项</th>
-<th>第二项</th>
-<th>第三项</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>\(f(n-1)\)</td>
-<td>\(f(n)\)</td>
-<td>\(f(n+1)\)</td>
-</tr>
-</tbody>
-</table>
-
-<p>通过队列，我们成功的将空间复杂度降为\(O(1)\)(因为只用了三个元素空间来实现队列)，但是时间复杂度仍旧不变。<br/>
-当然这种解法也可以通过一个大小为3数组来实现，只是在数组中我们在将第0个元素移除的时候，需要自己实现前移的过程，较为繁琐。<br/>
-或者我们也可以使用三个变量num1,num2,num3来实现，只是这样一来的话，三个变量需要赋值转换，增加阅读难度。</p>
-
-<h2 id="toc_5">矩阵算法</h2>
-
-<p>构建一个矩阵<br/>
-\[\begin{align}<br/>
-\begin{bmatrix}<br/>
-x_{n} \\<br/>
-x_{n-1}<br/>
-\end {bmatrix}<br/>
-&amp;= \begin{bmatrix}<br/>
-x_{n-1} + x_{n-2} \\<br/>
-x_{n-1}<br/>
-\end{bmatrix}\\<br/>
-&amp;=\begin{bmatrix}<br/>
-1 &amp; 1 \\\<br/>
-1 &amp; 0 <br/>
-\end{bmatrix} * <br/>
-\begin{bmatrix}<br/>
-x_{n-1} \\<br/>
-x_{n-2}<br/>
-\end{bmatrix}\\<br/>
-&amp;=\begin{bmatrix}<br/>
-1 &amp; 1 \\<br/>
-1 &amp; 0 <br/>
-\end{bmatrix}^{2} * <br/>
-\begin{bmatrix}<br/>
-x_{n-2} \\<br/>
-x_{n-3}<br/>
-\end{bmatrix}\\<br/>
-&amp; \dots \\<br/>
-&amp;=\begin{bmatrix}<br/>
-1 &amp; 1 \\<br/>
-1 &amp; 0 <br/>
-\end{bmatrix}^{n-1} * <br/>
-\begin{bmatrix}<br/>
-x_{1} \\<br/>
-x_{0}<br/>
-\end{bmatrix}\\<br/>
-&amp;=\begin{bmatrix}<br/>
-1 &amp; 1 \\<br/>
-1 &amp; 0 <br/>
-\end{bmatrix}^{n-1} * <br/>
-\begin{bmatrix}<br/>
-1 \\<br/>
-1<br/>
-\end{bmatrix}\\<br/>
-\end{align}<br/>
-\]</p>
-
-<p>在计算 \(x_{n}\)的时候，我们只需要直接计算矩阵\(\begin{bmatrix}1&amp;1\\1&amp;0\end{bmatrix}^{n-1}\)即可。<br/>
-这样，我们的主要问题就转换成了求矩阵的n次方，时间复杂度降到了\(O(log n)\)</p>
-
-<h2 id="toc_6">扩展: N阶楼梯，每步可走0～m步，求解算法</h2>
-
-<p>从每步1～2级阶梯到1～m级阶梯，需要改变的不仅仅只是步长，还有每步走完之后，对剩余台阶总数的判断。当当总剩余的台阶数n大于步长m的时候，则第一步为1～m的一个数值，循环递归求解可能的走法。如果总剩余台阶数n小于步长m的时候，则步长调整为n，递归求解。<br/>
-具体代码如下: </p>
-
-<pre><code class="language-java">public class Solution {
-    @param n: 总的台阶数
-    @param m: 每次可以走的最大的阶数
-    @return: 一共有多少种可能的走法
-    public int climbStairs(int n, int m) {
-        int stepsCount = 0;
-        // 台阶数为0的时候表示已经走完
-        if (n == 0) {
-            return 1;
-        }
-        // 当总剩余的台阶数n大于步长m的时候，则 
-        // 第一步为 1～m的一个数值，循环递归求解可能的走法
-        if (n &gt;= m) {
-            for (int i = 1; i &lt;= m; i++) {
-                stepsCount += climbStairs(n-i, m);
-            }
-        }else { 
-        // 如果总剩余台阶数n小于步长m的时候，则 步长为n，递归求解。
-            stepsCount += climbStairs(n, n);
-        }
-        return stepsCount;
-    }
-}
-</code></pre>
 
 ]]></content>
   </entry>

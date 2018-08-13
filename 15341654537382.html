@@ -1,0 +1,658 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  RecyclerView with SortedList - 渐行渐远
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="渐行渐远" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:blog.crayygy.com ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="self" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_self" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; 渐行渐远</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="self" href="index.html">Home</a></li>
+        
+        <li><a target="_self" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="drafts.html">随笔</a></li>
+        
+            <li><a href="coding.html">编程</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>RecyclerView with SortedList</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">8/13/2018</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='Android.html'>Android</a></span>
+           
+         
+          <span class="comments">
+            
+              <a href="https://blog.crayygy.com/15341654537382.html#disqus_thread">comments</a>
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <h2 id="toc_0">0x00 Background</h2>
+
+<p>It is common for a list to have a specific order, assuming you have a bunch of contacts in your list, you might want to sort them in alphabet order, or if you have some kind of notes, you like to sort them in time order. These sorting requirements are common and easy, you can just use a list and a comparator, just use the <code>compare()</code> method, however some are much complicated, like different kind of data, different sort rules, how to deal with the duplicated names. Also, you need to handle all the changes like insert, remove and updates. Sometimes it can be annoying, no worry, we have <code>SortedList</code>.</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_1">0x01 What is a SortedList</h2>
+
+<p>In order to have a sorted list in recycler view, and update automatically, we used a library from RecyclerView, it is <code>SortedList</code> from <code>android.support.v7.util</code>. </p>
+
+<p>As we can find in <code>SortedList</code> implementation. </p>
+
+<pre><code class="language-java">/**
+ * A Sorted list implementation that can keep items in order and also notify for changes in the
+ * list
+ * such that it can be bound to a {@link android.support.v7.widget.RecyclerView.Adapter
+ * RecyclerView.Adapter}.
+ * &lt;p&gt;
+ * It keeps items ordered using the {@link Callback#compare(Object, Object)} method and uses
+ * binary search to retrieve items. If the sorting criteria of your items may change, make sure you
+ * call appropriate methods while editing them to avoid data inconsistencies.
+ * &lt;p&gt;
+ * You can ⌃ the order of items and change notifications via the {@link Callback} parameter.
+ */
+</code></pre>
+
+<p><code>SortedList</code> holds a recycler view adapter and manages updates like insertion\delete\item updates. And also supports serval useful functions like batch updates. </p>
+
+<h2 id="toc_2">0x02 SortedList and updates</h2>
+
+<p><code>SortedList</code> is just like its name, it is sorted since created, all operations will just update the list, and it will always be sorted, it can help you handle UI update and data change. </p>
+
+<h3 id="toc_3">Create a sorted list and callback</h3>
+
+<p><code>SortedList</code> is easy to use. We can create our own instance of <code>SortedList</code> by inheriting the original <code>SortedList</code> and add our methods there.</p>
+
+<p>To have our own compare rules, all we need to do is to implement a <code>SortedCallback</code> from <code>SortedList.Callback&lt;T&gt;</code>, where <code>T</code> is the generic type of your data, and override these methods.</p>
+
+<pre><code class="language-java">abstract public int compare(T2 o1, T2 o2);
+abstract public boolean areContentsTheSame(T2 oldItem, T2 newItem);
+abstract public boolean areItemsTheSame(T2 item1, T2 item2);
+</code></pre>
+
+<p>I will explain these methods later in next section <code>0x03 Sort rules</code>.</p>
+
+<p>After create your own <code>SortedList</code> instance and create your own <code>SortedCallback</code>, you can easily add your data to your sorted list.</p>
+
+<p>Just like a normal list, you are able to use <code>add()</code> <code>addAll()</code> <code>remove()</code>, you can also write your own useful methods like <code>removeById()</code>. Most methods are used like in a normal recycler list adapter. Just remember to call the methods from <code>SortedList</code>.</p>
+
+<p>In fragment, like all recycler view, you crate your adapter, set your adapter to recycler view, and here comes the differences. You have to create a sorted list and put your own <code>SortedCallback</code> instance to it.</p>
+
+<pre><code class="language-java">adapter = new MyAdapter(this);
+recyclerView.setAdapter(adapter);
+mySortedList = new MySortedList(ListItem.class, new SortedCallback(adapter));
+adapter.initDataList(mySortedList);
+</code></pre>
+
+<p>After all these done, you can happily use your <code>mySortedList</code> to update items.</p>
+
+<h3 id="toc_4">Batch updates</h3>
+
+<p>Since we have to sort the whole list and update them on UI, if we have serval data to update, it is expensive to update them one by one, we need to update them once and all. That is why we need <code>batch updates</code>.</p>
+
+<p>By using <code>SortedList</code>, it is very easy to have batch updates, when you have multiple data to update, you can do it either in your list or in UI.</p>
+
+<pre><code class="language-java">// In your sorted list
+beginBatchedUpdates();
+// Do the updates like insert or remove or update
+endBatchedUpdates();
+
+// In UI
+mySortedList.beginBatchedUpdates();
+// Do the updates like insert or remove or update
+mySortedList.endBatchedUpdates();
+</code></pre>
+
+<p><code>SortedList</code> will handle batch updates during your event and update them to UI once for all.</p>
+
+<h3 id="toc_5">Delayed refresh</h3>
+
+<p>For some reason, some callback might call frequently, we also need a buffer to cache the updates and update them once in a time slot, like 1 second.</p>
+
+<p>We create a set to hold the data, and post a handler delay for 1 second if there is any update.</p>
+
+<pre><code class="language-java">// Create the buffer set
+private Set&lt;ListItemData&gt; dataSet = new HashSet&lt;&gt;(10);
+
+// In Callback method that called frequently
+@Override
+public void onDataChange(ListItemData data) {
+    dataSet.add(data);
+    if (!handler.hasMessages(1)) {
+        handler.sendEmptyMessageDelayed(1, 1000);
+    }
+}
+
+// Handler
+private Handler handler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        if (msg.what == 1) {
+            beginBatchedUpdates();
+            for (ListItemData data : dataSet) {
+                int index = indexOf(data);
+                if (index &gt;= 0) {
+                    callback.setPayload(TYPE_CHANGE); // For partial updates
+                    updateItemAt(index, data);
+                }
+            }
+            endBatchedUpdates();
+            dataSet.clear(); // Clear for next update
+        }
+    }
+};
+</code></pre>
+
+<blockquote>
+<p>Note:<br/>
+Remember to remove the handler when clear the list or UI destroy, or it might cause memory leak.</p>
+</blockquote>
+
+<h3 id="toc_6">Partial updates</h3>
+
+<p>Sometimes we have serval fields on UI need to update, like photos\names\status, when one field update, we want to only refresh the specific view rather than the whole view holder. That comes the <code>partial updates</code>.</p>
+
+<p>To understand partial updates in recycler view. One thing to know is the <code>payloads</code> in <code>onBindViewHolder(RecyclerView.ViewHolder holder, int position, List&lt;Object&gt; payloads)</code>. We can set our own payloads and update using adapter&#39;s update method.</p>
+
+<p>In your own <code>SortedCallBack</code>, override the <code>onChange()</code> method and notify the changes.</p>
+
+<pre><code class="language-java">@Override
+public void onChanged(int position, int count) {
+    mAdapter.notifyItemRangeChanged(position, count, payload);
+}
+</code></pre>
+
+<p>Also in <code>Adapter</code>, we need to implement two <code>onBindViewHolder()</code> methods. One with payloads and one not.</p>
+
+<p>If update with payloads, first retrieve the payload list to detect what need to be updated, then update them separately.</p>
+
+<h3 id="toc_7">Performance considering</h3>
+
+<p>UI updates are expensive, we have to do them in main thread, and sometimes you have to be careful about refreshing UI, loading bitmaps or refreshing too frequently might cost a lot of CPU or memory resourse.</p>
+
+<p>To avoid the performance issues of refreshing list, we combine the batched updates, delayed refresh and partial updates, try to refresh UI less but never miss a point. When data changed, data list is able to get the change event in time and cache them in buffer, then batch update them, when it comes to UI, just refresh the changed part without refreshing other views. This can help a lot for CPU and memory usage.</p>
+
+<h2 id="toc_8">0x03 Sort rules</h2>
+
+<p>Here comes the most important part for sorted list: the sort rules.</p>
+
+<p>For a sorted list, we have to decide, which one should be at the top, which one should be after, that is why we need a rule.</p>
+
+<p>Remember the methods in <code>SortedList.Callback</code>?</p>
+
+<pre><code class="language-java">abstract public int compare(T2 o1, T2 o2);
+abstract public boolean areContentsTheSame(T2 oldItem, T2 newItem);
+abstract public boolean areItemsTheSame(T2 item1, T2 item2);
+</code></pre>
+
+<p>I will explain them one by one.</p>
+
+<p>First, the <code>compare()</code> method. Actually it is from <code>Comparator</code> interface, <code>SortedList.Callback</code> implements it and makes it abstract, so we need to override it. For two items the <code>compare()</code> method decides which one is <strong>Bigger</strong> than the other one, if o1&gt;o2, then returns 1, if o1&lt;02, then returns -1, if they are the same, then 0 will be returned. </p>
+
+<p>Then, the <code>areContentsTheSame()</code> method, like described in comments(which you can find in codes), this method decides whether it need to refresh the UI or not. Mostly it compares the UI related data, since it might need to refresh.</p>
+
+<blockquote>
+<p>From comments:</p>
+
+<p>Called by the SortedList when it wants to check whether two items have the same data or not. SortedList uses this information to decide whether it should call {@link #onChanged(int, int)} or not.</p>
+</blockquote>
+
+<p>Lastly, the <code>areItemsTheSame()</code> method, it is more like an <code>equals()</code> method, it decides whether two object represent the same Item or not. If you have an unique ID for your data, you should use that ID. </p>
+
+<blockquote>
+<p>From comments:</p>
+
+<p>@return True if the two items represent the same object or false if they are different.</p>
+</blockquote>
+
+<p>In order to have a completely sorted list for different kind of data, we need a common field to compare and keep the order.</p>
+
+<p>So we need an interface, to mark the common fields for different kind of data.</p>
+
+<pre><code class="language-java">public interface DataItem {
+    int TYPE_A = 1;
+    int TYPE_B = 2;
+    int TYPE_C = 3;
+
+    protected String sortName;
+
+    int getType(); // For adapter to create view holder
+
+    String getSortName(); // For sorting
+}
+</code></pre>
+
+<p>For different types of data class, they all need to implement from <code>DataItem</code>.</p>
+
+<pre><code class="language-java">class DataTypeA implements DataItem {
+
+    @Override
+    public int getType {
+        return TYPE_A;
+    }
+
+    @Override
+    public String getSortName() {
+        return sortName;
+    }
+}
+
+class DataTypeB implements DataItem {
+    @Override
+    public int getType {
+        return TYPE_B;
+    }
+
+    @Override
+    public String getSortName() {
+        return sortName;
+    }
+}
+
+class DataTypeC implements DataItem {
+    @Override
+    public int getType {
+        return TYPE_C;
+    }
+
+    @Override
+    public String getSortName() {
+        return sortName;
+    }
+}
+</code></pre>
+
+<p>In order to have different priority of sort, we can define different <code>sortName</code> rules. For example, A must sort before B, B must sort before C.</p>
+
+<p>So we have a specific order of type A B and C, to archive this, we can add a prefix to every different instance of A B and C, let them start with different character.</p>
+
+<p>Assuming that A B and C are all related with field <code>displayName</code>, never mind how to generate a display name, just remember, we need A &lt; B &lt; C.</p>
+
+<p>What can we do?</p>
+
+<p>Ok, it is pretty easy, see codes below. </p>
+
+<pre><code class="language-java">class DataTypeA {
+    private void initSortName() {
+        sortName = &#39;\u0000&#39; + displayName;
+    }
+}
+
+class DataTypeB {
+    private void initSortName() {
+        sortName = &#39;\u0001&#39; + displayName;
+    }
+}
+
+class DataTypeC {
+    private void initSortName() {
+        sortName = &#39;\u0002&#39; + displayName;
+    }
+}
+</code></pre>
+
+<p>Now we have orders for A B and C, but we might meet another issue about sorting, what if two A instances have the same <code>displayName</code>, it is OK if just want to sort them in order, but it is an unstable sorting, we need them to keep in the same order. It is also easy, just add a random string after the <code>sortName</code>.</p>
+
+<p>However, if you just do so, you might found that, if two people both named <code>yang</code>, after adding the random string, it might be <code>yang001</code> and <code>yang900</code>, now they are different, and they will keep in different order, but what if there is another person named as <code>yang2</code>, this will break the rules using random string, luckily we have another fix for this: adding a postfix to the <code>sortName</code>, then the random string. We can use the minimal character <code>\u0000</code> to keep the order, so now, the <code>yang</code> guys might have sortName like <code>yang&#39;\u0000&#39;001</code> and <code>yang&#39;\u0000&#39;900</code>, this will work even when there is another guy named like <code>yang2</code>. </p>
+
+<p>See codes below:</p>
+
+<pre><code class="language-java">class DataTypeA {
+    private void initSortName() {
+        sortName = &#39;\u0000&#39; + displayName + &#39;\u0000&#39; + String.valueOf(Math.random());
+    }
+}
+</code></pre>
+
+<p>These are the complete rules for the sorted list.</p>
+
+<h2 id="toc_9">0x04 Summary</h2>
+
+<p>SortedList is a helper for creating a UI related sorted list when using recycler view, with some methods you can have a powerful yet simple list with orders, even if you have some other kind of requirements like change the sort type, like sometimes I want it sorted by alphabet, sometimes I want it sorted by time, just modify the <code>compare()</code> method and add a different <code>sortName</code> like <code>timeOrder</code>, also some helper methods, this is completely under your ⌃.</p>
+
+<p>Hope you enjoy it.</p>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="15300248044929.html" 
+          title="Next Post: Android dynamic UI for phones and tablets">Android dynamic UI for phones and tablets &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://crayygy.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+          
+            <div id="disqus_thread"></div>
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="media/14582780488696/14582794682117.jpg" /></div>
+            
+                <h1>渐行渐远</h1>
+                <div class="site-des">慢慢走</div>
+                <div class="social">
+
+
+
+
+
+
+
+<a target="_blank" class="weibo" href="https://weibo.com/crayygy" title="weibo">Weibo</a>
+<a target="_blank" class="twitter" target="_blank" href="https://twitter.com/crayygy" title="Twitter">Twitter</a>
+<a target="_blank" class="github" target="_blank" href="https://github.com/crayygy" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:me@crayygy.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="drafts.html"><strong>随笔</strong></a>
+        
+            <a href="coding.html"><strong>编程</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="15341654537382.html">RecyclerView with SortedList</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15300248044929.html">Android dynamic UI for phones and tablets</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15278616674467.html">智能生活的坚实一步-- Android Things 1.0</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15254241548087.html">First step to love writing wikis and blogs</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="15235097714605.html">Different ways to send problem report in app with screenshots</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2018
+Powered by <a target="_blank" href="//www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="//github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'crayygy'; 
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+
+<script type="text/javascript">
+var disqus_shortname = 'crayygy'; 
+
+(function () {
+var s = document.createElement('script'); s.async = true;
+s.type = 'text/javascript';
+s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+    <script src="asset/chart/all-min.js"></script><script type="text/javascript">$(function(){    var mwebii=0;    var mwebChartEleId = 'mweb-chart-ele-';    $('pre>code').each(function(){        mwebii++;        var eleiid = mwebChartEleId+mwebii;        if($(this).hasClass('language-sequence')){            var ele = $(this).addClass('nohighlight').parent();            $('<div id="'+eleiid+'"></div>').insertAfter(ele);            ele.hide();            var diagram = Diagram.parse($(this).text());            diagram.drawSVG(eleiid,{theme: 'simple'});        }else if($(this).hasClass('language-flow')){            var ele = $(this).addClass('nohighlight').parent();            $('<div id="'+eleiid+'"></div>').insertAfter(ele);            ele.hide();            var diagram = flowchart.parse($(this).text());            diagram.drawSVG(eleiid);        }    });});</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-69531240-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

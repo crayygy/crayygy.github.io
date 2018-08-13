@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  Some Mongodb problems and solutions - 渐行渐远
+  编程 - 渐行渐远
   
   </title>
   
@@ -93,135 +93,67 @@
        
 
  <script type="text/javascript">
-  $(function(){
-    $('#menu_item_index').addClass('is_active');
-  });
+	$(function(){
+		$('#menu_item_index').addClass('is_active');
+	});
 </script>
 <div class="row">
-  <div class="large-8 medium-8 columns">
-      <div class="markdown-body article-wrap">
-       <div class="article">
-          
-          <h1>Some Mongodb problems and solutions</h1>
-     
-        <div class="read-more clearfix">
-          <span class="date">1/13/2017</span>
-
-          <span>posted in&nbsp;</span> 
-          
-              <span class="posted-in"><a href='server.html'>Server</a></span>
-           
-         
-          <span class="comments">
-            
-              <a href="https://blog.crayygy.com/14842384827556.html#disqus_thread">comments</a>
-            
-
-            
-          </span>
-
-        </div>
-      </div><!-- article -->
-
-      <div class="article-content">
-      <p>Recently I have encountered some problems during my internship. One of our server suddenly goes very very slow, when I try to ping the server, it&#39;s always 2000-5000. After checked everything I think may cause the problem and got no answer, I decided to reboot the server.</p>
-
-<span id="more"></span><!-- more -->
-
-<p>After hard reboot the virtual machine, it&#39;s just the start of the hell. First, I found there&#39;s some warning about ruby, then, the mongodb on the server can&#39;t restart after reboot. </p>
-
-<p>Luckily, we have already backup our data since one time that we delete our database without &quot;where&quot;.  We backup our database every two hours to another server. So nothing too bad happens.</p>
-
-<p>Mongodb is such a nasty guy, when I try to restart with ⌘ <code>mongod -f /etc/mongod.conf --fork</code>, it got stuck. And never showed a single message. At last, I had to delete my exist db and pull it back from our backup server, and then put it into another folder, and re-write the config file, change dbpath parameter, and start with ⌘ <code>mongod -f /etc/mongod.conf --fork</code>.</p>
-
-<p>Something good about mongo is that it can set a master db and a slave db for backup.  For this, all you have to do is start mongo with a config file, and set <code>master=true</code> or <code>slave=true</code> in config file.</p>
-
-<p>For example, on you master db server, you should write config file like this:</p>
-
-<pre><code>dbpath=[a-folder]
-logpath=[a-folder]
-master=true
-...
-...
-</code></pre>
-
-<p>On your slave db server, you should write mongo config file like this<br/>
-port=<a href="27018">a-port-different-from-master-db</a><br/>
-dbpath=[some-place-to-store-db]<br/>
-logpath=[some-place-to-store-log]<br/>
-slave=true<br/>
-slavedelay=7200// set as seconds<br/>
-source=[master-db-ip-address]:[master-db-port]</p>
-
-<p>After start both server, your mongodb will sync from you master server to your slave server every 2 hours.</p>
-
-<p>Some tricks about mongod ⌘</p>
-
-<p>Usually start with --dbpath parameter, or use --config(-f as abbr) to start with a config file.</p>
-
-<p>--fork parameter can let mongod server runs on the background.</p>
-
-<p>A single example of this is:<br/>
-<code>mongod -f /etc/mongod.conf --fork</code></p>
+	<div class="large-8 medium-8 columns">
+		<div class="markdown-body home-categories">
+		
+			<div class="article">
+                <a class="clearlink" href="14591320972722.html">
+                
+                  <h1>二叉树的深度问题</h1>
+                  <div class="a-content">
+                      
+                      <div class="a-content-text">
+                        
+                        	<p>昨天笔试的时候做到了一题求二叉树深度的问题，刚刚在Leetcode上刷题的时候刚好也遇到了，就顺手刷了。但是仔细思考发现，这个问题背后所反应的思想很值得我注重，因此写了这篇文章。</p>
 
 
-    
+                        
+                      </div>
+                  </div>
+                </a>
+                <div class="read-more clearfix">
+                  <div class="more-left left">
+                   <a href="14591320972722.html">Read more</a>&nbsp;&nbsp; 
+                    <span class="date">3/28/2016</span>
+                    <span>posted in&nbsp;</span> 
+          				  
+          					    <span class="posted-in"><a href='Algorithm.html'>算法</a></span>
+          				   
+                  </div>
+                  <div class="more-right right">
+                  <span class="comments">
+                      
+                        <a href="https://blog.crayygy.com/14591320972722.html#disqus_thread">comments</a>
+                      
 
-      </div>
-
-      <div class="row">
-        <div class="large-6 columns">
-        <p class="text-left" style="padding:15px 0px;">
-      
-          <a href="14890186322971.html" 
-          title="Previous Post: Ruby on Rails + Mongodb + AngularJS develop environment setup">&laquo; Ruby on Rails + Mongodb + AngularJS develop environment setup</a>
-      
-        </p>
-        </div>
-        <div class="large-6 columns">
-      <p class="text-right" style="padding:15px 0px;">
-      
-          <a  href="14698658453148.html" 
-          title="Next Post: Leetcode #169 Majority Element">Leetcode #169 Majority Element &raquo;</a>
-      
-      </p>
-        </div>
-      </div>
-      <div class="comments-wrap">
-        <div class="share-comments">
-          <div id="disqus_thread"></div>
-<script>
-
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://crayygy.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-          
-            <div id="disqus_thread"></div>
-          
-
-          
-        </div>
-      </div>
-    </div><!-- article-wrap -->
-  </div><!-- large 8 -->
+                       
+                  </span>
+                  </div>
+                </div>
+              </div><!-- article -->
+        
+              
 
 
-
+			<div class="row">
+			  <div class="large-6 columns">
+			  <p class="text-left" style="padding-top:25px;">
+			   <a href="coding_1.html">&laquo; Prev Page</a>  
+			  </p>
+			  </div>
+			  <div class="large-6 columns">
+			<p class="text-right" style="padding-top:25px;">
+			
+			</p>
+			  </div>
+			</div>
+		</div>
+	</div><!-- large 8 -->
 
  <div class="large-4 medium-4 columns">
   <div class="hide-for-small">
