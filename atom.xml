@@ -4,13 +4,79 @@
   <title><![CDATA[渐行渐远]]></title>
   <link href="https://blog.crayygy.com/atom.xml" rel="self"/>
   <link href="https://blog.crayygy.com/"/>
-  <updated>2019-05-28T17:48:08+08:00</updated>
+  <updated>2020-02-26T13:46:46+08:00</updated>
   <id>https://blog.crayygy.com/</id>
   <author>
     <name><![CDATA[]]></name>
     
   </author>
   <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[使用 Kotlin 编写 Android 应用时要注意的一个小坑]]></title>
+    <link href="https://blog.crayygy.com/15826950093079.html"/>
+    <updated>2020-02-26T13:30:09+08:00</updated>
+    <id>https://blog.crayygy.com/15826950093079.html</id>
+    <content type="html"><![CDATA[
+<p>nullable 是个好东西，但可惜 Java 没有呀～</p>
+
+<span id="more"></span><!-- more -->
+
+<h2 id="toc_0">0x00 Background</h2>
+
+<p>前段时间在fix 一个 Google Play 发现的一个issue的时候发现了一个非常古怪的问题。 </p>
+
+<pre><code class="language-java">java.lang.IllegalArgumentException
+</code></pre>
+
+<p>一个很简单的 Exception，但是在代码中怎么找怎么找，都找不到对应的到底是谁的参数有问题，看 crash stack 也非常的不明确，只是模糊的告诉我们，在一个 <code>PhoneStateListener</code> 的实现中。仔细检查了我们的实现以后发现：</p>
+
+<pre><code class="language-java">override fun onCallStateChanged(state: Int, phoneNumber: String) {
+    // codes
+}
+</code></pre>
+
+<p>这里面的代码非常的简单，几乎没有可能的地方会抛这个问题。</p>
+
+<h2 id="toc_1">0x01 Root cause</h2>
+
+<p>主要的原因在于，Kotlin 在实现或继承 Java 层的接口/方法的时候，如果一个参数被加上了 <code>@Nullable</code> 的注解，则会被自动实现成 <code>Type?</code> 的形式，但是如果原本的接口不带这个注解，那么实现的时候，Kotlin中无论是 <code>Type</code> or <code>Type?</code> 这两种写法都是被接受的，因此，在这个例子中，<br/>
+Java 的接口是这样定义的: </p>
+
+<pre><code class="language-java">// android/telephony/PhoneStateListener.java
+public void onCallStateChanged(int state, String phoneNumber) {
+        // default implementation empty
+}
+</code></pre>
+
+<p>而我们的实现中，这个 <code>phoneNumber</code> 的类型被强制变成了 <code>@NonNull String</code>，因此当调用方传入 <code>null</code> 之后，Java层是正确的，但是回调到 Kotlin 的时候， <code>String?</code> 并不能强制转换成 <code>String</code>， 因此会抛出 <code>java.lang.IllegalArgumentException</code>。</p>
+
+<h2 id="toc_2">0x02 Solution</h2>
+
+<p>找到了原因之后，fix 起来就非常的简单了，将原有接口的实现变更为：</p>
+
+<pre><code class="language-java">override fun onCallStateChanged(state: Int, phoneNumber: String?) {
+    // codes
+}
+</code></pre>
+
+<p>然后在内部进行 null check, 以确保不会发生其它error。</p>
+
+<h2 id="toc_3">0x03 Afterwards</h2>
+
+<p>Kotlin/Java 混用，在现在的 Android Project 中应该是非常常见的场景了，平时开发过程中可能一个不注意就踩到了一些坑，因此需要格外小心一些隐式的转换之类，这类问题编译器无法发现，被抓到的时候可能栈也不是特别清楚，需要仔细甄别。</p>
+
+<p>说到这里，实名表扬 Firebase crashlytics, Google Play中只能看到栈，但是 crashlytics 中能够看到</p>
+
+<pre><code class="language-java">Fatal Exception: java.lang.IllegalArgumentException
+Parameter specified as non-null is null: method kotlin.jvm.internal.Intrinsics.checkParameterIsNotNull, parameter phoneNumber
+CallPhoneStateReceiver$onReceive$1.onCallStateChanged
+</code></pre>
+
+<p>非常实用了。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android Studio 编写 JNI 代码时的一个小问题]]></title>
@@ -2277,46 +2343,6 @@ source=[master-db-ip-address]:[master-db-port]</p>
 
 <p>A single example of this is:<br/>
 <code>mongod -f /etc/mongod.conf --fork</code></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Leetcode #169 Majority Element]]></title>
-    <link href="https://blog.crayygy.com/14698658453148.html"/>
-    <updated>2016-07-30T16:04:05+08:00</updated>
-    <id>https://blog.crayygy.com/14698658453148.html</id>
-    <content type="html"><![CDATA[
-<blockquote>
-<p>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.</p>
-</blockquote>
-
-<span id="more"></span><!-- more -->
-
-<blockquote>
-<p>You may assume that the array is non-empty and the majority element always exist in the array.</p>
-</blockquote>
-
-<p>Build a hash for the result, if a num is not in the hash, then make the hash[num] counts 1, else make the hash[num]+1.</p>
-
-<p>To get the majority element of the array, just get the key with the max value in this hash.</p>
-
-<pre><code class="language-ruby"># @param {Integer[]} nums
-# @return {Integer}
-def majority_element(nums)
-  hash = Hash.new
-  
-  nums.each do |num| 
-    if hash.has_key? num
-      hash[num] += 1
-    else
-      hash[num] = 1
-    end
-  end
-  result = hash.key(hash.values.max)
-  return result
-end
-</code></pre>
 
 ]]></content>
   </entry>

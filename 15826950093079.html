@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  智能生活的坚实一步-- Android Things 1.0 - 渐行渐远
+  使用 Kotlin 编写 Android 应用时要注意的一个小坑 - 渐行渐远
   
   </title>
   
@@ -102,19 +102,19 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>智能生活的坚实一步-- Android Things 1.0</h1>
+          <h1>使用 Kotlin 编写 Android 应用时要注意的一个小坑</h1>
      
         <div class="read-more clearfix">
-          <span class="date">6/1/2018</span>
+          <span class="date">2/26/2020</span>
 
           <span>posted in&nbsp;</span> 
           
-              <span class="posted-in"><a href='drafts.html'>随笔</a></span>
+              <span class="posted-in"><a href='Android.html'>Android</a></span>
            
          
           <span class="comments">
             
-              <a href="https://blog.crayygy.com/15278616674467.html#disqus_thread">comments</a>
+              <a href="https://blog.crayygy.com/15826950093079.html#disqus_thread">comments</a>
             
 
             
@@ -124,56 +124,62 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>2018 年 Google IO 大会给我们带来了最新的 Android Things 1.0 版本，也为与会者提供了一份完整的 Android Things develop kit。刚好有一个好朋友也去参加了这一次的 IO（羡慕ing），拿到了一套，并且慷慨的送给了我，在此先谢谢方大神！<br/>
-<img src="media/15278616674467/kDmfBBTATlKjSFoZz89uGw_thumb_891.jpg" alt="kDmfBBTATlKjSFoZz89uGw_thumb_891" style="width:512px;"/></p>
+      <p>nullable 是个好东西，但可惜 Java 没有呀～</p>
 
 <span id="more"></span><!-- more -->
 
-<h2 id="toc_0">0x00 物联网简述</h2>
+<h2 id="toc_0">0x00 Background</h2>
 
-<p>在正式了解 Android Things 之前，先介绍一下 Iot(Internet of Things)，即所谓的物联网。</p>
+<p>前段时间在fix 一个 Google Play 发现的一个issue的时候发现了一个非常古怪的问题。 </p>
 
-<p>从最早期的短距离组网技术，到全球范围内的因特网，逐渐进化到如今的无线网络时代，接入网络的设备数量越来越庞大，接入的种类越来越多，而接入的方式也是越来越简单，物联网描述了一个所有可接入网络设备进行无缝衔接并交流的一种全新的生活方式。当生活中的种种设备都能够通过网络，甚至于通过智能家庭中心进行控制的时候，可以想象未来的生活便利程度。</p>
+<pre><code class="language-java">java.lang.IllegalArgumentException
+</code></pre>
 
-<p>物联网技术的普及其实是基于非常多的技术的广泛运用，从底层使用的协议栈，到应用层的智能化，早在1999年便开始提起的技术，直到最近几年才真正的有机会被应用到市场中。</p>
+<p>一个很简单的 Exception，但是在代码中怎么找怎么找，都找不到对应的到底是谁的参数有问题，看 crash stack 也非常的不明确，只是模糊的告诉我们，在一个 <code>PhoneStateListener</code> 的实现中。仔细检查了我们的实现以后发现：</p>
 
-<p>物联网的最常见的例子有，智能家居（包括但不限于智能灯泡，智能扫地机器人，智能音箱），车载物联网系统（定位，导航等），共享单车（解锁，定位等）。随着应用的不断普及，接入的厂商越来越多，整个市场规模也越来越庞大。</p>
+<pre><code class="language-java">override fun onCallStateChanged(state: Int, phoneNumber: String) {
+    // codes
+}
+</code></pre>
 
-<p><img src="media/15278616674467/15278630338751.jpg" alt="小米智能家居系列产品"/></p>
+<p>这里面的代码非常的简单，几乎没有可能的地方会抛这个问题。</p>
 
-<h2 id="toc_1">0x01 Android Things 是什么</h2>
+<h2 id="toc_1">0x01 Root cause</h2>
 
-<p>介绍完了 Internet of Things, 那么什么是 Android Things 呢？<br/>
-<img src="media/15278616674467/15278635101077.jpg" alt="Android Things 官网介绍"/></p>
+<p>主要的原因在于，Kotlin 在实现或继承 Java 层的接口/方法的时候，如果一个参数被加上了 <code>@Nullable</code> 的注解，则会被自动实现成 <code>Type?</code> 的形式，但是如果原本的接口不带这个注解，那么实现的时候，Kotlin中无论是 <code>Type</code> or <code>Type?</code> 这两种写法都是被接受的，因此，在这个例子中，<br/>
+Java 的接口是这样定义的: </p>
 
-<p>Android Things 是 Google 开发的一款针对物联网产品的操作系统。早在2016年底，Google 就 release 了最初的 Android Things 开发者版本，它的前身其实就是 Google 的 Brillo 操作系统，添加了更多的 Android Java API 以方便开发者进行开发，并且支持使用 Android Studio 进行开发。对于一个 Android 开发者而言，Google 此举无疑是重大利好。<br/>
-<img src="media/15278616674467/15278652306941.jpg" alt=""/></p>
+<pre><code class="language-java">// android/telephony/PhoneStateListener.java
+public void onCallStateChanged(int state, String phoneNumber) {
+        // default implementation empty
+}
+</code></pre>
 
-<h2 id="toc_2">0x02 Android Things 能用来做什么</h2>
+<p>而我们的实现中，这个 <code>phoneNumber</code> 的类型被强制变成了 <code>@NonNull String</code>，因此当调用方传入 <code>null</code> 之后，Java层是正确的，但是回调到 Kotlin 的时候， <code>String?</code> 并不能强制转换成 <code>String</code>， 因此会抛出 <code>java.lang.IllegalArgumentException</code>。</p>
 
-<p>对于我这样的实用主义者而言，对于一个产品我更关注的是，我能用它来做些什么，或者说，我能用它来改变些什么。如果只是一个用来写个 Hello world 或者点个灯看 Bling Bling，那也没必要再多费口舌了。</p>
+<h2 id="toc_2">0x02 Solution</h2>
 
-<p>简单而言，Android Things 可以为你的智能家居，智能出行，智能生活打下坚实的软件基础。未来生活中的智能设备，可能都会有 Android Things 参与其中，当然目前而言这还是个幻想，怎样拿下这块市场是 Google 需要操心的事情。</p>
+<p>找到了原因之后，fix 起来就非常的简单了，将原有接口的实现变更为：</p>
 
-<p>从2017年开始，Google 的口号便从 Mobile First 转向 AI First，今年的 IO 我们也看到了 Google Assistant 恐怖的以假乱真的能力（Refer to <a href="https://www.bilibili.com/video/av23217154/">here</a>）。 而更多的连接到 Google 云端的设备也将会为我们提供更多更便利的服务（国内的笑笑就行了）。</p>
+<pre><code class="language-java">override fun onCallStateChanged(state: Int, phoneNumber: String?) {
+    // codes
+}
+</code></pre>
 
-<h2 id="toc_3">0x03 Android Things Power</h2>
+<p>然后在内部进行 null check, 以确保不会发生其它error。</p>
 
-<p><img src="media/15278616674467/15278635528927.jpg" alt="Android Things 架构"/></p>
+<h2 id="toc_3">0x03 Afterwards</h2>
 
-<p>熟悉 Android 开发的同学可能会对这张图感到十分的眼熟，图中除了 Support Library 与 Android 架构不同之外，几乎可以说是一模一样。再加上可以使用 Android Studio 进行开发（Kotlin 也同样支持），支持 Firebase API 的一些子集（去除了认证等模块），支持基于 <a href="https://www.tensorflow.org">Tensorflow</a> 的本地机器学习能力，基于 Google Cloud 的连接能力，基于 Google Assistant 的智能化程度， 再加上无比庞大的 Android 使用者与开发者群体。随着厂商的逐步接入与适配，相信 Android Things 的正式产品离我们不会很远了。</p>
+<p>Kotlin/Java 混用，在现在的 Android Project 中应该是非常常见的场景了，平时开发过程中可能一个不注意就踩到了一些坑，因此需要格外小心一些隐式的转换之类，这类问题编译器无法发现，被抓到的时候可能栈也不是特别清楚，需要仔细甄别。</p>
 
-<p><img src="media/15278616674467/15278649325937.jpg" alt=""/></p>
+<p>说到这里，实名表扬 Firebase crashlytics, Google Play中只能看到栈，但是 crashlytics 中能够看到</p>
 
-<h2 id="toc_4">0x04 说了这么多...然后呢？</h2>
+<pre><code class="language-java">Fatal Exception: java.lang.IllegalArgumentException
+Parameter specified as non-null is null: method kotlin.jvm.internal.Intrinsics.checkParameterIsNotNull, parameter phoneNumber
+CallPhoneStateReceiver$onReceive$1.onCallStateChanged
+</code></pre>
 
-<p>作为一名消费者，对于 Android Things 暂时还不需要抱有特别多的关注，目前智能家居的体系还不是非常成熟，国外的 Google/Apple/Amazon，国内的小米/天猫/京东，大家都还处于一个探索阶段，想尝鲜的话可以考虑国内厂商的某些产品（本土化更好）。</p>
-
-<p>对于开发者而言，由于 Android Things 采用了与 Android 类似的架构设计与 API，未来想要接入到 Things 平台想必也不会特别麻烦。</p>
-
-<p>对于智能硬件厂商而言，那些有实力有资源自己开发操作系统的厂商自然不用多说，而那些资源不是很充足的厂商，未来更有可能采用某一家公司提供的操作系统方案，而选择某一个方案的时候最优先考虑到的应当是安全性和开发难度。Android Things 背靠着 Google 这棵大树，相信未来也会有很多的厂商愿意采用。</p>
-
-<p>而对于我们而言，这只是一家不存在的公司发布的一个不存在的产品，洗洗睡吧。</p>
+<p>非常实用了。</p>
 
 
     
@@ -184,16 +190,13 @@
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15300248044929.html" 
-          title="Previous Post: Android dynamic UI for phones and tablets">&laquo; Android dynamic UI for phones and tablets</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="15254241548087.html" 
-          title="Next Post: First step to love writing wikis and blogs">First step to love writing wikis and blogs &raquo;</a>
+          <a  href="15603285820987.html" 
+          title="Next Post: Android Studio 编写 JNI 代码时的一个小问题">Android Studio 编写 JNI 代码时的一个小问题 &raquo;</a>
       
       </p>
         </div>
